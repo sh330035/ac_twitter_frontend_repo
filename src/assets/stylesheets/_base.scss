@@ -1,0 +1,19 @@
+// color setting
+$ac-orange: #ff6600;
+$text-white: #ffffff;
+
+h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1c1c1c;
+}
+
+.btn {
+  width: 100%;
+  height: 38px;
+  border-radius: 30px;
+  background-color: $ac-orange;
+  color: $text-white;
+  font-size: 18px;
+  font-weight: 700;
+}

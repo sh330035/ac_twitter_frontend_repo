@@ -1,0 +1,65 @@
+// icon URL
+$logo-url: url(../images/Logo.png);
+$home-url: url(../images/home.svg);
+$person-url: url(../images/person.svg);
+$setting-url: url(../images/setting.svg);
+$logout-url: url(../images/logout.svg);
+
+.navbar {
+  padding-left: 50px;
+  min-width: 350px;
+  height: 100vh;
+  &_brand {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 30px;
+    &_logo {
+      width: 50px;
+      height: 50px;
+      background-image: $logo-url;
+    }
+  }
+  .link {
+    display: block;
+  }
+  &_link {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &_content {
+      margin-left: 12px;
+      margin-bottom: 20px;
+      display: flex;
+    }
+    &_icon {
+      width: 24px;
+      height: 24px;
+      background-size: 100% 100%;
+      &_home-page {
+        background-image: $home-url;
+      }
+      &_user-page {
+        background-image: $person-url;
+      }
+      &_setting-page {
+        background-image: $setting-url;
+      }
+      &_logout {
+        background-image: $logout-url;
+      }
+    }
+    &_text {
+      display: inline;
+      margin-left: 24px;
+    }
+    &_tweet-launch {
+      width: 210px;
+      margin-top: 10px;
+    }
+    &_logout {
+      margin-top: 55vh;
+    }
+  }
+}
