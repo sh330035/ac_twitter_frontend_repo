@@ -1,2 +1,13 @@
-@use 'fontFamily';
-@use 'base.scss';
+// reset CSS
+@import "reset";
+
+// basic setting
+@import "mixins";
+@import "placeholder-selectors";
+
+// 字體設定
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+// project styles start
+@import "base";
+@import "navbar";
