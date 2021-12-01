@@ -3,104 +3,127 @@
     @submit.prevent.stop="handleFormSubmit"
     class="account-setting-form"
     action=""
+    novalidate
   >
-    <div class="account-setting-form__form-row form-row">
-      <label for="account" class="account-setting-form__form-row__label">
-        帳號
-      </label>
+    <div class="form-row">
+      <label for="account" class="form-row__label"> 帳號 </label>
       <input
         v-model="accountDetail.account"
         id="account"
-        class="account-setting-form__form-row__input"
+        class="form-row__input"
+        :class="{ invalid: formValidation.account.error }"
         type="text"
         name="account"
-        placeholder="@"
         required
       />
-      <div
-        v-if="formValidation.account.error"
-        class="account-setting-form__form-row__error-message"
-      >
+      <div v-if="formValidation.account.error" class="form-row__error-message">
         {{ formValidation.account.message }}
       </div>
     </div>
-    <div class="account-setting-form__form-row form-row">
-      <label for="name" class="account-setting-form__form-row__label">
-        名稱
-      </label>
+    <div class="form-row">
+      <label for="name" class="form-row__label"> 名稱 </label>
       <input
         v-model="accountDetail.name"
         id="name"
-        class="account-setting-form__form-row__input"
+        class="form-row__input"
+        :class="{ invalid: formValidation.name.error }"
         type="text"
         name="name"
         required
       />
+      <div class="form-row__length-counter">
+        <span class="form-row__length-counter__current-length">
+          {{ accountDetail.name.length }}
+        </span>
+        <span class="form-row__length-counter__length-limit">
+          / {{ formValidation.name.lengthLimit }}
+        </span>
+      </div>
+      <div v-if="formValidation.name.error" class="form-row__error-message">
+        {{ formValidation.name.message }}
+      </div>
     </div>
-    <div class="account-setting-form__form-row form-row">
-      <label for="email" class="account-setting-form__form-row__label">
-        Email
-      </label>
+    <div class="form-row">
+      <label for="email" class="form-row__label"> Email </label>
       <input
         v-model="accountDetail.email"
         id="email"
-        class="account-setting-form__form-row__input"
+        class="form-row__input"
+        :class="{ invalid: formValidation.email.error }"
         type="email"
         name="email"
         required
       />
+      <div v-if="formValidation.email.error" class="form-row__error-message">
+        {{ formValidation.email.message }}
+      </div>
     </div>
-    <div class="account-setting-form__form-row form-row">
-      <label for="password" class="account-setting-form__form-row__label">
-        密碼
-      </label>
+    <div class="form-row">
+      <label for="password" class="form-row__label"> 密碼 </label>
       <input
         v-model="accountDetail.password"
         id="password"
-        class="account-setting-form__form-row__input"
-        type="text"
+        class="form-row__input"
+        :class="{ invalid: formValidation.password.error }"
+        type="password"
         name="password"
         required
       />
+      <div v-if="formValidation.password.error" class="form-row__error-message">
+        {{ formValidation.password.message }}
+      </div>
     </div>
-    <div class="account-setting-form__form-row form-row">
-      <label for="passwordCheck" class="account-setting-form__form-row__label">
-        密碼確認
-      </label>
+    <div class="form-row">
+      <label for="passwordCheck" class="form-row__label"> 密碼確認 </label>
       <input
         v-model="accountDetail.passwordCheck"
         id="passwordCheck"
-        class="account-setting-form__form-row__input"
-        type="text"
+        class="form-row__input"
+        :class="{ invalid: formValidation.passwordCheck.error }"
+        type="password"
         name="passwordCheck"
         required
       />
+      <div
+        v-if="formValidation.passwordCheck.error"
+        class="form-row__error-message"
+      >
+        {{ formValidation.passwordCheck.message }}
+      </div>
     </div>
     <button type="submit" class="account-setting-form__submit-btn btn">
       submit
     </button>
-    <router-link class="link" to="">取消</router-link>
+    <span class="link" @click="$router.back()">取消</span>
   </form>
 </template>
 
 <script>
 
 export default {
+  name: 'AccountSettingForm',
+  props: {
+    initialAccountDetail: {
+      type: Object,
+    }
+  },
   data() {
     return {
       accountDetail: {
-        account: '@',
+        account: '',
         name: '',
         email: '',
         password: '',
+        passwordCheck: '',
         role: 'user'
       },
       formValidation: {
         account: {
-          error: true,
+          error: false,
           message: 'test'
         },
         name: {
+          lengthLimit: 50,
           error: false,
           message: ''
         },
@@ -112,72 +135,88 @@ export default {
           error: false,
           message: ''
         },
+        passwordCheck: {
+          error: false,
+          message: ''
+        },
+      }
+    }
+  },
+  created() {
+    this.updateAccountDetail()
+  },
+  watch: {
+    initialAccountDetail: function () {
+      this.updateAccountDetail()
+    },
+    'accountDetail.name': function () {
+      if (this.accountDetail.name.length > this.formValidation.name.lengthLimit) {
+        this.formValidation.name.error = true
+        this.formValidation.name.message = '字數超過限制'
+      } else {
+        this.formValidation.name.error = false
       }
     }
   },
   methods: {
-    handleFormSubmit() {
-      console.log('validate form')
-      // form validation
-      // console.log(this.accountDetail.account.slice(0, 1))
-      // console.log(this.accountDetail.account.slice(0, 1) === '@')
-      // console.log(this.accountDetail.account.includes('@'))
-      if (this.accountDetail.account.trim().length === 0 || !this.accountDetail.account.includes('@')) {
-        console.log('account name invalid')
+    updateAccountDetail() {
+      this.accountDetail = {
+        ...this.accountDetail,
+        ...this.initialAccountDetail,
+        password: ''
       }
-      
+    },
+    handleFormSubmit() {
+      // reset data of this.formValidation
+      const fileName = Object.keys(this.formValidation)
+      fileName.forEach(name => {
+        this.formValidation[name].error = false
+        this.formValidation[name].message = ''
+      })
+      // form validation of account
+      if (this.accountDetail.account.trim().length === 0) {
+        this.formValidation.account.error = true
+        this.formValidation.account.message = '請填入帳號'
+        return
+      }
+      // form validation of name
+      if (this.accountDetail.name.trim().length === 0) {
+        this.formValidation.name.error = true
+        this.formValidation.name.message = '請填入名稱'
+        return
+      }
+      // form validation of email
+      if (this.accountDetail.email.trim().length === 0) {
+        this.formValidation.email.error = true
+        this.formValidation.email.message = '請填入信箱'
+        return
+      } else if (!this.accountDetail.email.includes('@') || !this.accountDetail.email.includes('.com')) {
+        this.formValidation.email.error = true
+        this.formValidation.email.message = '請填入正確的信箱格式'
+        return
+      }
+      // form validation of password
+      if (this.accountDetail.password.trim().length === 0) {
+        this.formValidation.password.error = true
+        this.formValidation.password.message = '請填入密碼'
+        return
+      }
+      if (this.accountDetail.passwordCheck.trim().length === 0) {
+        this.formValidation.passwordCheck.error = true
+        this.formValidation.passwordCheck.message = '請再次填入密碼已進行確認'
+        return
+      } else if (this.accountDetail.password !== this.accountDetail.passwordCheck) {
+        this.formValidation.passwordCheck.error = true
+        this.formValidation.passwordCheck.message = '密碼不相符，請重新確認'
+        this.accountDetail.passwordCheck = ''
+        return
+      }
+
+      // formSubmit
+      this.$emit('after-form-submit', this.accountDetail)
+      this.$router.push({ name: 'login' })
     }
   }
 }
 
 </script>
-
-<style lang="scss">
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-.form-row {
-  width: 100%;
-  height: 52px;
-  position: relative;
-  background-color: #f5f8fa;
-  label {
-    position: absolute;
-    top: 5px;
-    left: 10px;
-    font-size: 15px;
-    line-height: 15px;
-    font-weight: 500;
-    color: #657786;
-  }
-  input {
-    width: 100%;
-    // height: 100%;
-    // display: block;
-    padding: 20px 10px 4px 10px;
-    border-color: transparent;
-    border-bottom: 2px solid #657786;
-    // active & error 要是另一個底色樣式
-    background-color: transparent;
-    font-size: 19px;
-    font-weight: 500;
-    line-height: 28px;
-    color: #1c1c1c;
-    vertical-align: text-bottom;
-    // &::placeholder {
-    //   // padding: 20px 10px 4px 10px;
-    // }
-  }
-}
-
-.link {
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 26px;
-  text-decoration: underline;
-  color: #0099ff;
-}
-</style>
