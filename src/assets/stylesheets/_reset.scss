@@ -52,7 +52,8 @@ a:focus {
   -webkit-appearance: none;
 }
 
-button, .btn {
+button,
+.btn {
   background-color: transparent;
   border: 0;
   cursor: pointer;
@@ -62,7 +63,16 @@ button[disabled] {
   pointer-events: none;
 }
 
-input:required, 
+input:required,
 input:invalid {
   box-shadow: none;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-flex-col {
+  display: flex;
+  flex-direction: column;
 }
