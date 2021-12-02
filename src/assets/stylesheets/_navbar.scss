@@ -4,9 +4,13 @@ $person-url: url(../images/person.svg);
 $setting-url: url(../images/setting.svg);
 $logout-url: url(../images/logout.svg);
 
+$home-orange-url: url(../images/home_orange.svg);
+$person-orange-url: url(../images/person_orange.svg);
+$setting-orange-url: url(../images/setting_orange.svg);
+
 .navbar {
-  padding-left: 50px;
-  min-width: 350px;
+  padding-left: 30px;
+  width: 295px;
   height: 100vh;
   &_brand {
     display: block;
@@ -59,6 +63,24 @@ $logout-url: url(../images/logout.svg);
     }
     &_logout {
       margin-top: 55vh;
+    }
+    .active {
+      .navbar_link {
+        &_icon {
+          &_home-page {
+            background-image: $home-orange-url;
+          }
+          &_user-page {
+            background-image: $person-orange-url;
+          }
+          &_setting-page {
+            background-image: $setting-orange-url;
+          }
+        }
+        &_text {
+          color: $ac-orange;
+        }
+      }
     }
   }
 }
