@@ -220,7 +220,9 @@ export default {
 
       // formSubmit
       this.$emit("after-form-submit", this.accountDetail);
-      this.$router.push({ name: "login" });
+      // 暫時註解掉，看這段要不要拿到母層，寫在form與後端溝通的地方
+      // 因為 register 完導回 login；但 setting 完應該是導回 profile 之類
+      // this.$router.push({ name: "login" });
     },
   },
 };
