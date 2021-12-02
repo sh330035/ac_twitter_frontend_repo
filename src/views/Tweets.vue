@@ -2,7 +2,7 @@
   <div class="tweets-page">
     <!-- 測試頁面，確認字體有拉到 SCSS 的樣式 -->
     <section class="center-view">
-      <PageNameBanner />
+      <PageNameBanner :banner-title="bannerTitle"/>
       <h1>This is Tweets Main Page</h1>
     </section>
     <section class="right-card">
@@ -20,5 +20,10 @@ export default {
     PopularUsersCard,
     PageNameBanner,
   },
+  data () {
+    return { 
+      bannerTitle: '首頁'
+    }
+  }
 };
 </script>

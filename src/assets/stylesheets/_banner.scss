@@ -2,12 +2,6 @@
   width: 100%;
   height: 55px;
   border-bottom: 1px solid $border-gray;
-  &__tweets-page {
-    padding: 15px;
-    h2 {
-      line-height: 20px;
-    }
-  }
   &__user-page {
     padding-left: 15px;
 
@@ -25,8 +19,12 @@
       cursor: pointer;
     }
   }
-  &__setting-page {
+  &__other-page {
     padding: 15px;
     line-height: 20px;
+    &__arrow {
+      margin-right: 44px;
+      cursor: pointer;
+    }
   }
 }
