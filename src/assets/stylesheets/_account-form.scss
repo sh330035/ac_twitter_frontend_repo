@@ -1,7 +1,10 @@
 // General settings for pages of Register, Login, Account-setting & Admin Login
 .register,
-.setting {
+.setting,
+.login {
   width: 100%;
+
+  max-width: 540px;
   margin: 0 auto;
   text-align: center;
   display: flex;
@@ -19,9 +22,8 @@
     margin-bottom: 20px;
   }
   form {
-    margin: 20px;
+    padding: 20px;
     width: 100%;
-    max-width: 540px;
     display: flex;
     flex-direction: column;
     gap: 32px;
@@ -82,12 +84,34 @@
   }
   .link {
     font-size: 18px;
-    font-weight: 800;
+    font-weight: 700;
     line-height: 26px;
     color: $link-skyblue;
     cursor: pointer;
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+.setting {
+  button[type='submit'] {
+    width: auto;
+    padding: 10px 40px;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.login {
+  &__actions {
+    width: 100%;
+    margin-right: 20px;
+    text-align: right;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 26px;
+    color: $link-skyblue;
   }
 }
