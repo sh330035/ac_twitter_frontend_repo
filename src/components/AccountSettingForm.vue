@@ -99,124 +99,131 @@
 </template>
 
 <script>
-
 export default {
-  name: 'AccountSettingForm',
+  name: "AccountSettingForm",
   props: {
     initialAccountDetail: {
       type: Object,
-    }
+    },
   },
   data() {
     return {
       accountDetail: {
-        account: '',
-        name: '',
-        email: '',
-        password: '',
-        passwordCheck: '',
-        role: 'user'
+        account: "",
+        name: "",
+        email: "",
+        password: "",
+        passwordCheck: "",
+        role: "user",
       },
       formValidation: {
         account: {
           error: false,
-          message: 'test'
+          message: "test",
         },
         name: {
           lengthLimit: 50,
           error: false,
-          message: ''
+          message: "",
         },
         email: {
           error: false,
-          message: ''
+          message: "",
         },
         password: {
           error: false,
-          message: ''
+          message: "",
         },
         passwordCheck: {
           error: false,
-          message: ''
+          message: "",
         },
-      }
-    }
+      },
+    };
   },
   created() {
-    this.updateAccountDetail()
+    this.updateAccountDetail();
   },
   watch: {
     initialAccountDetail: function () {
-      this.updateAccountDetail()
+      this.updateAccountDetail();
     },
-    'accountDetail.name': function () {
-      if (this.accountDetail.name.length > this.formValidation.name.lengthLimit) {
-        this.formValidation.name.error = true
-        this.formValidation.name.message = '字數超過限制'
+    "accountDetail.name": function () {
+      if (
+        this.accountDetail.name.length > this.formValidation.name.lengthLimit
+      ) {
+        this.formValidation.name.error = true;
+        this.formValidation.name.message = "字數超過限制";
       } else {
-        this.formValidation.name.error = false
+        this.formValidation.name.error = false;
       }
-    }
+    },
   },
   methods: {
     updateAccountDetail() {
       this.accountDetail = {
         ...this.accountDetail,
         ...this.initialAccountDetail,
-        password: ''
-      }
+        password: "",
+      };
     },
     handleFormSubmit() {
       // reset data of this.formValidation
-      const fileName = Object.keys(this.formValidation)
-      fileName.forEach(name => {
-        this.formValidation[name].error = false
-        this.formValidation[name].message = ''
-      })
+      const fileName = Object.keys(this.formValidation);
+      fileName.forEach((name) => {
+        this.formValidation[name].error = false;
+        this.formValidation[name].message = "";
+      });
       // form validation of account
       if (this.accountDetail.account.trim().length === 0) {
-        this.formValidation.account.error = true
-        this.formValidation.account.message = '請填入帳號'
-        return
+        this.formValidation.account.error = true;
+        this.formValidation.account.message = "請填入帳號";
+        return;
       }
       // form validation of name
       if (this.accountDetail.name.trim().length === 0) {
-        this.formValidation.name.error = true
-        this.formValidation.name.message = '請填入名稱'
-        return
+        this.formValidation.name.error = true;
+        this.formValidation.name.message = "請填入名稱";
+        return;
       }
       // form validation of email
       if (this.accountDetail.email.trim().length === 0) {
-        this.formValidation.email.error = true
-        this.formValidation.email.message = '請填入信箱'
-        return
-      } else if (!this.accountDetail.email.includes('@') || !this.accountDetail.email.includes('.com')) {
-        this.formValidation.email.error = true
-        this.formValidation.email.message = '請填入正確的信箱格式'
-        return
+        this.formValidation.email.error = true;
+        this.formValidation.email.message = "請填入信箱";
+        return;
+      } else if (
+        !this.accountDetail.email.includes("@") ||
+        !this.accountDetail.email.includes(".com")
+      ) {
+        this.formValidation.email.error = true;
+        this.formValidation.email.message = "請填入正確的信箱格式";
+        return;
       }
       // form validation of password
       if (this.accountDetail.password.trim().length === 0) {
-        this.formValidation.password.error = true
-        this.formValidation.password.message = '請填入密碼'
-        return
+        this.formValidation.password.error = true;
+        this.formValidation.password.message = "請填入密碼";
+        return;
       }
       if (this.accountDetail.passwordCheck.trim().length === 0) {
-        this.formValidation.passwordCheck.error = true
-        this.formValidation.passwordCheck.message = '請再次填入密碼已進行確認'
-        return
-      } else if (this.accountDetail.password !== this.accountDetail.passwordCheck) {
-        this.formValidation.passwordCheck.error = true
-        this.formValidation.passwordCheck.message = '密碼不相符，請重新確認'
-        this.accountDetail.passwordCheck = ''
-        return
+        this.formValidation.passwordCheck.error = true;
+        this.formValidation.passwordCheck.message = "請再次填入密碼已進行確認";
+        return;
+      } else if (
+        this.accountDetail.password !== this.accountDetail.passwordCheck
+      ) {
+        this.formValidation.passwordCheck.error = true;
+        this.formValidation.passwordCheck.message = "密碼不相符，請重新確認";
+        this.accountDetail.passwordCheck = "";
+        return;
       }
 
       // formSubmit
-      this.$emit('after-form-submit', this.accountDetail)
-      this.$router.push({ name: 'login' })
-    }
-  }
-}
-
+      this.$emit("after-form-submit", this.accountDetail);
+      // 暫時註解掉，看這段要不要拿到母層，寫在form與後端溝通的地方
+      // 因為 register 完導回 login；但 setting 完應該是導回 profile 之類
+      // this.$router.push({ name: "login" });
+    },
+  },
+};
 </script>
