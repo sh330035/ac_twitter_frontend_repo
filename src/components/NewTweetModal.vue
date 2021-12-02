@@ -1,11 +1,12 @@
 <template>
   <div class="modal-mask">
     <div class="modal-wrapper">
-      <form action="">
+      <form action="" @submit.prevent.stop="handleFormSubmit">
         <div class="modal-container">
           <div class="modal-header">
             <span
               ><img
+                @click.prevent.stop="checkoutHandler"
                 src="../assets/images/cross.png"
                 alt=""
                 class="modal-header_cross"
@@ -13,9 +14,16 @@
           </div>
 
           <div class="modal-body">
-            <span><img src="" alt="" class="modal-body_user-image" /></span>
+            <span>
+              <img
+                :src="this.$store.state.currentUser.avatar"
+                alt=""
+                class="modal-body_user-image"
+            /></span>
             <textarea
               type=""
+              autofocus
+              v-model="tweetContent"
               class="modal-body_new-tweet"
               rows="4"
               cols="50"
@@ -25,6 +33,12 @@
 
           <div class="modal-footer">
             <div class="modal-footer_button-container">
+              <div
+                v-if="formValidation.tweet.error"
+                class="form-row__error-message"
+              >
+                {{ formValidation.tweet.message }}
+              </div>
               <button class="btn modal-button" @click="$emit('close')">
                 推文
               </button>
@@ -37,13 +51,63 @@
 </template>
 
 <script>
-export default {};
+import { mapState } from "vuex";
+
+export default {
+  name: "new-tweet-modal",
+  data() {
+    return {
+      tweetContent: "",
+      formValidation: {
+        tweet: {
+          lengthLimit: 140,
+          error: false,
+          message: "",
+        },
+      },
+    };
+  },
+  watch: {
+    tweetContent: function () {
+      if (this.tweetContent.length > this.formValidation.tweet.lengthLimit) {
+        this.formValidation.tweet.error = true;
+        this.formValidation.tweet.message = "字數不可超過 140 字";
+      } else if (this.tweetContent.length == 0) {
+        this.formValidation.tweet.error = true;
+        this.formValidation.tweet.message = "推文不能為空白";
+      } else {
+        this.formValidation.tweet.error = false;
+      }
+    },
+  },
+  computed: {
+    ...mapState(["currentUser"]),
+  },
+  methods: {
+    handleFormSubmit() {
+      if (this.tweetContent.length == 0) {
+        this.formValidation.tweet.error = true;
+        this.formValidation.tweet.message = "推文不能為空白";
+      }
+      if (this.formValidation.tweet.error) {
+        return;
+      }
+      console.log("推特內容送出：", this.tweetContent);
+
+      this.$emit("after-tweet-send");
+      this.checkoutHandler();
+    },
+    checkoutHandler() {
+      this.$emit("after-tweet-checkout");
+    },
+  },
+};
 </script>
 
 <style scoped>
 .modal-mask {
   position: fixed;
-  z-index: 9998;
+  z-index: 999;
   top: 0;
   left: 0;
   width: 100%;
@@ -101,12 +165,30 @@ export default {};
 
 .modal-body_new-tweet {
   margin-left: 10px;
+  padding-top: 9px;
   border: none;
+  resize: none;
+  font-size: 18px;
+  font-family: "Noto Sans TC", sans-serif;
 }
 
 .modal-footer {
   display: flex;
   justify-content: end;
+}
+
+.modal-footer_button-container {
+  display: flex;
+  align-items: center;
+}
+
+.form-row__error-message {
+  margin: 5px 0;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 15px;
+  color: #fc5a5a;
 }
 
 .modal-button {

@@ -2,7 +2,6 @@
   <div class="test-page">
     <!-- 測試頁面，確認字體有拉到 SCSS 的樣式 -->
     <section class="center-view">
-      <NewTweetModal v-if="isModelShowed" />
       <h3>Test page</h3>
       <i class="fas fa-align-left"></i>
       <button @click="sendToastMessage">Show Snackbar</button>
@@ -55,11 +54,10 @@
 <script>
 import PopularUsersCard from "../components/PopularUsersCard.vue";
 import Toast from "../components/AlertToast.vue";
-import NewTweetModal from "../components/NewTweetModal.vue";
 
 export default {
   name: "test-page",
-  components: { PopularUsersCard, Toast, NewTweetModal },
+  components: { PopularUsersCard, Toast },
   data() {
     return {
       // 母層須 props 此物件給 Toast 做為控制參數
@@ -67,7 +65,6 @@ export default {
         message: "",
         dataStatus: "",
       },
-      isModelShowed: false,
     };
   },
   methods: {
