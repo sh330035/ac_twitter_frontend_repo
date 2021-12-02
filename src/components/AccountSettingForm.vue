@@ -92,9 +92,8 @@
       </div>
     </div>
     <button type="submit" class="account-setting-form__submit-btn btn">
-      submit
+      {{ initialAccountDetail ? '儲存' : '註冊'}}
     </button>
-    <span class="link" @click="$router.back()">取消</span>
   </form>
 </template>
 
@@ -217,12 +216,8 @@ export default {
         this.accountDetail.passwordCheck = "";
         return;
       }
-
       // formSubmit
       this.$emit("after-form-submit", this.accountDetail);
-      // 暫時註解掉，看這段要不要拿到母層，寫在form與後端溝通的地方
-      // 因為 register 完導回 login；但 setting 完應該是導回 profile 之類
-      // this.$router.push({ name: "login" });
     },
   },
 };
