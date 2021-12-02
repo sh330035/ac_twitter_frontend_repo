@@ -1,58 +1,65 @@
 <template>
   <div class="test-page">
     <!-- 測試頁面，確認字體有拉到 SCSS 的樣式 -->
-    <NewTweetModal />
-    <h3>Test page</h3>
-    <i class="fas fa-align-left"></i>
-    <button @click="sendToastMessage">Show Snackbar</button>
-    <Toast :ToastMessage="ToastMessage" />
-    <h3>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem voluptatum
-      debitis mollitia ipsam quod, provident, perferendis nisi maiores nihil
-      sapiente animi incidunt laudantium blanditiis aspernatur beatae? Obcaecati
-      quae officiis fugiat! 帳號Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Autem voluptatum debitis mollitia ipsam quod, provident,
-      perferendis nisi maiores nihil sapiente animi incidunt laudantium
-      blanditiis aspernatur beatae? Obcaecati quae officiis fugiat! 帳號Lorem
-      ipsum dolor sit amet consectetur adipisicing elit. Autem voluptatum
-      debitis mollitia ipsam quod, provident, perferendis nisi maiores nihil
-      sapiente animi incidunt laudantium blanditiis aspernatur beatae? Obcaecati
-      quae officiis fugiat! 帳號Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Autem voluptatum debitis mollitia ipsam quod, provident,
-      perferendis nisi maiores nihil sapiente animi incidunt laudantium
-      blanditiis aspernatur beatae? Obcaecati quae officiis fugiat! 帳號Lorem
-      ipsum dolor sit amet consectetur adipisicing elit. Autem voluptatum
-      debitis mollitia ipsam quod, provident, perferendis nisi maiores nihil
-      sapiente animi incidunt laudantium blanditiis aspernatur beatae? Obcaecati
-      quae officiis fugiat! 帳號Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Autem voluptatum debitis mollitia ipsam quod, provident,
-      perferendis nisi maiores nihil sapiente animi incidunt laudantium
-      blanditiis aspernatur beatae? Obcaecati quae officiis fugiat! 帳號Lorem
-      ipsum dolor sit amet consectetur adipisicing elit. Autem voluptatum
-      debitis mollitia ipsam quod, provident, perferendis nisi maiores nihil
-      sapiente animi incidunt laudantium blanditiis aspernatur beatae? Obcaecati
-      quae officiis fugiat! 帳號Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Autem voluptatum debitis mollitia ipsam quod, provident,
-      perferendis nisi maiores nihil sapiente animi incidunt laudantium
-      blanditiis aspernatur beatae? Obcaecati quae officiis fugiat! 帳號Lorem
-      ipsum dolor sit amet consectetur adipisicing elit. Autem voluptatum
-      debitis mollitia ipsam quod, provident, perferendis nisi maiores nihil
-      sapiente animi incidunt laudantium blanditiis aspernatur beatae? Obcaecati
-      quae officiis fugiat! 帳號Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Autem voluptatum debitis mollitia ipsam quod, provident,
-      perferendis nisi maiores nihil sapiente animi incidunt laudantium
-      blanditiis aspernatur beatae? Obcaecati quae officiis fugiat! 帳號
-    </h3>
+    <section class="center-view">
+      <NewTweetModal v-if="isModelShowed" />
+      <h3>Test page</h3>
+      <i class="fas fa-align-left"></i>
+      <button @click="sendToastMessage">Show Snackbar</button>
+      <Toast :ToastMessage="ToastMessage" />
+      <h3>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
+        voluptatum debitis mollitia ipsam quod, provident, perferendis nisi
+        maiores nihil sapiente animi incidunt laudantium blanditiis aspernatur
+        beatae? Obcaecati quae officiis fugiat! 帳號Lorem ipsum dolor sit amet
+        consectetur adipisicing elit. Autem voluptatum debitis mollitia ipsam
+        quod, provident, perferendis nisi maiores nihil sapiente animi incidunt
+        laudantium blanditiis aspernatur beatae? Obcaecati quae officiis fugiat!
+        帳號Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
+        voluptatum debitis mollitia ipsam quod, provident, perferendis nisi
+        maiores nihil sapiente animi incidunt laudantium blanditiis aspernatur
+        beatae? Obcaecati quae officiis fugiat! 帳號Lorem ipsum dolor sit amet
+        consectetur adipisicing elit. Autem voluptatum debitis mollitia ipsam
+        quod, provident, perferendis nisi maiores nihil sapiente animi incidunt
+        laudantium blanditiis aspernatur beatae? Obcaecati quae officiis fugiat!
+        帳號Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
+        voluptatum debitis mollitia ipsam quod, provident, perferendis nisi
+        maiores nihil sapiente animi incidunt laudantium blanditiis aspernatur
+        beatae? Obcaecati quae officiis fugiat! 帳號Lorem ipsum dolor sit amet
+        consectetur adipisicing elit. Autem voluptatum debitis mollitia ipsam
+        quod, provident, perferendis nisi maiores nihil sapiente animi incidunt
+        laudantium blanditiis aspernatur beatae? Obcaecati quae officiis fugiat!
+        帳號Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
+        voluptatum debitis mollitia ipsam quod, provident, perferendis nisi
+        maiores nihil sapiente animi incidunt laudantium blanditiis aspernatur
+        beatae? Obcaecati quae officiis fugiat! 帳號Lorem ipsum dolor sit amet
+        consectetur adipisicing elit. Autem voluptatum debitis mollitia ipsam
+        quod, provident, perferendis nisi maiores nihil sapiente animi incidunt
+        laudantium blanditiis aspernatur beatae? Obcaecati quae officiis fugiat!
+        帳號Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
+        voluptatum debitis mollitia ipsam quod, provident, perferendis nisi
+        maiores nihil sapiente animi incidunt laudantium blanditiis aspernatur
+        beatae? Obcaecati quae officiis fugiat! 帳號Lorem ipsum dolor sit amet
+        consectetur adipisicing elit. Autem voluptatum debitis mollitia ipsam
+        quod, provident, perferendis nisi maiores nihil sapiente animi incidunt
+        laudantium blanditiis aspernatur beatae? Obcaecati quae officiis fugiat!
+        帳號
+      </h3>
+    </section>
+    <section class="right-card">
+      <PopularUsersCard />
+    </section>
   </div>
 </template>
 
 <script>
+import PopularUsersCard from "../components/PopularUsersCard.vue";
 import Toast from "../components/AlertToast.vue";
 import NewTweetModal from "../components/NewTweetModal.vue";
 
 export default {
   name: "test-page",
-  components: { Toast, NewTweetModal },
+  components: { PopularUsersCard, Toast, NewTweetModal },
   data() {
     return {
       // 母層須 props 此物件給 Toast 做為控制參數
@@ -60,6 +67,7 @@ export default {
         message: "",
         dataStatus: "",
       },
+      isModelShowed: false,
     };
   },
   methods: {
@@ -81,10 +89,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.test-page {
-  height: 100vh;
-  overflow-y: scroll;
-}
-</style>

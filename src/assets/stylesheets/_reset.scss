@@ -1,5 +1,7 @@
 /* reset css */
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -12,7 +14,6 @@ h4,
 h5,
 h6,
 p {
-  font-family: 'Noto Sans TC', sans-serif;
   margin: 0px;
   padding: 0px;
 }
@@ -28,8 +29,9 @@ li {
 a,
 a:hover,
 a:focus {
-  color: #000000;
+  color: inherit;
   text-decoration: none;
+  outline: none;
   cursor: pointer;
 }
 
@@ -39,7 +41,6 @@ img {
   display: block;
 }
 
-.btn,
 button,
 button:focus,
 input:focus,
@@ -48,9 +49,10 @@ select,
 select:focus,
 a:focus {
   outline: 0px !important;
+  -webkit-appearance: none;
 }
 
-button {
+button, .btn {
   background-color: transparent;
   border: 0;
   cursor: pointer;
@@ -60,14 +62,7 @@ button[disabled] {
   pointer-events: none;
 }
 
-input {
-  padding: 0;
-}
-
-input:required {
-  box-shadow: none;
-}
-
+input:required, 
 input:invalid {
   box-shadow: none;
 }

@@ -1,6 +1,61 @@
 // color setting
-$ac-orange: #ff6600;
 $text-white: #ffffff;
+$text-black: #1c1c1c;
+$ac-orange: #ff6600;
+$link-skyblue: #0099ff;
+$default-hint-color: #657786;
+$active-hint-color: #50b5ff;
+$error-hint-color: #fc5a5a;
+$input-bg-color: #f5f8fa;
+
+$logo-url: url(../images/Logo.png);
+
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Noto Sans TC', sans-serif;
+  color: $text-black;
+}
+
+#twitter-app {
+  height: 100vh;
+  width: 100vw;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-start;
+  text-align: center;
+  overflow-y: hidden;
+
+  main {
+    height: 100vh;
+    width: 100vw;
+    margin: 0 20px 0 20px;
+    min-height: 100vh;
+    // 選擇 main 下一個層級的 div = 選擇 router-link
+    > div {
+      height: 100vh;
+      display: flex;
+      justify-content: flex-start;
+      section.center-view {
+        flex-grow: 1;
+        min-width: 600px;
+        height: 100%;
+        overflow-y: auto;
+        // scrollbar setting - make scrollbar transparent */
+        &::-webkit-scrollbar {
+          background: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: transparent;
+        }
+      }
+      section.right-card {
+        flex-basis: 400px;
+      }
+    }
+  }
+}
 
 h2 {
   font-size: 18px;
@@ -16,4 +71,11 @@ h2 {
   color: $text-white;
   font-size: 18px;
   font-weight: 700;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.9;
+  };
+  &:active {
+    opacity: 1;
+  }
 }
