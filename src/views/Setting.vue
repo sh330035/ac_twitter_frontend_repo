@@ -1,7 +1,7 @@
 <template>
   <div class="setting">
     <section class="center-view">
-      <PageNameBanner />
+      <PageNameBanner :banner-title="bannerTitle"/>
       <account-setting-form
         :initial-account-detail="accountDetail"
         @after-form-submit="afterFormSubmit"
@@ -15,7 +15,7 @@ import AccountSettingForm from "../components/AccountSettingForm.vue";
 import PageNameBanner from "../components/PageNameBanner.vue";
 
 const dummyData = {
-  user: {
+  currentUser: {
     id: 1,
     account: "user1",
     email: "user1@email.com",
@@ -33,6 +33,7 @@ export default {
   },
   data() {
     return {
+      bannerTitle: '帳戶設定',
       accountDetail: {
         account: "",
         name: "",
@@ -55,11 +56,13 @@ export default {
       console.log(`向後台拿取 user id-${userId} 資料`);
       this.accountDetail = {
         ...this.accountDetail,
-        ...dummyData.user,
+        ...dummyData.currentUser,
       };
     },
     afterFormSubmit(accountDetail) {
       console.log("註冊資料送出：", accountDetail);
+      // redirect to user profile of this current user 
+      this.$router.push({name: 'user', params: dummyData.currentUser.id})
     },
   },
 };

@@ -1,13 +1,6 @@
 <template>
   <div class="page-name-banner">
     <div class="banner">
-      <!-- tweets page banner -->
-      <div
-        v-if="this.currentRouterName == 'tweets'"
-        class="banner__tweets-page d-flex"
-      >
-        <span><h2>首頁</h2></span>
-      </div>
       <!-- user page banner -->
       <div
         v-if="this.currentRouterName == 'user'"
@@ -27,12 +20,18 @@
           </p>
         </span>
       </div>
-      <!-- setting page banner -->
-      <div
-        v-if="this.currentRouterName == 'account-setting'"
-        class="banner__setting-page d-flex"
-      >
-        <span><h2>帳戶設定</h2></span>
+      <!-- other page banner -->
+      <div v-if="bannerTitle" class="banner__other-page d-flex">
+        <h2>
+          <span
+            v-if="bannerLinkBack"
+            @click="$router.back()"
+            class="banner__other-page__arrow"
+          >
+            &larr;
+          </span>
+          {{ bannerTitle }}
+        </h2>
       </div>
     </div>
   </div>
@@ -44,22 +43,26 @@ export default {
     user: {
       type: Object,
     },
+    bannerTitle: {
+      type: String
+    },
+    bannerLinkBack: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
       currentRouterName: "",
-      currentRouterParams: "",
-    };
+    }
   },
   methods: {
     getRouterName() {
-      this.currentRouterName = this.$route.name;
-      this.currentRouterParams = this.$route.params.id;
-      console.log(this.currentRouterName, this.currentRouterParams);
+      this.currentRouterName = this.$route.name
     },
   },
   created() {
-    this.getRouterName();
+    this.getRouterName()
   },
 };
 </script>
