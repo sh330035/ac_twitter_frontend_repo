@@ -1,23 +1,24 @@
 <template>
   <section class="center-view">
-    <div class="register">
+    <div class="admin-login">
       <Toast :ToastMessage="ToastMessage" />
-
       <div class="logo"></div>
-      <h2>建立你的帳號</h2>
-      <account-setting-form @after-form-submit="afterFormSubmit" />
-      <span class="link" @click="$router.push('/login')">取消</span>
+      <h2>後台登入</h2>
+      <account-login-form @after-form-submit="afterFormSubmit" />
+      <div class="login__actions">
+        <router-link class="link" to="/login">前台登入</router-link>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
-import AccountSettingForm from "../components/AccountSettingForm.vue"
+import AccountLoginForm from "../components/AccountLoginForm.vue"
 import Toast from "../components/AlertToast.vue"
 
 export default {
   components: {
-    AccountSettingForm,
+    AccountLoginForm,
     Toast,
   },
   data() {
@@ -38,16 +39,16 @@ export default {
       // Toast 測試 模擬Email重複
       if (this.backendReturnStatus) {
         this.sendToastMessage()
+        return
       }
 
-      this.$router.push({ name: "login" })
+      this.$router.push({ name: "tweets" })
     },
     // 修改 toast message 讓 toast 監看到變化，觸發視窗跳出
     sendToastMessage() {
       this.ToastMessage.dataStatus = ""
       this.ToastMessage.dataStatus = "error"
-
-      this.ToastMessage.message = "Email 已重複註冊!"
+      this.ToastMessage.message = "______"
     },
   },
 };

@@ -1,11 +1,11 @@
 <template>
   <div class="setting">
-    <div class="logo"></div>
-    <h2>建立你的帳號</h2>
-    <account-setting-form
-      :initial-account-detail="accountDetail"
-      @after-form-submit="afterFormSubmit"
-    />
+    <section class="center-view">
+      <account-setting-form
+        :initial-account-detail="accountDetail"
+        @after-form-submit="afterFormSubmit"
+      />
+    </section>
   </div>
 </template>
 
