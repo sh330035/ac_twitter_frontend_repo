@@ -42,7 +42,7 @@ export default {
         return
       }
 
-      this.$router.push({ name: "tweets" })
+      this.$router.push({ name: "admin-tweets" })
     },
     // 修改 toast message 讓 toast 監看到變化，觸發視窗跳出
     sendToastMessage() {

@@ -10,8 +10,9 @@ $setting-orange-url: url(../images/setting_orange.svg);
 
 .navbar {
   padding-left: 30px;
-  width: 295px;
+  flex-basis: 295px;
   height: 100vh;
+  padding-right: 55px;
   &_brand {
     display: block;
     width: 50px;
