@@ -3,7 +3,8 @@
     <!-- v-for Start -->
     <div v-for="tweet in tweets" :key="tweet.id" class="admin-tweets__tweet">
       <div class="admin-tweets__tweet__content-wrapper">
-        <img src="" class="admin-tweets__tweet__content-wrapper__avatar" />
+        <img
+          :src="tweet.avatar" class="admin-tweets__tweet__content-wrapper__avatar" alt="Avatar"/>
         <div class="admin-tweets__tweet__content-wrapper__detail">
           <div class="admin-tweets__tweet__content-wrapper__detail__info">
             <span
