@@ -23,9 +23,9 @@
             <textarea
               type=""
               autofocus
-              v-model="tweetContent"
+              v-model="description"
               class="modal-body_new-tweet"
-              rows="4"
+              rows1="3"
               cols="50"
               placeholder="有什麼新鮮事?"
             />
@@ -39,9 +39,7 @@
               >
                 {{ formValidation.tweet.message }}
               </div>
-              <button class="btn modal-button" @click="$emit('close')">
-                推文
-              </button>
+              <button class="btn modal-button">推文</button>
             </div>
           </div>
         </div>
@@ -51,13 +49,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-
 export default {
   name: "new-tweet-modal",
   data() {
     return {
-      tweetContent: "",
+      description: "",
       formValidation: {
         tweet: {
           lengthLimit: 140,
@@ -68,11 +64,11 @@ export default {
     };
   },
   watch: {
-    tweetContent: function () {
-      if (this.tweetContent.length > this.formValidation.tweet.lengthLimit) {
+    description: function () {
+      if (this.description.length > this.formValidation.tweet.lengthLimit) {
         this.formValidation.tweet.error = true;
         this.formValidation.tweet.message = "字數不可超過 140 字";
-      } else if (this.tweetContent.length == 0) {
+      } else if (this.description.length == 0) {
         this.formValidation.tweet.error = true;
         this.formValidation.tweet.message = "推文不能為空白";
       } else {
@@ -80,19 +76,16 @@ export default {
       }
     },
   },
-  computed: {
-    ...mapState(["currentUser"]),
-  },
   methods: {
     handleFormSubmit() {
-      if (this.tweetContent.length == 0) {
+      if (this.description.length == 0) {
         this.formValidation.tweet.error = true;
         this.formValidation.tweet.message = "推文不能為空白";
       }
       if (this.formValidation.tweet.error) {
         return;
       }
-      console.log("推特內容送出：", this.tweetContent);
+      console.log("推特內容送出：", this.description);
 
       this.$emit("after-tweet-send");
       this.checkoutHandler();
@@ -170,6 +163,13 @@ export default {
   resize: none;
   font-size: 18px;
   font-family: "Noto Sans TC", sans-serif;
+}
+/* scrollbar setting - make scrollbar transparent */
+.modal-body_new-tweet::-webkit-scrollbar {
+  background: transparent;
+}
+.modal-body_new-tweet::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
 
 .modal-footer {

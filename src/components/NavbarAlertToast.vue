@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div id="snackbar">
-      <span class="snackbar_text">{{ this.ToastMessage.message }}</span>
-      <span class="snackbar_img" v-if="this.ToastMessage.dataStatus == 'error'"
+    <div id="snackbar__navbar">
+      <span class="snackbar_text">{{ this.NavbarToastMessage.message }}</span>
+      <span
+        class="snackbar_img"
+        v-if="this.NavbarToastMessage.dataStatus == 'error'"
         ><img src="../assets/images/error.svg" alt=""
       /></span>
       <span class="snackbar_img" v-else
@@ -14,25 +16,25 @@
 
 <script>
 export default {
-  name: "Toast",
+  name: "NavbarToast",
   props: {
-    ToastMessage: {
+    NavbarToastMessage: {
       type: Object,
       required: true,
     },
   },
   watch: {
     // 監看 props 中 status 的變化 (由空值變為 error 或 success) 觸發 toast
-    ToastMessage: {
+    NavbarToastMessage: {
       handler: function () {
-        this.toast();
+        this.toastNav();
       },
       deep: true,
     },
   },
   methods: {
-    toast() {
-      const toastElement = document.getElementById("snackbar");
+    toastNav() {
+      const toastElement = document.getElementById("snackbar__navbar");
       toastElement.className = "show";
       setTimeout(function () {
         toastElement.className = toastElement.className.replace("show", "");
@@ -41,4 +43,3 @@ export default {
   },
 };
 </script>
-
