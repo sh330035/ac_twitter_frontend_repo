@@ -3,31 +3,35 @@
     <div class="newest__tweet d-flex">
       <!-- 目前 tweets 中，沒有該 tweet 之發文者資料，圖片先帶假資料 -->
       <span
-        ><a href="">
+        ><router-link to="users/1">
           <img
             src="https://randomuser.me/api/portraits/women/81.jpg"
             alt=""
             class="newest__tweet__image"
-        /></a>
+        /></router-link>
       </span>
-      <div class="newest__tweet__container d-flex-col">
+      <div
+        class="newest__tweet__container d-flex-col"
+        @click.prevent.stop="toReplyRouter(tweet.id)"
+      >
         <div class="newest__tweet__user">
-          <h2 class="newest__tweet__user__name">apple</h2>
-          <span class="newest__tweet__user__account"
-            >@apple・{{ tweet.createdAt }} 小時</span
+          <h2 class="newest__tweet__user__name user-name-text">apple</h2>
+          <span class="newest__tweet__user__account user-account-text"
+            >@apple・{{ tweet.createdAt | fromNow }}</span
           >
         </div>
         <div class="newest__tweet__descriptoion">
-          <p>L{{ tweet.description }}</p>
+          <p class="description-15">{{ tweet.description }}</p>
         </div>
         <div class="newest__tweet__icon d-flex">
           <div class="newest__tweet__icon__reply d-flex">
             <img
+              @click.prevent.stop="replyLaunchHandler(tweet.id)"
               src="../assets/images/reply.svg"
               alt=""
               class="icon newest__tweet__icon__image icon__reply__image"
             />
-            <span class="newest__tweet__icon__count">{{
+            <span class="newest__tweet__icon__count count-13">{{
               tweet.replyCount
             }}</span>
           </div>
@@ -47,7 +51,7 @@
               class="icon newest__tweet__icon__image icon__like__image"
             />
             <span
-              class="newest__tweet__icon__count"
+              class="newest__tweet__icon__count count-13"
               :class="{ red: tweet.isLike }"
               >{{ tweet.likeCount }}</span
             >
@@ -59,6 +63,7 @@
 </template>
 
 <script>
+import { fromNowFilter, accountFilter } from "../utils/mixins.js";
 export default {
   name: "Newest-tweets",
   props: {
@@ -67,6 +72,7 @@ export default {
       required: true,
     },
   },
+  mixins: [fromNowFilter, accountFilter],
   methods: {
     addLike(tweetId) {
       console.log("add", tweetId);
@@ -75,6 +81,13 @@ export default {
     deleteLike(tweetId) {
       console.log("delete", tweetId);
       this.$emit("after-delete-like", tweetId);
+    },
+    replyLaunchHandler(tweetId) {
+      this.$emit("after-launch-reply-modal", tweetId);
+    },
+    // 點擊貼文跳轉至推文與回覆串
+    toReplyRouter(tweetId) {
+      this.$router.push({ name: "tweet-replies", params: { id: tweetId } });
     },
   },
 };

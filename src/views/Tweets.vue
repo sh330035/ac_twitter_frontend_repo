@@ -2,6 +2,12 @@
   <div class="tweets-page">
     <!-- 測試頁面，確認字體有拉到 SCSS 的樣式 -->
     <section class="center-view">
+      <ReplyModal
+        v-if="isReplyModalShow"
+        @after-comment-send="afterCommentSend"
+        @after-comment-checkout="afterCommentCheckout"
+        :replyTweet="replyTweet"
+      />
       <PageNameBanner :banner-title="bannerTitle" />
       <NewTweetForm />
       <NewestFeedList
@@ -10,6 +16,7 @@
         :tweet="tweet"
         @after-add-like="addLikeHandler"
         @after-delete-like="deleteLikeHandler"
+        @after-launch-reply-modal="afterLaunchReplyModal"
       />
     </section>
     <section class="right-card">
@@ -23,6 +30,7 @@ import PopularUsersCard from "../components/PopularUsersCard.vue";
 import PageNameBanner from "../components/PageNameBanner.vue";
 import NewTweetForm from "../components/NewTweetForm.vue";
 import NewestFeedList from "../components/NewestFeedList.vue";
+import ReplyModal from "../components/ReplyModel.vue";
 
 const dummyData = {
   tweets: [
@@ -197,7 +205,8 @@ const dummyData = {
     {
       id: 3,
       UserId: 1,
-      description: "Non autem deleniti perspiciatis architecto.",
+      description:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores distinctio quia officia? Sit unde illo harum! Necessitatibus iusto sunt odit error hic expedita et iste? Est perspiciatis iste consectetur harum.",
       createdAt: "2021-11-30T10:14:55.000Z",
       updatedAt: "2021-11-30T10:14:55.000Z",
       Replies: [
@@ -849,11 +858,15 @@ export default {
     PageNameBanner,
     NewTweetForm,
     NewestFeedList,
+    ReplyModal,
   },
   data() {
     return {
       bannerTitle: "首頁",
       tweets: [],
+      // reply modal
+      isReplyModalShow: false,
+      replyTweet: {},
     };
   },
   created() {
@@ -890,6 +903,19 @@ export default {
           };
         }
       });
+    },
+    // reply Modal 控制區
+    afterLaunchReplyModal(tweetId) {
+      console.log(tweetId);
+      this.replyTweet = this.tweets.find((tweet) => tweet.id == tweetId);
+      console.log(this.replyTweet);
+      this.isReplyModalShow = true;
+    },
+    afterCommentSend(comment) {
+      console.log("回覆內容送出：123", comment);
+    },
+    afterCommentCheckout() {
+      this.isReplyModalShow = false;
     },
   },
 };
