@@ -53,6 +53,6 @@
 .popular {
   height: 100vh;
   min-width: 410px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 </style>

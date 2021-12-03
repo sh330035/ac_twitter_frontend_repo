@@ -38,7 +38,7 @@
         @after-tweet-checkout="afterTweetCheckout"
         @after-tweet-send="afterTweetSend"
       />
-      <Toast :ToastMessage="ToastMessage" />
+      <Toast :NavbarToastMessage="NavbarToastMessage" />
       <button
         @click.prevent.stop="tweetLaunchHandler"
         class="btn tweet-launch_button"
@@ -60,16 +60,16 @@
 <script>
 import { mapState } from "vuex";
 import NewTweetModal from "../components/NewTweetModal.vue";
-import Toast from "../components/AlertToast.vue";
+import Toast from "../components/NavbarAlertToast.vue";
 
 export default {
-  name: "test-page",
+  name: "nav-bar",
   components: { NewTweetModal, Toast },
   data() {
     return {
       isModelShowed: false,
       // 母層須 props 此物件給 Toast 做為控制參數
-      ToastMessage: {
+      NavbarToastMessage: {
         message: "",
         dataStatus: "",
       },
@@ -97,10 +97,10 @@ export default {
     },
     // 修改 toast message 讓 toast 監看到變化，觸發視窗跳出
     sendToastMessage(status) {
-      this.ToastMessage.dataStatus = "";
-      this.ToastMessage.dataStatus = status;
+      this.NavbarToastMessage.dataStatus = "";
+      this.NavbarToastMessage.dataStatus = status;
 
-      this.ToastMessage.message = "推文發送成功";
+      this.NavbarToastMessage.message = "推文發送成功";
     },
   },
 };

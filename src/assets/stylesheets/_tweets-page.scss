@@ -1,0 +1,109 @@
+.form-wrapper {
+  height: 130px;
+  border-bottom: 10px solid $border-gray;
+  .tweet-form {
+    &__container {
+      padding: 15px 15px 0px 15px;
+      display: flex;
+    }
+    &__image {
+      height: 50px;
+      width: 50px;
+      border-radius: 50px;
+    }
+    &__new-tweet {
+      margin-left: 10px;
+      padding-top: 10px;
+      border: none;
+      resize: none;
+      font-size: 18px;
+      font-family: 'Noto Sans TC', sans-serif;
+      // scrollbar setting - make scrollbar transparent */
+      &::-webkit-scrollbar {
+        background: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+      }
+    }
+    &__footer {
+      padding-right: 15px;
+      display: flex;
+      justify-content: end;
+      align-items: center;
+      &__button {
+        width: 66px;
+        height: 38px;
+      }
+      &__error-message {
+        margin-right: 20px;
+        text-align: left;
+        font-size: 15px;
+        font-weight: 500;
+        color: $error-hint-color;
+      }
+    }
+  }
+}
+
+.newest {
+  &__tweet {
+    padding: 5px 15px;
+    border-bottom: 1px solid $border-gray;
+    width: 100%;
+    height: 136px;
+    &__image {
+      margin-top: 5px;
+      height: 50px;
+      width: 50px;
+      border-radius: 50px;
+    }
+    &__container {
+      margin-left: 10px;
+      justify-content: space-around;
+      align-items: flex-start;
+    }
+    &__user {
+      height: 10%;
+      &__name {
+        display: inline;
+      }
+      &__account {
+        margin-left: 5px;
+      }
+    }
+    &__descriptoion {
+      max-height: 70%;
+      padding: 15px 0 0 0;
+      text-align: start;
+      word-break: break-all;
+      p {
+        width: 95%;
+      }
+    }
+    &__icon {
+      height: 20%;
+      &__reply {
+        margin-right: 45px;
+      }
+      &__count {
+        line-height: 20px;
+        color: $default-hint-color;
+        margin-left: 10px;
+      }
+      .red {
+        color: $like-red;
+      }
+      &__image {
+        width: 15px;
+        height: 15px;
+        display: inline-block;
+        cursor: pointer;
+      }
+      &__like,
+      &__reply {
+        align-items: center;
+      }
+    }
+  }
+}
