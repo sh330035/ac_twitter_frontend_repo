@@ -22,6 +22,7 @@ const dummyData = {
       "account": "user1",
       "name": "User1",
       "description": "vitae molestiae deserunt",
+      "avatar": "https://randomuser.me/api/portraits/women/5.jpg",
       "createdAt": "2021-11-30T10:14:55.000Z",
     },
     {
@@ -30,6 +31,7 @@ const dummyData = {
       "account": "user6",
       "name": "User6",
       "description": "Non autem deleniti perspiciatis architecto.",
+      "avatar": "https://randomuser.me/api/portraits/women/7.jpg",
       "createdAt": "2021-11-29T10:14:55.000Z",
     },
     {
@@ -38,6 +40,7 @@ const dummyData = {
       "account": "user8",
       "name": "User8",
       "description": "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
+      "avatar": "https://randomuser.me/api/portraits/men/6.jpg",
       "createdAt": "2021-11-28T10:14:55.000Z",
     },
     {
@@ -46,6 +49,7 @@ const dummyData = {
       "account": "user10",
       "name": "User10",
       "description": "fuga modi ipsa",
+      "avatar": "https://randomuser.me/api/portraits/women/22.jpg",
       "createdAt": "2021-11-26T10:14:55.000Z",
     },
     {
@@ -54,6 +58,7 @@ const dummyData = {
       "account": "user1",
       "name": "User1",
       "description": "vitae molestiae deserunt",
+      "avatar": "https://randomuser.me/api/portraits/women/11.jpg",
       "createdAt": "2021-11-25T10:14:55.000Z",
     },
     {
@@ -62,6 +67,7 @@ const dummyData = {
       "account": "user6",
       "name": "User6",
       "description": "Non autem deleniti perspiciatis architecto.",
+      "avatar": "https://randomuser.me/api/portraits/men/6.jpg",
       "createdAt": "2021-11-24T10:14:55.000Z",
     },
     {
@@ -70,6 +76,7 @@ const dummyData = {
       "account": "user8",
       "name": "User8",
       "description": "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
+      "avatar": "https://randomuser.me/api/portraits/women/17.jpg",
       "createdAt": "2021-11-23T10:14:55.000Z",
     },
     {
@@ -78,6 +85,7 @@ const dummyData = {
       "account": "user10",
       "name": "User10",
       "description": "fuga modi ipsa",
+      "avatar": "https://randomuser.me/api/portraits/women/6.jpg",
       "createdAt": "2021-11-22T10:14:55.000Z",
     },
     {
@@ -86,6 +94,7 @@ const dummyData = {
       "account": "user6",
       "name": "User6",
       "description": "Non autem deleniti perspiciatis architecto.",
+      "avatar": "https://randomuser.me/api/portraits/men/3.jpg",
       "createdAt": "2021-11-21T10:14:55.000Z",
     },
     {
@@ -94,6 +103,7 @@ const dummyData = {
       "account": "user8",
       "name": "User8",
       "description": "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
+      "avatar": "https://randomuser.me/api/portraits/men/46.jpg",
       "createdAt": "2021-11-18T10:14:55.000Z",
     },
     {
@@ -102,6 +112,7 @@ const dummyData = {
       "account": "user10",
       "name": "User10",
       "description": "fuga modi deleniti perspiciatis ipsa",
+      "avatar": "https://randomuser.me/api/portraits/women/44.jpg",
       "createdAt": "2021-11-06T10:14:55.000Z",
     },
     {
@@ -110,6 +121,7 @@ const dummyData = {
       "account": "user15",
       "name": "User15",
       "description": "fugadeleniti perspiciatis modi ipsa",
+      "avatar": "https://randomuser.me/api/portraits/women/36.jpg",
       "createdAt": "2021-11-05T10:14:55.000Z",
     },
     {
@@ -118,6 +130,7 @@ const dummyData = {
       "account": "user152",
       "name": "User152",
       "description": "fuga modi ipsa",
+      "avatar": "https://randomuser.me/api/portraits/men/16.jpg",
       "createdAt": "2021-10-06T10:14:55.000Z",
     }
   ]
