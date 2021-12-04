@@ -3,7 +3,7 @@
     <a href="/" class="link navbar_brand"
       ><div class="navbar_brand_logo"></div>
     </a>
-    <div class="navbar_link">
+    <div class="navbar_link" v-if="currentUser.role == 'user'">
       <router-link to="/tweets" class="link navbar_link_home-page">
         <div class="navbar_link_content">
           <div class="navbar_link_icon navbar_link_icon_home-page"></div>
@@ -32,6 +32,20 @@
         </div>
       </router-link>
     </div>
+    <div class="navbar_link" v-if="currentUser.role == 'admin'">
+      <router-link to="/admin/tweets" class="link navbar_link_home-page">
+        <div class="navbar_link_content">
+          <div class="navbar_link_icon navbar_link_icon_home-page"></div>
+          <h2 class="navbar_link_text">推文清單</h2>
+        </div>
+      </router-link>
+      <router-link to="/admin/users" class="link navbar_link_user-page">
+        <div class="navbar_link_content">
+          <div class="navbar_link_icon navbar_link_icon_user-page"></div>
+          <h2 class="navbar_link_text">使用者列表</h2>
+        </div>
+      </router-link>
+    </div>
     <div class="navbar_link_tweet-launch">
       <NewTweetModal
         v-if="isModelShowed"
@@ -47,12 +61,10 @@
       </button>
     </div>
     <div class="navbar_link_logout">
-      <a href="/logout" class="link navbar_link_logout">
-        <div class="navbar_link_content">
-          <div class="navbar_link_icon navbar_link_icon_logout"></div>
-          <h2 class="navbar_link_text">登出</h2>
-        </div>
-      </a>
+      <div class="navbar_link_content" @click.prevent.stop="logout">
+        <div class="navbar_link_icon navbar_link_icon_logout"></div>
+        <h2 class="navbar_link_text">登出</h2>
+      </div>
     </div>
   </nav>
 </template>
@@ -101,6 +113,9 @@ export default {
       this.NavbarToastMessage.dataStatus = status;
 
       this.NavbarToastMessage.message = "推文發送成功";
+    },
+    logout() {
+      console.log("log-out");
     },
   },
 };

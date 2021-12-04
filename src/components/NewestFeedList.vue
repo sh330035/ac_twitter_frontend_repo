@@ -1,6 +1,9 @@
 <template>
   <div class="newest">
-    <div class="newest__tweet d-flex">
+    <div
+      class="newest__tweet d-flex"
+      @click.prevent.stop="toReplyRouter(tweet.id)"
+    >
       <!-- 目前 tweets 中，沒有該 tweet 之發文者資料，圖片先帶假資料 -->
       <span
         ><router-link to="users/1">
@@ -8,16 +11,14 @@
             src="https://randomuser.me/api/portraits/women/81.jpg"
             alt=""
             class="newest__tweet__image"
+            @click.prevent.stop="toUserPage(tweet.UserId)"
         /></router-link>
       </span>
-      <div
-        class="newest__tweet__container d-flex-col"
-        @click.prevent.stop="toReplyRouter(tweet.id)"
-      >
+      <div class="newest__tweet__container d-flex-col">
         <div class="newest__tweet__user">
           <h2 class="newest__tweet__user__name user-name-text">apple</h2>
           <span class="newest__tweet__user__account user-account-text"
-            >@apple・{{ tweet.createdAt | fromNow }}</span
+            >{{ "apple" | accountTag }}・{{ tweet.createdAt | fromNow }}</span
           >
         </div>
         <div class="newest__tweet__descriptoion">
@@ -88,6 +89,9 @@ export default {
     // 點擊貼文跳轉至推文與回覆串
     toReplyRouter(tweetId) {
       this.$router.push({ name: "tweet-replies", params: { id: tweetId } });
+    },
+    toUserPage(userId) {
+      this.$router.push({ name: "user", params: { id: userId } });
     },
   },
 };

@@ -13,6 +13,7 @@ $setting-orange-url: url(../images/setting_orange.svg);
   flex-basis: 295px;
   height: 100vh;
   padding-right: 55px;
+  position: relative;
   &_brand {
     display: block;
     width: 50px;
@@ -29,6 +30,7 @@ $setting-orange-url: url(../images/setting_orange.svg);
   }
   &_link {
     display: flex;
+    width: 210px;
     flex-direction: column;
     align-items: flex-start;
 
@@ -56,14 +58,19 @@ $setting-orange-url: url(../images/setting_orange.svg);
     }
     &_text {
       display: inline;
+      cursor: pointer;
       margin-left: 24px;
     }
     &_tweet-launch {
-      width: 210px;
       margin-top: 10px;
     }
     &_logout {
-      margin-top: 55vh;
+      width: 150px;
+      position: absolute;
+      bottom: 0;
+      .navbar_link_content {
+        cursor: pointer;
+      }
     }
     .active {
       .navbar_link {

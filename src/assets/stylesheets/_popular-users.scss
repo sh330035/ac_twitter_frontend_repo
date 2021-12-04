@@ -1,0 +1,51 @@
+.popular {
+  padding: 15px 0 0 30px;
+  &__card {
+    border-radius: 14px;
+    width: 350px;
+    background-color: $popular-bg;
+    &__title {
+      padding-top: 13px;
+      padding-left: 15px;
+      text-align: start;
+      margin-bottom: 10px;
+    }
+    &__user {
+      height: 70px;
+      border-top: 1px solid $border-gray;
+      align-items: center;
+      justify-content: space-between;
+      &__avatar {
+        margin-left: 15px;
+        margin-right: 10px;
+      }
+      &__name {
+        flex-grow: 1;
+        align-items: flex-start;
+        line-height: 18px;
+      }
+      &__button {
+        margin-right: 13px;
+
+        .btn-follow {
+          width: 60px;
+          height: 35px;
+          border-radius: 30px;
+          border: 1px solid $ac-orange;
+          color: $ac-orange;
+          font-size: 15px;
+          font-weight: 700;
+        }
+        .btn-following {
+          width: 90px;
+          height: 35px;
+          border-radius: 30px;
+          background-color: $ac-orange;
+          color: $text-white;
+          font-size: 15px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
