@@ -1,0 +1,135 @@
+.tweet-card {
+  padding: 15px;
+  border-bottom: 1px solid $border-gray;
+  text-align: left;
+  &__author {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    &__avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+      background-color: #c4c4c4;
+      object-fit: cover;
+    }
+    &__detail {
+      display: flex;
+      flex-direction: column;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 22px;
+      &__account {
+        color: $default-hint-color;
+        font-weight: 500;
+      }
+    }
+  }
+  &__post-content {
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 34px;
+  }
+  &__create-time {
+    padding: 15px 0;
+    border-bottom: 1px solid $border-gray;
+    color: $default-hint-color;
+    font-size: 15px;
+    line-height: 22px;
+  }
+  &__social-count {
+    padding: 20px 0;
+    border-bottom: 1px solid $border-gray;
+    color: $default-hint-color;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 27.5px;
+    &__reply,
+    &__like {
+      display: inline-block;
+      margin-right: 20px;
+      &__count {
+        color: $text-black;
+      }
+    }
+  }
+  &__social-action-bar {
+    padding-top: 20px;
+    &__reply-icon {
+      background: url(../images/reply.svg);
+      margin-right: 155px;
+    }
+    &__like-icon {
+      background: url(../images/like.svg);
+    }
+    &__red-like-icon {
+      background: url(../images/like-red.svg);
+    }
+    &__reply-icon,
+    &__like-icon,
+    &__red-like-icon {
+      display: inline-block;
+      height: 25px;
+      width: 25px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+  }
+}
+
+.reply-list {
+  .reply {
+    position: relative;
+    border-bottom: 1px solid $border-gray;
+    display: flex;
+    &__avatar{
+      cursor: pointer;
+    &__img {
+      width: 50px;
+      height: 50px;
+      margin: 15px;
+      border-radius: 50%;
+    }
+    }
+    &__detail {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      text-align: left;
+      line-height: 22px;
+      font-size: 15px;
+      &__author {
+        &__name {
+          padding-right: 5px;
+          font-weight: 700;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        &__account,
+        &__post-time {
+          font-weight: 500;
+          color: $default-hint-color;
+        }
+      }
+      &__reply-to {
+        font-weight: 500;
+        color: $default-hint-color;
+        &__account {
+          color: $ac-orange;
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+      &__comment {
+        font-weight: 500;
+      }
+    }
+  }
+}
