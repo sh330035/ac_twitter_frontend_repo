@@ -1,6 +1,7 @@
 // color setting
 $text-white: #ffffff;
 $text-black: #1c1c1c;
+$text-gray: #657786;
 $ac-orange: #ff6600;
 $link-skyblue: #0099ff;
 $default-hint-color: #657786;
@@ -9,13 +10,18 @@ $error-hint-color: #fc5a5a;
 $input-bg-color: #f5f8fa;
 $border-gray: #e6ecf0;
 $like-red: #e0245e;
+$reply-modal-line: #ccd6dd;
+$popular-bg: #f5f8fa;
 
 $logo-url: url(../images/Logo.png);
+
+* {
+  font-family: 'Noto Sans TC', sans-serif;
+}
 
 body {
   height: 100%;
   width: 100%;
-  font-family: 'Noto Sans TC', sans-serif;
   color: $text-black;
 }
 
@@ -44,10 +50,13 @@ body {
       section.center-view {
         flex-grow: 1;
         height: 100%;
-        overflow-y: auto;
+        overflow-x: auto;
         border-right: 1px solid $border-gray;
         border-left: 1px solid $border-gray;
         // scrollbar setting - make scrollbar transparent */
+        &::-webkit-scrollbar {
+          display: none;
+        }
         &::-webkit-scrollbar {
           background: transparent;
         }
@@ -62,13 +71,56 @@ body {
   }
 }
 
+// 文字設定
 h2 {
   font-size: 18px;
   font-weight: 700;
-  color: #1c1c1c;
+  color: $text-black;
   cursor: default;
 }
 
+.user-name-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: $text-black;
+}
+
+.user-account-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: $text-gray;
+}
+
+.reply-account-13 {
+  font-size: 13px;
+  font-weight: 500;
+  color: $text-gray;
+}
+
+.reply-account-15 {
+  font-size: 15px;
+  font-weight: 500;
+  color: $text-gray;
+}
+
+.description-15 {
+  font-size: 15px;
+  font-weight: 500;
+  color: $text-black;
+}
+.description-23 {
+  font-size: 23px;
+  font-weight: 500;
+  color: $text-black;
+}
+
+.count-13 {
+  font-size: 13px;
+  font-weight: 500;
+  color: $text-gray;
+}
+
+// 按鈕設定
 .btn {
   width: 100%;
   height: 38px;
@@ -84,4 +136,11 @@ h2 {
   &:active {
     opacity: 1;
   }
+}
+
+// 大頭貼
+.avatar-50 {
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
 }
