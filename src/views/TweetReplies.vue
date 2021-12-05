@@ -1,17 +1,17 @@
 <template>
   <div class="tweet-replies">
-    <!-- 測試頁面，確認字體有拉到 SCSS 的樣式 -->
     <section class="center-view">
       <page-name-banner
         :banner-title="bannerTitle"
         :banner-link-back="bannerLinkBack"
       />
-      <tweet-card :initial-tweet="tweet" />
+      <tweet-card :initial-tweet="tweet" @after-show-reply-modal="afterShowReplyModal" />
       <reply-list :tweet="tweet" />
     </section>
     <section class="right-card">
       <popular-users-card />
     </section>
+    <reply-model v-show="showReplyModal" :reply-tweet="tweet" @after-comment-checkout="afterCommentCheckout" />
   </div>
 </template>
 
@@ -20,6 +20,7 @@ import PageNameBanner from "../components/PageNameBanner.vue"
 import TweetCard from '../components/TweetCard.vue'
 import ReplyList from '../components/ReplyList.vue'
 import PopularUsersCard from "../components/PopularUsersCard.vue"
+import ReplyModel from "../components/ReplyModel.vue"
 
 const dummyData = {
   tweet: {
@@ -163,12 +164,14 @@ export default {
     TweetCard,
     ReplyList,
     PopularUsersCard,
+    ReplyModel
   },
   data() {
     return {
       bannerLinkBack: true,
       bannerTitle: '推文',
-      tweet: {}
+      tweet: {},
+      showReplyModal: false,
     }
   },
   created() {
@@ -179,6 +182,12 @@ export default {
     fetchTweetData(tweetId) {
       console.log(`fetch data of tweet-${tweetId}`)
       this.tweet = dummyData.tweet
+    },
+    afterShowReplyModal() {
+      this.showReplyModal = true
+    },
+    afterCommentCheckout () {
+      this.showReplyModal = false
     }
   }
 };
