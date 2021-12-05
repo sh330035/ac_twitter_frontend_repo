@@ -139,10 +139,13 @@ export default {
 
       this.$emit("after-comment-send", this.comment);
       this.checkoutHandler();
+      this.comment = ""
     },
     checkoutHandler() {
+      console.log('click')
       this.$emit("after-comment-checkout");
     },
+
   },
 };
 </script>
