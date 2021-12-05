@@ -20,10 +20,12 @@
             class="newest__tweet__user__name user-name-text"
             @click.prevent.stop="toUserPage(tweet.UserId)"
           >
-            apple
+            {{ tweet.User.name }}
           </h2>
           <span class="newest__tweet__user__account user-account-text"
-            >{{ "apple" | accountTag }}・{{ tweet.createdAt | fromNow }}</span
+            >{{ tweet.User.account | accountTag }}・{{
+              tweet.createdAt | fromNow
+            }}</span
           >
         </div>
         <div class="newest__tweet__descriptoion">
