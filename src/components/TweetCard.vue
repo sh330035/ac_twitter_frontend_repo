@@ -1,10 +1,12 @@
 <template>
   <div class="tweet-card">
     <div class="tweet-card__author">
-      <img class="tweet-card__author__avatar" :src="tweet.avatar" alt="Avatar" />
+      <router-link :to="{name: 'user', params: {id: tweet.userId}}"  >
+        <img class="tweet-card__author__avatar" :src="tweet.avatar" alt="Avatar" />
+      </router-link>
       <div class="tweet-card__author__detail">
-        <div class="tweet-card__author__detail__name"> {{ tweet.name }} </div>
-        <div class="tweet-card__author__detail__account">{{ tweet.account | accountTag }}</div>
+        <router-link :to="{name: 'user', params: {id: tweet.userId}}" class="tweet-card__author__detail__name"> {{ tweet.name }} </router-link>
+        <router-link :to="{name: 'user', params: {id: tweet.userId}}" class="tweet-card__author__detail__account">{{ tweet.account | accountTag }}</router-link>
       </div>
     </div>
     <div class="tweet-card__post-content">
@@ -22,7 +24,7 @@
       </div>
     </div>
     <div class="tweet-card__social-action-bar">
-      <span class="tweet-card__social-action-bar__reply-icon"></span>
+      <span @click="showReplyModal" class="tweet-card__social-action-bar__reply-icon"></span>
       <span v-if="tweet.isLike" @click="removeLike(tweet.id)" class="tweet-card__social-action-bar__red-like-icon"></span>
       <span v-else @click="addLike(tweet.id)" class="tweet-card__social-action-bar__like-icon"></span>
       
@@ -45,7 +47,7 @@ export default {
     return {
       tweet: {
         id: -1,
-        UserId: -1,
+        userId: -1,
         account: "",
         name: "",
         avatar: '',
@@ -62,6 +64,11 @@ export default {
   created () {
     this.updateTweetData()
   },
+  watch: {
+    initialTweet: function () {
+      this.updateTweetData()
+    }
+  },
   methods: {
     updateTweetData() {
       const { id, UserId: userId,account, name, avatar, description, createdAt, replyCount, likeCount, isLike } = this.initialTweet
@@ -70,6 +77,9 @@ export default {
         ...this.tweet,
         id, userId,account, name, avatar, description, createdAt, replyCount, likeCount, isLike,
       }
+    },
+    showReplyModal () {
+      this.$emit('after-show-reply-modal')
     },
     addLike (tweetId) {
       // API - TODO

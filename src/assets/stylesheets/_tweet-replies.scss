@@ -14,6 +14,9 @@
       border-radius: 50px;
       background-color: #c4c4c4;
       object-fit: cover;
+      &:hover {
+        filter: brightness(95%);
+      }
     }
     &__detail {
       display: flex;
@@ -21,6 +24,11 @@
       font-weight: 700;
       font-size: 15px;
       line-height: 22px;
+      &__name {
+        &:hover {
+          text-decoration: underline;
+        }
+      }
       &__account {
         color: $default-hint-color;
         font-weight: 500;
@@ -87,6 +95,9 @@
     display: flex;
     &__avatar{
       cursor: pointer;
+      &:hover {
+        filter: brightness(95%);
+      }
     &__img {
       width: 50px;
       height: 50px;
