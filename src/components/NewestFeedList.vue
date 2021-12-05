@@ -10,13 +10,18 @@
           <img
             src="https://randomuser.me/api/portraits/women/81.jpg"
             alt=""
-            class="newest__tweet__image"
+            class="newest__tweet__image avatar-50"
             @click.prevent.stop="toUserPage(tweet.UserId)"
         /></router-link>
       </span>
       <div class="newest__tweet__container d-flex-col">
         <div class="newest__tweet__user">
-          <h2 class="newest__tweet__user__name user-name-text">apple</h2>
+          <h2
+            class="newest__tweet__user__name user-name-text"
+            @click.prevent.stop="toUserPage(tweet.UserId)"
+          >
+            apple
+          </h2>
           <span class="newest__tweet__user__account user-account-text"
             >{{ "apple" | accountTag }}・{{ tweet.createdAt | fromNow }}</span
           >
@@ -25,9 +30,11 @@
           <p class="description-15">{{ tweet.description }}</p>
         </div>
         <div class="newest__tweet__icon d-flex">
-          <div class="newest__tweet__icon__reply d-flex">
+          <div
+            class="newest__tweet__icon__reply d-flex"
+            @click.prevent.stop="replyLaunchHandler(tweet.id)"
+          >
             <img
-              @click.prevent.stop="replyLaunchHandler(tweet.id)"
               src="../assets/images/reply.svg"
               alt=""
               class="icon newest__tweet__icon__image icon__reply__image"
