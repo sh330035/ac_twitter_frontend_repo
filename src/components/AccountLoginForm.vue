@@ -44,6 +44,12 @@
 <script>
 export default {
   name: "AccountSettingForm",
+  props: {
+    isProcessing: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
       accountDetail: {
@@ -59,40 +65,43 @@ export default {
         password: {
           error: false,
           message: "",
-        }
+        },
       },
-    }
+    };
   },
   methods: {
     handleFormSubmit() {
       // reset data of this.formValidation
-      const fileName = Object.keys(this.formValidation)
+      const fileName = Object.keys(this.formValidation);
       fileName.forEach((name) => {
-        this.formValidation[name].error = false
-        this.formValidation[name].message = ""
-      })
+        this.formValidation[name].error = false;
+        this.formValidation[name].message = "";
+      });
       // form validation of email
       if (this.accountDetail.email.trim().length === 0) {
-        this.formValidation.email.error = true
-        this.formValidation.email.message = "請填入信箱"
-        return
+        this.formValidation.email.error = true;
+        this.formValidation.email.message = "請填入信箱";
+        return;
       } else if (
         !this.accountDetail.email.includes("@") ||
         !this.accountDetail.email.includes(".com")
       ) {
-        this.formValidation.email.error = true
-        this.formValidation.email.message = "請填入正確的信箱格式"
-        return
+        this.formValidation.email.error = true;
+        12313;
+        this.formValidation.email.message = "請填入正確的信箱格式";
+        return;
       }
       // form validation of password
       if (this.accountDetail.password.trim().length === 0) {
-        this.formValidation.password.error = true
-        this.formValidation.password.message = "請填入密碼"
-        return
+        this.formValidation.password.error = true;
+        this.formValidation.password.message = "請填入密碼";
+        return;
       }
 
       // formSubmit
-      this.$emit("after-form-submit", this.accountDetail)
+      this.$emit("after-form-submit", this.accountDetail);
+      // 因為資料有拆到form裡，不好從catch error控制，設定成每次發送都刪除密碼
+      this.accountDetail.password = "";
     },
   },
 };

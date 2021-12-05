@@ -49,35 +49,7 @@
 
 <script>
 import { accountFilter } from "../utils/mixins.js";
-
-const dummyData = {
-  users: [
-    {
-      id: "5",
-      name: "google",
-      account: "google-map",
-      avatar: "https://randomuser.me/api/portraits/women/83.jpg",
-      FollowerCount: 1200,
-      isFollowed: true,
-    },
-    {
-      id: "9",
-      name: "Apple",
-      account: "Apple-store",
-      avatar: "https://randomuser.me/api/portraits/women/32.jpg",
-      FollowerCount: 900,
-      isFollowed: false,
-    },
-    {
-      id: "8",
-      name: "Android",
-      account: "smart",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      FollowerCount: 700,
-      isFollowed: false,
-    },
-  ],
-};
+import popularUsersAPI from "../api/users";
 
 export default {
   name: "popular-user",
@@ -91,8 +63,14 @@ export default {
     this.fetchPopularUsers();
   },
   methods: {
-    fetchPopularUsers() {
-      this.popularUsers = dummyData.users;
+    async fetchPopularUsers() {
+      try {
+        const { data } = await popularUsersAPI.getPopularUsers();
+
+        this.popularUsers = data.users;
+      } catch (error) {
+        console.log(error);
+      }
     },
     addFollowing(userId) {
       this.popularUsers = this.popularUsers.map((user) => {

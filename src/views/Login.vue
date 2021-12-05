@@ -4,7 +4,10 @@
       <Toast :ToastMessage="ToastMessage" />
       <div class="logo"></div>
       <h2>登入 Alphitter</h2>
-      <account-login-form @after-form-submit="afterFormSubmit" />
+      <account-login-form
+        @after-form-submit="afterFormSubmit"
+        :isProcessing="isProcessing"
+      />
       <div class="login__actions">
         <router-link class="link" to="/register">註冊 Alphitter</router-link>
         <span>・</span>
@@ -15,10 +18,12 @@
 </template>
 
 <script>
-import AccountLoginForm from "../components/AccountLoginForm.vue"
-import Toast from "../components/AlertToast.vue"
+import AccountLoginForm from "../components/AccountLoginForm.vue";
+import Toast from "../components/AlertToast.vue";
+import authorizationAPI from "../api/authorization";
 
 export default {
+  name: "login-page",
   components: {
     AccountLoginForm,
     Toast,
@@ -30,27 +35,48 @@ export default {
         message: "",
         dataStatus: "",
       },
-      // 預設後端回傳錯誤訊息
-      backendReturnStatus: false,
-    }
+      // 防止使用者重複點擊
+      isProcessing: false,
+    };
   },
   methods: {
-    afterFormSubmit(accountDetail) {
-      console.log("註冊資料送出：", accountDetail)
+    async afterFormSubmit(accountDetail) {
+      try {
+        console.log("註冊資料送出：", accountDetail);
 
-      // Toast 測試 模擬Email重複
-      if (this.backendReturnStatus) {
-        this.sendToastMessage()
-        return
+        this.isProcessing = true;
+
+        const response = await authorizationAPI.signIn({
+          email: accountDetail.email,
+          password: accountDetail.password,
+        });
+
+        const { data } = response;
+
+        if (data.status !== "success") {
+          this.sendToastMessage(data.message);
+          throw new Error(data);
+        }
+
+        // 將 token 存放在 localStorage 內
+        localStorage.setItem("token", data.token);
+
+        console.log(data.status, data.message);
+
+        this.$router.push({ name: "tweets" });
+      } catch (error) {
+        console.log(error);
+
+        this.isProcessing = false;
+
+        return;
       }
-
-      this.$router.push({ name: "tweets" })
     },
     // 修改 toast message 讓 toast 監看到變化，觸發視窗跳出
-    sendToastMessage() {
-      this.ToastMessage.dataStatus = ""
-      this.ToastMessage.dataStatus = "error"
-      this.ToastMessage.message = "______"
+    sendToastMessage(message) {
+      this.ToastMessage.dataStatus = "";
+      this.ToastMessage.dataStatus = "error";
+      this.ToastMessage.message = message;
     },
   },
 };
