@@ -37,17 +37,17 @@ export const numberFilterEng = {
       } else if (number >= 1000000000) {
         const shortValue = number / 1000000000
         const isTensDigit = shortValue / 10 >= 1
-        return isTensDigit ? shortValue + 'G' : shortValue.toFixed(1) + 'G'
+        return isTensDigit ? shortValue.toFixed(0) + 'G' : shortValue.toFixed(1) + 'G'
       }
       else if (number >= 1000000) {
         const shortValue = number / 1000000
         const isTensDigit = shortValue / 10 >= 1
-        return isTensDigit ? shortValue + 'M' : shortValue.toFixed(1) + 'M'
+        return isTensDigit ? shortValue.toFixed(0) + 'M' : shortValue.toFixed(1) + 'M'
       }
       else if (number >= 1000) {
         const shortValue = number / 1000
         const isTensDigit = shortValue / 10 >= 1
-        return isTensDigit ? shortValue + 'K' : shortValue.toFixed(1) + 'K'
+        return isTensDigit ? shortValue.toFixed(0) + 'K' : shortValue.toFixed(1) + 'K'
       } else {
         return number
       }
@@ -64,11 +64,11 @@ export const numberFilterTC = {
       } else if (number >= 100000000) {
         const shortValue = number / 100000000
         const isTensDigit = shortValue / 10 >= 1
-        return isTensDigit ? shortValue + '億' : shortValue.toFixed(1) + '億'
+        return isTensDigit ? shortValue.toFixed(0) + '億' : shortValue.toFixed(1) + '億'
       } else if (number >= 10000) {
         const shortValue = number / 10000
         const isTensDigit = shortValue / 10 >= 1
-        return isTensDigit ? shortValue + '萬' : shortValue.toFixed(1) + '萬'
+        return isTensDigit ? shortValue.toFixed(0) + '萬' : shortValue.toFixed(1) + '萬'
       } else {
         return number
       }

@@ -1,0 +1,236 @@
+.profile-card {
+  width: 100%;
+  &__pictures {
+    position: relative;
+    img {
+      object-fit: cover;
+    }
+    &__cover {
+      height: 200px;
+    }
+    &__avatar {
+      position: absolute;
+      top: 124px;
+      left: 14px;
+      height: 140px;
+      width: 140px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      background-color: $input-bg-color;
+    }
+  }
+  &__profile {
+    padding: 10px 15px 36px 15px;
+    text-align: left;
+    &__action-buttons {
+      min-width: 140px;
+      margin-left: 155px;
+      display: flex;
+      flex-flow: row wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      &__social-actions {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 10px;
+        justify-content: flex-end;
+        &__message {
+          background: url(../images/message.svg);
+        }
+        &__notification-on {
+          background: url(../images/notification-on-white.svg);
+          background-color: $ac-orange;
+        }
+        &__notification-off {
+          background: url(../images/notification-off.svg);
+        }
+        span.icon {
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
+          border: 1px solid $ac-orange;
+          background-size: 20px 20px;
+          background-repeat: no-repeat;
+          background-position: center;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.9;
+          }
+          &:active {
+            opacity: 1;
+          }
+        }
+        span.btn {
+          width: auto;
+          padding: 10px 15px;
+          font-weight: 700;
+          font-size: 15px;
+          line-height: 15px;
+          display: flex;
+          align-items: center;
+        }
+      }
+      &__profile-setting {
+        width: auto;
+        padding: 10px 15px;
+        background-color: transparent;
+        color: $ac-orange;
+        border: 1px solid $ac-orange;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 15px;
+        display: flex;
+        align-items: center;
+      }
+    }
+    &__name {
+      margin-top: 24px;
+      font-weight: 900;
+      font-size: 19px;
+      line-height: 28px;
+    }
+    &__account {
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 22px;
+      color: $default-hint-color;
+    }
+    &__introduction {
+      padding: 10px 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    &__social-count {
+      display: flex;
+      gap: 20px;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: $default-hint-color;
+      &__follow__count {
+        color: $text-black;
+      }
+    }
+  }
+}
+
+.feeds-nav-pills {
+  width: 100%;
+  border-bottom: 1px solid $border-gray;
+  display: flex;
+  &__feeds-categories {
+    display: inline-block;
+    width: 130px;
+    padding: 14px 0;
+    color: $default-hint-color;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 22px;
+    &:hover,
+    &:active {
+      background-color: $popular-bg;
+      color: $default-hint-color;
+    }
+    &.active {
+      border-bottom: 2px solid $ac-orange;
+      color: $text-black;
+    }
+  }
+}
+
+.user-feed-list {
+  .feed {
+    padding: 10px 15px 15px;
+    border-bottom: 1px solid $border-gray;
+    display: flex;
+    gap: 10px;
+    &:hover {
+      background-color: $popular-bg;
+    }
+
+    &__avatar {
+      &__img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: $input-bg-color;
+      }
+    }
+
+    &__detail {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      text-align: left;
+      line-height: 22px;
+      font-size: 15px;
+      &__author {
+        &__name {
+          padding-right: 5px;
+          font-weight: 700;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        &__account,
+        &__post-time {
+          font-weight: 500;
+          color: $default-hint-color;
+        }
+      }
+      &__reply-to {
+        font-weight: 500;
+        color: $default-hint-color;
+        &__account {
+          color: $ac-orange;
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+      &__comment {
+        font-weight: 500;
+      }
+      &__social-count {
+        width: 100%;
+        display: flex;
+        gap: 50px;
+        font-size: 13px;
+        font-weight: 500;
+        color: $default-hint-color;
+
+        &__reply-count,
+        &__like-count {
+          display: flex;
+          gap: 11px;
+          align-items: center;
+        }
+
+        &__reply-count__icon {
+          background: url(../images/reply.svg);
+        }
+        &__like-count__icon {
+          background: url(../images/like.svg);
+        }
+        &__like-count__icon-red {
+          background: url(../images/like-red.svg);
+        }
+        &__reply-count__icon,
+        &__like-count__icon,
+        &__like-count__icon-red {
+          display: inline-block;
+          height: 13px;
+          width: 13px;
+          background-size: contain;
+          background-repeat: no-repeat;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
