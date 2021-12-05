@@ -1,26 +1,32 @@
 <template>
   <div class="page-name-banner">
-    <div class="banner">
-      <!-- user page banner -->
-      <div
-        v-if="this.currentRouterName == 'user'"
-        class="banner__user-page d-flex"
-      >
+    <!-- user page banner -->
+
+    <div
+      class="banner-user"
+      v-if="
+        this.currentRouterName == 'user' ||
+        this.currentRouterName == 'user-follow'
+      "
+    >
+      <div class="banner-user__user-page d-flex">
         <span
           ><img
             @click="$router.back()"
             src="../assets/images/back.svg"
             alt=""
-            class="banner__user-page__back"
+            class="banner-user__user-page__back"
         /></span>
-        <span class="banner__user-page__info"
-          ><h2 class="banner__user-page__name">{{ this.user.name }}</h2>
-          <p class="banner__user-page__tweets-count">
+        <span class="banner-user__user-page__info">
+          <h2 class="banner-user__user-page__name">{{ this.user.name }}</h2>
+          <p class="banner-user__user-page__tweets-count">
             {{ this.user.tweetsCount }} 推文
           </p>
         </span>
       </div>
-      <!-- other page banner -->
+    </div>
+    <!-- other page banner -->
+    <div class="banner" v-else>
       <div v-if="bannerTitle" class="banner__other-page d-flex">
         <h2>
           <span
@@ -44,25 +50,30 @@ export default {
       type: Object,
     },
     bannerTitle: {
-      type: String
+      type: String,
     },
     bannerLinkBack: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       currentRouterName: "",
-    }
+    };
   },
   methods: {
     getRouterName() {
-      this.currentRouterName = this.$route.name
+      this.currentRouterName = this.$route.name;
+      console.log(this.currentRouterName);
+      console.log(
+        this.currentRouterName == "user" ||
+          this.currentRouterName == "user-follow"
+      );
     },
   },
   created() {
-    this.getRouterName()
+    this.getRouterName();
   },
 };
 </script>

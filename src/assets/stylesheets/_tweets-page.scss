@@ -46,6 +46,7 @@
   }
 }
 
+// tweet list
 .newest {
   &__tweet {
     padding: 5px 15px;
@@ -55,9 +56,6 @@
     cursor: pointer;
     &__image {
       margin-top: 5px;
-      height: 50px;
-      width: 50px;
-      border-radius: 50px;
     }
     &__container {
       width: 100%;

@@ -10,7 +10,7 @@
           <img
             src="https://randomuser.me/api/portraits/women/81.jpg"
             alt=""
-            class="newest__tweet__image"
+            class="newest__tweet__image avatar-50"
             @click.prevent.stop="toUserPage(tweet.UserId)"
         /></router-link>
       </span>
