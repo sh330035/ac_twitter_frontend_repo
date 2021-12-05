@@ -8,7 +8,7 @@
         :key="popularUser.id"
       >
         <span
-          ><router-link to="user">
+          ><router-link :to="{ name: 'user', params: { id: popularUser.id } }">
             <img
               :src="popularUser.avatar"
               alt=""
@@ -16,7 +16,12 @@
           /></router-link>
         </span>
         <div class="popular__card__user__name d-flex-col">
-          <p class="user-name-text">{{ popularUser.name }}</p>
+          <p
+            class="user-name-text"
+            @click.prevent.stop="toUserPage(popularUser.id)"
+          >
+            {{ popularUser.name }}
+          </p>
           <p class="user-account-text">
             {{ popularUser.account | accountTag }}
           </p>
@@ -112,6 +117,9 @@ export default {
           };
         }
       });
+    },
+    toUserPage(userId) {
+      this.$router.push({ name: "user", params: { id: userId } });
     },
   },
 };

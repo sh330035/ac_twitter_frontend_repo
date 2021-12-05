@@ -1,6 +1,5 @@
 <template>
   <div class="tweets-page">
-    <!-- 測試頁面，確認字體有拉到 SCSS 的樣式 -->
     <section class="center-view">
       <ReplyModal
         v-if="isReplyModalShow"

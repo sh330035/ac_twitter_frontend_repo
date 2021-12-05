@@ -23,6 +23,12 @@
         flex-grow: 1;
         align-items: flex-start;
         line-height: 18px;
+        .user-name-text {
+          &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        }
       }
       &__button {
         margin-right: 13px;
