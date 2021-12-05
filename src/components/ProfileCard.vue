@@ -12,7 +12,7 @@
           <span v-if="!user.isCurrentUser && !user.isNoticed" @click="toggleNotification('on')" class="profile-card__profile__action-buttons__social-actions__notification-off icon"></span>
           <span v-if="!user.isCurrentUser"  @click="toggleIsFollowed" class="profile-card__profile__action-buttons__social-actions__follow btn">{{ user.isFollowed ? '正在跟隨' : '跟隨' }}</span>
         </div>
-        <div v-if="user.isCurrentUser" class="profile-card__profile__action-buttons__profile-setting btn">編輯個人資料</div>
+        <div v-if="user.isCurrentUser" @click="showSettingForm" class="profile-card__profile__action-buttons__profile-setting btn">編輯個人資料</div>
       </div>
       <div class="profile-card__profile__name">{{ user.name }}</div>
       <div class="profile-card__profile__account">{{ user.account | accountTag }}</div>
@@ -80,6 +80,9 @@ export default {
       //   API put 讓 toggleIsFollowed = false
       // }
       this.user.isFollowed = !this.user.isFollowed
+    },
+    showSettingForm() {
+      this.$emit('show-setting-form')
     }
   },
 }

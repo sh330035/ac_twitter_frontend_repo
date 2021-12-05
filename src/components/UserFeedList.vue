@@ -97,8 +97,6 @@ export default {
   },
   methods: {
     updateFeedsData() {
-      console.log('updating')
-      console.log(`current feeds type is ${this.currentFeeds}`)
       this.feeds = this.initialFeeds
     },
     toggleLike(feedId, status) {

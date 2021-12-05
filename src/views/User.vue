@@ -2,10 +2,10 @@
   <div class="user-page">
     <section class="center-view">
       <page-name-banner :user="user" />
-      <profile-card :initial-user="user" @after-toggle-notification="afterToggleNotification" @after-toggle-isFollowed="afterToggleIsFollowed" />
+      <profile-card :initial-user="user" @after-toggle-notification="afterToggleNotification" @after-toggle-isFollowed="afterToggleIsFollowed" @show-setting-form="afterShowSettingForm" />
       <feeds-nav-pills />
       <user-feed-list :initial-user="user" :current-feeds="currentFeeds" :initial-feeds="feeds" @after-toggle-like="afterToggleLike"/>
-      <profile-edit-modal />
+      <profile-edit-modal v-show="showSettingForm" :initial-user="user" @close-setting-form="afterCloseSettingForm" @after-profile-form-submit="afterProfileFormSubmit" />
     </section>
     <section class="right-card">
       <popular-users-card />
@@ -31,14 +31,14 @@ const dummyData = {
     avatar: "https://randomuser.me/api/portraits/women/82.jpg",
     cover: "https://loremflickr.com/320/240/city/?random=87.0724194526249",
     introduction:
-      "In velit doloribus delectus est eum quia aut perferendis eveniet. Quas sint asperiores dolorem. Numquam et ipsa. Dolorum consequuntur quae quidem et at quia reiciendis molestiae voluptatem. Eligendi ex quis cupiditate natus sequi ratione illo repellendus omnis. Magni praesentium consequuntur sed qui atque corrupti ratione ut.",
+      "Dolorum consequuntur quae quidem et at quia reiciendis molestiae voluptatem. Eligendi ex quis cupiditate natus sequiomnis. Magni consequuntur sed atque corruptiut.",
     role: "user",
     createdAt: "2021-11-30T10:01:31.000Z",
     updatedAt: "2021-11-30T10:01:31.000Z",
     followerCount: 137,
     followingCount: 12345,
     tweetsCount: 189,
-    isCurrentUser: false,
+    isCurrentUser: true,
     isFollowed: true,
     isNoticed: true,
     Tweets: [
@@ -290,7 +290,8 @@ export default {
     return {
       user: {},
       currentFeeds: 'tweets',
-      feeds: []
+      feeds: [],
+      showSettingForm: false
     }
   },
   beforeRouteUpdate(to, from, next) {
@@ -388,7 +389,17 @@ export default {
       //   API put 讓 isLike = false
       // }
       console.log(`Toggle isLike of id-${feedId} status to ${status}`)
-
+    },
+    afterShowSettingForm () {
+      this.showSettingForm = true
+    },
+    afterCloseSettingForm () {
+      this.showSettingForm = false
+    },
+    afterProfileFormSubmit (data) {
+      console.log('submit profile form', data)
+      // TODO : 串接 API
+      this.showSettingForm = false
     }
   },
   created() {
