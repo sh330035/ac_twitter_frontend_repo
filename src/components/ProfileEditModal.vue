@@ -153,7 +153,7 @@ export default {
     },
     handleAvatarChange(e) {
       const { files } = e.target
-    console.log('files', files)
+      console.log('files', files)
       if (files.length === 0) {
         // 使用者沒有選擇上傳的檔案
         this.user.avatar = ""

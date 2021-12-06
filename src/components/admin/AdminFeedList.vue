@@ -4,20 +4,20 @@
     <div v-for="tweet in tweets" :key="tweet.id" class="admin-tweets__tweet">
       <div class="admin-tweets__tweet__content-wrapper">
         <img
-          :src="tweet.avatar" class="admin-tweets__tweet__content-wrapper__avatar" alt="Avatar"/>
+          :src="tweet.User.avatar" class="admin-tweets__tweet__content-wrapper__avatar" alt="Avatar"/>
         <div class="admin-tweets__tweet__content-wrapper__detail">
           <div class="admin-tweets__tweet__content-wrapper__detail__info">
             <span
               class="admin-tweets__tweet__content-wrapper__detail__info__name"
             >
-              {{ tweet.name }}
+              {{ tweet.User.name }}
             </span>
             <span
               class="
                 admin-tweets__tweet__content-wrapper__detail__info__account
               "
             >
-              {{ tweet.name | accountTag }}
+              {{ tweet.User.account | accountTag }}
             </span>
             <span
               class="

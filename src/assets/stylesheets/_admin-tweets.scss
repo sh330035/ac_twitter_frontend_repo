@@ -2,6 +2,7 @@
   &__tweet {
     position: relative;
     border-bottom: 1px solid $border-gray;
+    @extend %tweet-block-hover-effect;
     &__delete {
       position: absolute;
       top: 19px;
@@ -12,6 +13,7 @@
       cursor: pointer;
     }
     &__content-wrapper {
+      padding-right: 60px;
       display: flex;
       &__avatar {
         width: 50px;

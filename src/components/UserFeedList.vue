@@ -39,10 +39,10 @@
         <div class="feed__detail__comment">{{ feed.comment }}</div>
         <div v-if="currentFeeds !== 'reply'" class="feed__detail__social-count">
           <div class="feed__detail__social-count__reply-count">
-            <span class="feed__detail__social-count__reply-count__icon"></span
+            <span @click.prevent="showReplyModal(feed.id)" class="feed__detail__social-count__reply-count__icon"></span
             >{{ feed.replyCount }}
           </div>
-          <div class="feed__detail__social-count__like-count">
+          <div class="feed__detail__social-count__like-count" :class="{active: feed.isLike}">
             <span
               v-if="!feed.isLike"
               @click.prevent="toggleLike(feed.id, true)"
@@ -113,6 +113,9 @@ export default {
           return feed
         }
       })
+    },
+    showReplyModal(feedId) {
+      this.$emit('after-show-reply-modal', feedId)
     }
   },
 }
