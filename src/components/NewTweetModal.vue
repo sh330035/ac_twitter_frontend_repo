@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import tweetsAPI from "../api/tweets";
+
 export default {
   name: "new-tweet-modal",
   data() {
@@ -77,18 +79,28 @@ export default {
     },
   },
   methods: {
-    handleFormSubmit() {
-      if (this.description.length == 0) {
+    async handleFormSubmit() {
+      if (this.description.trim().length == 0) {
         this.formValidation.tweet.error = true;
         this.formValidation.tweet.message = "推文不能為空白";
+        this.description = "";
       }
       if (this.formValidation.tweet.error) {
         return;
       }
-      console.log("推特內容送出：", this.description);
 
-      this.$emit("after-tweet-send");
-      this.checkoutHandler();
+      try {
+        const description = { description: this.description };
+        const { data } = await tweetsAPI.createTweet({ description });
+
+        console.log("推特內容送出：", this.description);
+        this.description = "";
+
+        this.$emit("after-tweet-send", data.status);
+        this.checkoutHandler();
+      } catch (error) {
+        console.log(error);
+      }
     },
     checkoutHandler() {
       this.$emit("after-tweet-checkout");

@@ -92,4 +92,37 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach(async (to, from, next) => {
+  console.log('to', to)
+  console.log('from', from)
+  const token = localStorage.getItem('token')
+  // 預設是尚未驗證
+  let isAuthenticated = false
+  if (token) {
+    // 取得驗證成功與否
+    isAuthenticated = await store.dispatch('fetchCurrentUser')
+  }
+
+  const pathsWithoutAuthentication = ['login', 'register', 'admin-login']
+
+  // 如果 token 無效則轉址到登入頁
+  if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
+    next('/login')
+    return
+  }
+
+  console.log(store.state.currentUser.role)
+
+  if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
+    if (store.state.currentUser.role == 'user') {
+      next('/tweets')
+      return
+    } else if (store.state.currentUser.role == 'admin') {
+      next('/admin/tweets')
+    }
+  }
+
+  next()
+})
+
 export default router
