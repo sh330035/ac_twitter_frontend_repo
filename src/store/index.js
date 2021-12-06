@@ -19,9 +19,20 @@ export default new Vuex.Store({
       role: 'user',
       createdAt: '2021-11-30T10:01:31.000Z',
       updatedAt: '2021-11-30T10:01:31.000Z'
+    },
+    //預設
+    isAuthenticated: true,
+    token:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM4NzgwODc2fQ.s4KEjXcuakXnuuLDozqZFzToNw1rsONt-3XLSBKOo3I'
+  },
+  mutations: {
+    revokeAuthentication(state) {
+      state.currentUser = {}
+      state.isAuthenticated = false
+      state.token = ''
+      localStorage.removeItem('token')
     }
   },
-  mutations: {},
   actions: {},
   modules: {}
 })

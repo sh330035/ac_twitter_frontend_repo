@@ -66,7 +66,6 @@ export default {
         // if (data.status !== "success") {
         //   throw new Error(data.message);
         // }
-
         console.log(data);
       } catch (error) {
         console.log(error);

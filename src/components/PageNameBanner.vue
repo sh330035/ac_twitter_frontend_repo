@@ -65,11 +65,6 @@ export default {
   methods: {
     getRouterName() {
       this.currentRouterName = this.$route.name;
-      console.log(this.currentRouterName);
-      console.log(
-        this.currentRouterName == "user" ||
-          this.currentRouterName == "user-follow"
-      );
     },
   },
   created() {

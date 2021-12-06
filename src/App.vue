@@ -1,6 +1,6 @@
 <template>
   <div id="twitter-app">
-    <Navbar v-if="isAuthenticated" />
+    <Navbar v-if="this.$store.state.isAuthenticated" />
     <main>
       <router-view />
     </main>
@@ -14,10 +14,7 @@ export default {
   name: "App",
   components: { Navbar },
   data() {
-    return {
-      // 暫時加，方便製作登入畫面
-      isAuthenticated: true,
-    };
+    return {};
   },
 };
 </script>
