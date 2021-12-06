@@ -42,20 +42,20 @@ export default {
   methods: {
     async afterFormSubmit(accountDetail) {
       try {
-        console.log("註冊資料送出：", accountDetail);
+        console.log("使用者登入資訊：", accountDetail);
 
         this.isProcessing = true;
 
         const response = await authorizationAPI.signIn({
-          email: accountDetail.email,
+          account: accountDetail.account,
           password: accountDetail.password,
         });
 
         const { data } = response;
-
+        console.log(data)
         if (data.status !== "success") {
           this.sendToastMessage(data.message);
-          throw new Error(data);
+          throw new Error(data.message);
         }
 
         // 將 token 存放在 localStorage 內
