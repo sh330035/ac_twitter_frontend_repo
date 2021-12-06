@@ -170,7 +170,7 @@ export default {
               User,
               createdAt,
               description: Tweet.description,
-              isLiked: Tweet.isLike,
+              isLiked: Tweet.isLiked,
               ReplyCount: Tweet.ReplyCount,
               LikeCount: Tweet.LikeCount
             }
