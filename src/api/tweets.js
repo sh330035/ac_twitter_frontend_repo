@@ -9,7 +9,7 @@ export default {
   },
   // 新增一筆 tweet
   createTweet({ description }) {
-    return apiHelper.post(`/tweets`, { description })
+    return apiHelper.post(`/tweets`, description)
   },
   // 取得特定一筆推文
   getTweet({ tweetId }) {

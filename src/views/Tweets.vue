@@ -8,7 +8,7 @@
         :replyTweet="replyTweet"
       />
       <PageNameBanner :banner-title="bannerTitle" />
-      <NewTweetForm />
+      <NewTweetForm @after-submit-tweet-form="afterSubmitTweetForm" />
       <NewestFeedList
         v-for="tweet in tweets"
         :key="tweet.id"
@@ -106,11 +106,15 @@ export default {
       console.log(this.replyTweet);
       this.isReplyModalShow = true;
     },
-    afterCommentSend(comment) {
+    async afterCommentSend(comment) {
       console.log("回覆內容送出：123", comment);
     },
     afterCommentCheckout() {
       this.isReplyModalShow = false;
+    },
+    // 發文後刷新畫面
+    afterSubmitTweetForm() {
+      this.fetchTweetsData();
     },
   },
 };

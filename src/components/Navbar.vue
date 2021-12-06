@@ -62,7 +62,7 @@
       </button>
     </div>
     <div class="navbar_link_logout">
-      <div class="navbar_link_content" @click.prevent.stop="logout">
+      <div class="navbar_link_content" @click="logout">
         <div class="navbar_link_icon navbar_link_icon_logout"></div>
         <h2 class="navbar_link_text">登出</h2>
       </div>
@@ -86,8 +86,6 @@ export default {
         message: "",
         dataStatus: "",
       },
-      // 預設後端回傳正確訊息
-      backendReturnStatus: true,
     };
   },
   computed: {
@@ -100,9 +98,8 @@ export default {
     afterTweetCheckout() {
       this.isModelShowed = false;
     },
-    afterTweetSend() {
-      // Toast 測試 模擬Email重複
-      if (!this.backendReturnStatus) {
+    afterTweetSend(dataStatus) {
+      if (!dataStatus) {
         this.sendToastMessage("error");
       } else {
         this.sendToastMessage("success");

@@ -52,7 +52,7 @@ export default {
         });
 
         const { data } = response;
-        console.log(data)
+        console.log(data);
         if (data.status !== "success") {
           this.sendToastMessage(data.message);
           throw new Error(data.message);
@@ -62,6 +62,9 @@ export default {
         localStorage.setItem("token", data.token);
 
         console.log(data.status, data.message);
+        console.log("data.user", data.user);
+        // 將資料傳到 Vuex 中
+        this.$store.commit("setCurrentUser", data.user);
 
         this.$router.push({ name: "tweets" });
       } catch (error) {

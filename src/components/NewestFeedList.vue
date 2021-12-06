@@ -6,9 +6,9 @@
     >
       <!-- 目前 tweets 中，沒有該 tweet 之發文者資料，圖片先帶假資料 -->
       <span
-        ><router-link to="users/1">
+        ><router-link :to="{ name: 'user', params: { id: tweet.User.id } }">
           <img
-            src="https://randomuser.me/api/portraits/women/81.jpg"
+            :src="tweet.User.avatar"
             alt=""
             class="newest__tweet__image avatar-50"
             @click.prevent.stop="toUserPage(tweet.UserId)"
