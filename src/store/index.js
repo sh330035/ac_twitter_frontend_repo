@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import usersAPI from '../api/users'
 
 Vue.use(Vuex)
 
@@ -7,25 +8,26 @@ export default new Vuex.Store({
   state: {
     //dummy data current user
     currentUser: {
-      id: 1,
-      account: 'user1',
-      email: 'user1@example.com',
-      name: 'user1',
-      password: '$2a$10$jf.dLx/ohvbTS1y0yrelo.h0IBnw9baWWXM7jEYUkE2iGnRo1ngLa',
-      avatar: 'https://randomuser.me/api/portraits/women/82.jpg',
-      cover: 'https://loremflickr.com/320/240/city/?random=87.0724194526249',
-      introduction:
-        'In velit doloribus delectus est eum quia aut perferendis eveniet. Quas sint asperiores dolorem. Numquam et ipsa. Dolorum consequuntur quae quidem et at quia reiciendis molestiae voluptatem. Eligendi ex quis cupiditate natus sequi ratione illo repellendus omnis. Magni praesentium consequuntur sed qui atque corrupti ratione ut.',
-      role: 'user',
-      createdAt: '2021-11-30T10:01:31.000Z',
-      updatedAt: '2021-11-30T10:01:31.000Z'
+      id: -1,
+      account: '',
+      email: '',
+      name: '',
+      avatar: '',
+      cover: '',
+      role: ''
     },
     //預設
-    isAuthenticated: true,
-    token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM4NzgwODc2fQ.s4KEjXcuakXnuuLDozqZFzToNw1rsONt-3XLSBKOo3I'
+    isAuthenticated: false,
+    token: ''
   },
   mutations: {
+    setCurrentUser(state, currentUser) {
+      state.currentUser = {
+        ...state.currentUser,
+        ...currentUser
+      }
+      state.isAuthenticated = true
+    },
     revokeAuthentication(state) {
       state.currentUser = {}
       state.isAuthenticated = false
@@ -33,6 +35,28 @@ export default new Vuex.Store({
       localStorage.removeItem('token')
     }
   },
-  actions: {},
+  actions: {
+    async fetchCurrentUser({ commit }) {
+      try {
+        // 呼叫 usersAPI.getCurrentUser() 方法，並將 response 顯示出來
+        const { data } = await usersAPI.getCurrentUser()
+        const { id, name, email, account, role, avatar, cover } = data
+        commit('setCurrentUser', {
+          id,
+          name,
+          email,
+          account,
+          role,
+          avatar,
+          cover
+        })
+        return true
+      } catch (error) {
+        console.log('error', error)
+        console.error('can not fetch user information')
+        return false
+      }
+    }
+  },
   modules: {}
 })

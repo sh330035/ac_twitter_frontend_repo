@@ -62,7 +62,7 @@
       </button>
     </div>
     <div class="navbar_link_logout">
-      <div class="navbar_link_content" @click.prevent.stop="logout">
+      <div class="navbar_link_content" @click="logout">
         <div class="navbar_link_icon navbar_link_icon_logout"></div>
         <h2 class="navbar_link_text">登出</h2>
       </div>
