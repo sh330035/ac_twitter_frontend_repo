@@ -53,7 +53,6 @@ export default {
         avatar: '',
         description: '',
         createdAt: '',
-        updatedAt: '',
         Replies: [],
         replyCount: 0,
         likeCount: 0,
@@ -65,8 +64,11 @@ export default {
     this.updateTweetData()
   },
   watch: {
-    initialTweet: function () {
-      this.updateTweetData()
+    initialTweet: {
+      handler: function () {
+        this.updateTweetData()
+      },
+      deep: true,
     }
   },
   methods: {
@@ -82,13 +84,11 @@ export default {
       this.$emit('after-show-reply-modal')
     },
     addLike (tweetId) {
-      // API - TODO
-      console.log(`add like tweet-${tweetId} via API`)
-      this.tweet.isLike = true
+      this.$emit('after-add-like', tweetId)
     },
     removeLike (tweetId) {
       // API - TODO
-      console.log(`remove like tweet-${tweetId} via API`)
+      this.$emit('after-delete-like', tweetId)
       this.tweet.isLike = false
     }
   }
