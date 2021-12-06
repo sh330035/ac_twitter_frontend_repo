@@ -31,6 +31,7 @@ import NewTweetForm from "../components/NewTweetForm.vue";
 import NewestFeedList from "../components/NewestFeedList.vue";
 import ReplyModal from "../components/ReplyModel.vue";
 import newestTweetsAPI from "../api/tweets";
+import likeTweetsAPI from "../api/users";
 
 export default {
   name: "Tweets",
@@ -58,32 +59,31 @@ export default {
       try {
         const { data } = await newestTweetsAPI.getNewestTweets();
 
-        console.log(data);
-        console.log(data.status);
-
         this.tweets = data;
-
-        // if (data.status !== "success") {
-        //   throw new Error(data.message);
-        // }
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
     },
-    addLikeHandler(tweetId) {
-      console.log("emit", tweetId);
-      this.tweets = this.tweets.map((tweet) => {
-        if (tweet.id !== tweetId) {
-          return tweet;
-        } else {
-          return {
-            ...tweet,
-            likeCount: tweet.likeCount + 1,
-            isLike: true,
-          };
-        }
-      });
+    async addLikeHandler(tweetId) {
+      try {
+        const { data } = await likeTweetsAPI.addLike({ tweetId });
+
+        console.log(data.message);
+
+        this.tweets = this.tweets.map((tweet) => {
+          if (tweet.id !== tweetId) {
+            return tweet;
+          } else {
+            return {
+              ...tweet,
+              likeCount: tweet.likeCount + 1,
+              isLike: true,
+            };
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
     deleteLikeHandler(tweetId) {
       console.log("emit", tweetId);

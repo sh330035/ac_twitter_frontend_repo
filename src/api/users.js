@@ -26,12 +26,12 @@ export default {
     })
   },
   // user follow page information
-  getUserFollowings({ userId }) {
+  getUserFollowings(userId) {
     return apiHelper.get(`/users/${userId}/followings`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  getUserFollowers({ userId }) {
+  getUserFollowers(userId) {
     return apiHelper.get(`/users/${userId}/followers`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
