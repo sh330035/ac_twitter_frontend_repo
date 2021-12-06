@@ -43,6 +43,8 @@ export default {
         this.tweets = data
       } catch (error) {
         console.log(error)
+        this.ToastMessage.message = `無法取得使用者推文，請稍後再試`
+        this.ToastMessage.dataStatus = 'error'
       }
     },
     async afterTweetDelete({ tweetId }) {
