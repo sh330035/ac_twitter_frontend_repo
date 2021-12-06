@@ -10,7 +10,7 @@
           <span v-if="!user.isCurrentUser" class="profile-card__profile__action-buttons__social-actions__message icon"></span>
           <span v-if="!user.isCurrentUser && user.isNoticed" @click="toggleNotification('off')" class="profile-card__profile__action-buttons__social-actions__notification-on icon"></span>
           <span v-if="!user.isCurrentUser && !user.isNoticed" @click="toggleNotification('on')" class="profile-card__profile__action-buttons__social-actions__notification-off icon"></span>
-          <span v-if="!user.isCurrentUser"  @click="toggleIsFollowed" class="profile-card__profile__action-buttons__social-actions__follow btn">{{ user.isFollowed ? '正在跟隨' : '跟隨' }}</span>
+          <span v-if="!user.isCurrentUser"  @click="toggleIsFollowed" class="profile-card__profile__action-buttons__social-actions__follow btn" :class="{inactive: !user.isFollowed}">{{ user.isFollowed ? '正在跟隨' : '跟隨' }}</span>
         </div>
         <div v-if="user.isCurrentUser" @click="showSettingForm" class="profile-card__profile__action-buttons__profile-setting btn">編輯個人資料</div>
       </div>
@@ -18,12 +18,12 @@
       <div class="profile-card__profile__account">{{ user.account | accountTag }}</div>
       <div class="profile-card__profile__introduction">{{ user.introduction }}</div>
       <div class="profile-card__profile__social-count">
-        <div class="profile-card__profile__social-count__follow">
+        <router-link :to="{name: 'user-follow', params: {id: user.id}, query: {follow: 'following'}}" class="profile-card__profile__social-count__follow">
         <span class="profile-card__profile__social-count__follow__count">{{user.followerCount | numberFormatTC }} 個</span>跟隨中
-      </div>
-      <div class="profile-card__profile__social-count__follow">
+      </router-link>
+      <router-link :to="{name: 'user-follow', params: {id: user.id}}" class="profile-card__profile__social-count__follow">
         <span class="profile-card__profile__social-count__follow__count">{{user.followingCount | numberFormatTC }} 位</span>跟隨者
-      </div>
+      </router-link>
       </div>
     </div>
   </div>

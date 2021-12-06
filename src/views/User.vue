@@ -14,6 +14,7 @@
         :current-feeds="currentFeeds"
         :initial-feeds="feeds"
         @after-toggle-like="afterToggleLike"
+        @after-show-reply-modal="afterShowReplyModal"
       />
       <profile-edit-modal
         v-show="showSettingForm"
@@ -25,6 +26,11 @@
     <section class="right-card">
       <popular-users-card />
     </section>
+    <reply-modal
+      v-show="replyModal.isShow"
+      :reply-tweet="replyModal.replyTweet"
+      @after-comment-checkout="afterCommentCheckout"
+    />
   </div>
 </template>
 
@@ -35,6 +41,7 @@ import FeedsNavPills from "../components/FeedsNavPills.vue";
 import UserFeedList from "../components/UserFeedList.vue";
 import ProfileEditModal from "../components/ProfileEditModal.vue";
 import PopularUsersCard from "../components/PopularUsersCard.vue";
+import ReplyModal from "../components/ReplyModel.vue";
 import { mapState } from "vuex";
 
 const dummyData = {
@@ -53,8 +60,8 @@ const dummyData = {
     followerCount: 137,
     followingCount: 12345,
     tweetsCount: 189,
-    isCurrentUser: true,
-    isFollowed: true,
+    isCurrentUser: false,
+    isFollowed: false,
     isNoticed: true,
     Tweets: [
       {
@@ -305,6 +312,7 @@ export default {
     UserFeedList,
     ProfileEditModal,
     PopularUsersCard,
+    ReplyModal,
   },
   data() {
     return {
@@ -312,6 +320,10 @@ export default {
       currentFeeds: "tweets",
       feeds: [],
       showSettingForm: false,
+      replyModal: {
+        isShow: false,
+        replyTweet: {},
+      },
     };
   },
   beforeRouteUpdate(to, from, next) {
@@ -419,6 +431,16 @@ export default {
       console.log("submit profile form", data);
       // TODO : 串接 API
       this.showSettingForm = false;
+    },
+    afterShowReplyModal(tweetId) {
+      this.replyModal.isShow = true;
+      this.replyModal.replyTweet = this.feeds.find(
+        (tweet) => tweet.id === tweetId
+      );
+    },
+    afterCommentCheckout() {
+      this.replyModal.isShow = false;
+      this.replyModal.replyTweet = {};
     },
   },
   created() {

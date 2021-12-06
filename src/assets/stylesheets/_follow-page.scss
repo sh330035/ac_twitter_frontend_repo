@@ -34,6 +34,7 @@
     border-bottom: 1px solid $border-gray;
     width: 100%;
     position: relative;
+    @extend %tweet-block-hover-effect;
     &__container {
       width: 100%;
       margin-left: 10px;
@@ -41,6 +42,7 @@
     }
     &__image {
       cursor: pointer;
+      @extend %avatar-hover-effect;
     }
     &__user {
       align-items: flex-start;

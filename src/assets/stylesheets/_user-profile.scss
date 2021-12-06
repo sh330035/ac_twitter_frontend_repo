@@ -70,6 +70,11 @@
           display: flex;
           align-items: center;
         }
+        &__follow.inactive {
+          background-color: white;
+          color: $ac-orange;
+          border: 1px solid $ac-orange;
+        }
       }
       &__profile-setting {
         width: auto;
@@ -127,11 +132,6 @@
     font-weight: 700;
     font-size: 15px;
     line-height: 22px;
-    &:hover,
-    &:active {
-      background-color: $popular-bg;
-      color: $default-hint-color;
-    }
     &.active {
       border-bottom: 2px solid $ac-orange;
       color: $text-black;
@@ -145,9 +145,7 @@
     border-bottom: 1px solid $border-gray;
     display: flex;
     gap: 10px;
-    &:hover {
-      background-color: $popular-bg;
-    }
+    @extend %tweet-block-hover-effect;
 
     &__avatar {
       &__img {
@@ -156,9 +154,7 @@
         border-radius: 50%;
         object-fit: cover;
         background-color: $input-bg-color;
-        &:hover {
-        filter: brightness(95%);
-      }
+        @extend %avatar-hover-effect;
       }
     }
 
@@ -232,6 +228,9 @@
           background-size: contain;
           background-repeat: no-repeat;
           cursor: pointer;
+        }
+        &__like-count.active {
+          color: $like-red;
         }
       }
     }

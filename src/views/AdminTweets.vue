@@ -7,155 +7,57 @@
         :initial-tweets="tweets"
       />
     </section>
+    <Toast :ToastMessage="ToastMessage" />
   </div>
 </template>
 
 <script>
 import PageNameBanner from '../components/PageNameBanner.vue'
 import AdminFeedList from '../components/admin/AdminFeedList.vue'
-
-const dummyData = {
-  tweets: [
-    {
-      "id": 1,
-      "UserId": 1,
-      "account": "user1",
-      "name": "User1",
-      "description": "vitae molestiae deserunt",
-      "avatar": "https://randomuser.me/api/portraits/women/5.jpg",
-      "createdAt": "2021-11-30T10:14:55.000Z",
-    },
-    {
-      "id": 6,
-      "UserId": 6,
-      "account": "user6",
-      "name": "User6",
-      "description": "Non autem deleniti perspiciatis architecto.",
-      "avatar": "https://randomuser.me/api/portraits/women/7.jpg",
-      "createdAt": "2021-11-29T10:14:55.000Z",
-    },
-    {
-      "id": 9,
-      "UserId": 8,
-      "account": "user8",
-      "name": "User8",
-      "description": "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
-      "avatar": "https://randomuser.me/api/portraits/men/6.jpg",
-      "createdAt": "2021-11-28T10:14:55.000Z",
-    },
-    {
-      "id": 10,
-      "UserId": 10,
-      "account": "user10",
-      "name": "User10",
-      "description": "fuga modi ipsa",
-      "avatar": "https://randomuser.me/api/portraits/women/22.jpg",
-      "createdAt": "2021-11-26T10:14:55.000Z",
-    },
-    {
-      "id": 11,
-      "UserId": 1,
-      "account": "user1",
-      "name": "User1",
-      "description": "vitae molestiae deserunt",
-      "avatar": "https://randomuser.me/api/portraits/women/11.jpg",
-      "createdAt": "2021-11-25T10:14:55.000Z",
-    },
-    {
-      "id": 16,
-      "UserId": 6,
-      "account": "user6",
-      "name": "User6",
-      "description": "Non autem deleniti perspiciatis architecto.",
-      "avatar": "https://randomuser.me/api/portraits/men/6.jpg",
-      "createdAt": "2021-11-24T10:14:55.000Z",
-    },
-    {
-      "id": 19,
-      "UserId": 8,
-      "account": "user8",
-      "name": "User8",
-      "description": "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
-      "avatar": "https://randomuser.me/api/portraits/women/17.jpg",
-      "createdAt": "2021-11-23T10:14:55.000Z",
-    },
-    {
-      "id": 20,
-      "UserId": 10,
-      "account": "user10",
-      "name": "User10",
-      "description": "fuga modi ipsa",
-      "avatar": "https://randomuser.me/api/portraits/women/6.jpg",
-      "createdAt": "2021-11-22T10:14:55.000Z",
-    },
-    {
-      "id": 36,
-      "UserId": 6,
-      "account": "user6",
-      "name": "User6",
-      "description": "Non autem deleniti perspiciatis architecto.",
-      "avatar": "https://randomuser.me/api/portraits/men/3.jpg",
-      "createdAt": "2021-11-21T10:14:55.000Z",
-    },
-    {
-      "id": 39,
-      "UserId": 8,
-      "account": "user8",
-      "name": "User8",
-      "description": "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
-      "avatar": "https://randomuser.me/api/portraits/men/46.jpg",
-      "createdAt": "2021-11-18T10:14:55.000Z",
-    },
-    {
-      "id": 40,
-      "UserId": 10,
-      "account": "user10",
-      "name": "User10",
-      "description": "fuga modi deleniti perspiciatis ipsa",
-      "avatar": "https://randomuser.me/api/portraits/women/44.jpg",
-      "createdAt": "2021-11-06T10:14:55.000Z",
-    },
-    {
-      "id": 45,
-      "UserId": 15,
-      "account": "user15",
-      "name": "User15",
-      "description": "fugadeleniti perspiciatis modi ipsa",
-      "avatar": "https://randomuser.me/api/portraits/women/36.jpg",
-      "createdAt": "2021-11-05T10:14:55.000Z",
-    },
-    {
-      "id": 49,
-      "UserId": 152,
-      "account": "user152",
-      "name": "User152",
-      "description": "fuga modi ipsa",
-      "avatar": "https://randomuser.me/api/portraits/men/16.jpg",
-      "createdAt": "2021-10-06T10:14:55.000Z",
-    }
-  ]
-}
+import adminAPI from '../api/admin.js'
+import Toast from "../components/AlertToast.vue";
 
 export default {
   components: {
     AdminFeedList,
     PageNameBanner,
+    Toast,
   },
   data() {
     return {
       bannerTitle: '推文清單',
-      tweets: []
+      tweets: [],
+      ToastMessage: {
+        message: "",
+        dataStatus: "",
+      },
     }
   },
   created() {
     this.fetchTweetsData()
   },
   methods: {
-    fetchTweetsData() {
-      this.tweets = dummyData.tweets
+    async fetchTweetsData() {
+      try {
+        const { data } = await adminAPI.getAdminTweets()
+        this.tweets = data
+      } catch (error) {
+        console.log(error)
+      }
     },
-    afterTweetDelete({ tweetId }) {
-      console.log('delete via API', tweetId)
+    async afterTweetDelete({ tweetId }) {
+      try {
+        console.log('delete via API', tweetId)
+        const {data} = await adminAPI.deleteTweet({ tweetId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.ToastMessage.message = `已成功刪除推文 (ID: ${tweetId})`
+        this.ToastMessage.dataStatus = 'success'
+      } catch (error) {
+        console.log(error)
+      }
+      
     }
   }
 }
