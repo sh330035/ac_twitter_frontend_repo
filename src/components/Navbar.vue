@@ -56,6 +56,7 @@
       <button
         @click.prevent.stop="tweetLaunchHandler"
         class="btn tweet-launch_button"
+        v-if="currentUser.role == 'user'"
       >
         推文
       </button>
@@ -116,6 +117,8 @@ export default {
     },
     logout() {
       console.log("log-out");
+      this.$store.commit("revokeAuthentication");
+      this.$router.push("/login");
     },
   },
 };

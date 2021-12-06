@@ -1,14 +1,27 @@
 .popular {
   padding: 15px 0 0 30px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &::-webkit-scrollbar {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
   &__card {
     border-radius: 14px;
     width: 350px;
     background-color: $popular-bg;
+    position: relative;
     &__title {
       padding-top: 13px;
       padding-left: 15px;
       text-align: start;
       margin-bottom: 10px;
+      position: sticky;
     }
     &__user {
       height: 70px;

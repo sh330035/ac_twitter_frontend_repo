@@ -72,29 +72,55 @@ export default {
         console.log(error);
       }
     },
-    addFollowing(userId) {
-      this.popularUsers = this.popularUsers.map((user) => {
-        if (user.id !== userId) {
-          return user;
-        } else {
-          return {
-            ...user,
-            isFollowed: true,
-          };
+    // 無法成功
+    async addFollowing(userId) {
+      try {
+        const { data } = await popularUsersAPI.addFollowing({ userId });
+
+        if (data.status !== "success") {
+          throw new Error(data.message);
         }
-      });
+
+        this.popularUsers = this.popularUsers.map((user) => {
+          if (user.id !== userId) {
+            return user;
+          } else {
+            return {
+              ...user,
+              isFollowed: true,
+            };
+          }
+        });
+
+        console.log("addingFollow, success");
+      } catch (error) {
+        console.log(error);
+      }
     },
-    deleteFollowing(userId) {
-      this.popularUsers = this.popularUsers.map((user) => {
-        if (user.id !== userId) {
-          return user;
-        } else {
-          return {
-            ...user,
-            isFollowed: false,
-          };
+    // 成功
+    async deleteFollowing(userId) {
+      try {
+        const { data } = await popularUsersAPI.deleteFollowing({ userId });
+
+        if (data.status !== "success") {
+          throw new Error(data.message);
         }
-      });
+
+        this.popularUsers = this.popularUsers.map((user) => {
+          if (user.id !== userId) {
+            return user;
+          } else {
+            return {
+              ...user,
+              isFollowed: false,
+            };
+          }
+        });
+
+        console.log("deleteFollow, success");
+      } catch (error) {
+        console.log(error);
+      }
     },
     toUserPage(userId) {
       this.$router.push({ name: "user", params: { id: userId } });
