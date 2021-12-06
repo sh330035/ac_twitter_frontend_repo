@@ -14,7 +14,7 @@
           <span class="profile-setting-form__header__title">編輯個人資料</span>
           <button
             :disabled="
-              formValidation.name.error || formValidation.introduction.error
+              formValidation.name.error || formValidation.introduction.error || isProcessing
             "
             class="profile-setting-form__header__save-btn btn"
             type="submit"
@@ -135,6 +135,10 @@ export default {
       type: Object,
       required: true,
     },
+    isProcessing: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {

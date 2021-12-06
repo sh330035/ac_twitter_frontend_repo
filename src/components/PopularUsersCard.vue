@@ -75,13 +75,11 @@ export default {
     // 無法成功
     async addFollowing(userId) {
       try {
-        const { data } = await popularUsersAPI.addFollowing({ id: userId });
+        const { data } = await popularUsersAPI.addFollowing({ userId });
 
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-
-        console.log(data.message);
 
         this.popularUsers = this.popularUsers.map((user) => {
           if (user.id !== userId) {
@@ -93,10 +91,13 @@ export default {
             };
           }
         });
+
+        console.log("addingFollow, success");
       } catch (error) {
         console.log(error);
       }
     },
+    // 成功
     async deleteFollowing(userId) {
       try {
         const { data } = await popularUsersAPI.deleteFollowing({ userId });

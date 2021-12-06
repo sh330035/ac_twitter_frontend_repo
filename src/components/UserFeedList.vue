@@ -2,27 +2,27 @@
   <div class="user-feed-list">
     <!-- v-for Start -->
     <router-link
-      :to="{ name: 'tweet-replies', params: { id: feed.id } }"
+      :to="{ name: 'tweet-replies', params: { id: feed.TweetId } }"
       v-for="feed in feeds"
-      :key="feed.id"
+      :key="feed.TweetId"
       class="feed"
     >
       <router-link
-        :to="{ name: 'user', params: { id: feed.UserId } }"
+        :to="{ name: 'user', params: { id: feed.User.id } }"
         class="feed__avatar"
       >
-        <img :src="feed.avatar" class="feed__avatar__img" alt="Avatar" />
+        <img :src="feed.User.avatar" class="feed__avatar__img" alt="Avatar" />
       </router-link>
       <div class="feed__detail">
         <div class="feed__detail__author">
           <router-link
-            :to="{ name: 'user', params: { id: feed.UserId } }"
+            :to="{ name: 'user', params: { id: feed.User.id } }"
             class="feed__detail__author__name"
           >
-            {{ feed.name }}
+            {{ feed.User.name }}
           </router-link>
           <span class="feed__detail__author__account">
-            {{ feed.name | accountTag }}
+            {{ feed.User.account | accountTag }}
           </span>
           <span class="feed__detail__author__post-time">
             ・{{ feed.createdAt | fromNow }}
@@ -31,29 +31,29 @@
         <div v-if="currentFeeds === 'reply'" class="feed__detail__reply-to">
           回覆
           <router-link
-            :to="{ name: 'user', params: { id: feed.UserId } }"
+            :to="{ name: 'user', params: { id: feed.User.id } }"
             class="feed__detail__reply-to__account"
-            >{{ feed.name | accountTag }}</router-link
+            >{{ feed.User.account | accountTag }}</router-link
           >
         </div>
-        <div class="feed__detail__comment">{{ feed.comment }}</div>
+        <div class="feed__detail__comment">{{ feed.description }}</div>
         <div v-if="currentFeeds !== 'reply'" class="feed__detail__social-count">
           <div class="feed__detail__social-count__reply-count">
-            <span @click.prevent="showReplyModal(feed.id)" class="feed__detail__social-count__reply-count__icon"></span
-            >{{ feed.replyCount }}
+            <span @click.prevent="showReplyModal(feed.TweetId)" class="feed__detail__social-count__reply-count__icon"></span
+            >{{ feed.ReplyCount }}
           </div>
-          <div class="feed__detail__social-count__like-count" :class="{active: feed.isLike}">
+          <div class="feed__detail__social-count__like-count" :class="{active: feed.isLiked}">
             <span
-              v-if="!feed.isLike"
-              @click.prevent="toggleLike(feed.id, true)"
+              v-if="!feed.isLiked"
+              @click.prevent="toggleLike(feed.TweetId, true)"
               class="feed__detail__social-count__like-count__icon"
             ></span
             ><span
-              v-if="feed.isLike"
-              @click.prevent="toggleLike(feed.id, false)"
+              v-if="feed.isLiked"
+              @click.prevent="toggleLike(feed.TweetId, false)"
               class="feed__detail__social-count__like-count__icon-red"
             ></span>
-            {{ feed.likeCount }}
+            {{ feed.LikeCount }}
           </div>
         </div>
       </div>
@@ -93,6 +93,9 @@ export default {
   watch: {
     currentFeeds: function () {
       this.updateFeedsData()
+    },
+    initialFeeds: function () {
+      this.updateFeedsData()
     }
   },
   methods: {
@@ -103,16 +106,7 @@ export default {
 
       this.$emit('after-toggle-like', { feedId, status })
 
-      this.feeds = this.feeds.map(feed => {
-        if (feed.id === feedId) {
-          return {
-            ...feed,
-            isLike: status,
-          }
-        } else {
-          return feed
-        }
-      })
+      
     },
     showReplyModal(feedId) {
       this.$emit('after-show-reply-modal', feedId)

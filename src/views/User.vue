@@ -19,6 +19,7 @@
       <profile-edit-modal
         v-show="showSettingForm"
         :initial-user="user"
+        :is-processing="isProcessing"
         @close-setting-form="afterCloseSettingForm"
         @after-profile-form-submit="afterProfileFormSubmit"
       />
@@ -31,277 +32,21 @@
       :reply-tweet="replyModal.replyTweet"
       @after-comment-checkout="afterCommentCheckout"
     />
+    <Toast :ToastMessage="ToastMessage" />
   </div>
 </template>
 
 <script>
-import PageNameBanner from "../components/PageNameBanner.vue";
-import ProfileCard from "../components/ProfileCard.vue";
-import FeedsNavPills from "../components/FeedsNavPills.vue";
-import UserFeedList from "../components/UserFeedList.vue";
-import ProfileEditModal from "../components/ProfileEditModal.vue";
-import PopularUsersCard from "../components/PopularUsersCard.vue";
-import ReplyModal from "../components/ReplyModel.vue";
-import { mapState } from "vuex";
-
-const dummyData = {
-  user: {
-    id: 1,
-    account: "user1",
-    email: "user1@example.com",
-    name: "user1",
-    avatar: "https://randomuser.me/api/portraits/women/82.jpg",
-    cover: "https://loremflickr.com/320/240/city/?random=87.0724194526249",
-    introduction:
-      "Dolorum consequuntur quae quidem et at quia reiciendis molestiae voluptatem. Eligendi ex quis cupiditate natus sequiomnis. Magni consequuntur sed atque corruptiut.",
-    role: "user",
-    createdAt: "2021-11-30T10:01:31.000Z",
-    updatedAt: "2021-11-30T10:01:31.000Z",
-    followerCount: 137,
-    followingCount: 12345,
-    tweetsCount: 189,
-    isCurrentUser: false,
-    isFollowed: false,
-    isNoticed: true,
-    Tweets: [
-      {
-        id: 80,
-        UserId: 1,
-        account: "user1",
-        name: "User1",
-        comment: "vitae molestiae deserunt",
-        avatar: "https://randomuser.me/api/portraits/women/82.jpg",
-        createdAt: "2021-12-04T10:14:55.000Z",
-        isLike: false,
-        replyCount: 45,
-        likeCount: 80,
-      },
-      {
-        id: 90,
-        UserId: 1,
-        account: "user1",
-        name: "User1",
-        comment: "vitae molestiae deserunt",
-        avatar: "https://randomuser.me/api/portraits/women/82.jpg",
-        createdAt: "2021-12-03T10:14:55.000Z",
-        isLike: false,
-        replyCount: 25,
-        likeCount: 90,
-      },
-      {
-        id: 808,
-        UserId: 1,
-        account: "user1",
-        name: "User1",
-        comment:
-          "Lorem ipsum dolor sit amet consecteturelit. Nostrum velit ea repudiandae fugit temporibus sit!",
-        avatar: "https://randomuser.me/api/portraits/women/82.jpg",
-        createdAt: "2021-11-24T10:14:55.000Z",
-        isLike: true,
-        replyCount: 9,
-        likeCount: 18,
-      },
-      {
-        id: 111,
-        UserId: 1,
-        account: "user1",
-        name: "User1",
-        comment: "vitae molestiae des Non autem deleniti perspiciatis runt",
-        avatar: "https://randomuser.me/api/portraits/women/82.jpg",
-        createdAt: "2021-11-23T10:14:55.000Z",
-        isLike: true,
-        replyCount: 15,
-        likeCount: 81,
-      },
-      {
-        id: 50,
-        UserId: 1,
-        account: "user1",
-        name: "User1",
-        comment: "vitae molestiae Non autem deleniti",
-        avatar: "https://randomuser.me/api/portraits/women/82.jpg",
-        createdAt: "2021-11-03T10:14:55.000Z",
-        isLike: false,
-        replyCount: 38,
-        likeCount: 98,
-      },
-    ],
-    Replies: [
-      {
-        id: 1,
-        UserId: 50,
-        account: "user50",
-        name: "User50",
-        comment: "vitae molestiae deserunt",
-        avatar: "https://randomuser.me/api/portraits/men/5.jpg",
-        createdAt: "2021-12-03T10:14:55.000Z",
-      },
-      {
-        id: 6,
-        UserId: 6,
-        account: "user6",
-        name: "User6",
-        comment: "Non autem deleniti perspiciatis architecto.",
-        avatar: "https://randomuser.me/api/portraits/women/7.jpg",
-        createdAt: "2021-11-29T10:14:55.000Z",
-      },
-      {
-        id: 9,
-        UserId: 8,
-        account: "user8",
-        name: "User8",
-        comment:
-          "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
-        avatar: "https://randomuser.me/api/portraits/men/6.jpg",
-        createdAt: "2021-11-28T10:14:55.000Z",
-      },
-      {
-        id: 10,
-        UserId: 10,
-        account: "user10",
-        name: "User10",
-        comment: "fuga modi ipsa",
-        avatar: "https://randomuser.me/api/portraits/women/22.jpg",
-        createdAt: "2021-11-26T10:14:55.000Z",
-      },
-      {
-        id: 11,
-        UserId: 1,
-        account: "user1",
-        name: "User1",
-        comment: "vitae molestiae deserunt",
-        avatar: "https://randomuser.me/api/portraits/women/11.jpg",
-        createdAt: "2021-11-25T10:14:55.000Z",
-      },
-      {
-        id: 16,
-        UserId: 6,
-        account: "user6",
-        name: "User6",
-        comment: "Non autem deleniti perspiciatis architecto.",
-        avatar: "https://randomuser.me/api/portraits/men/6.jpg",
-        createdAt: "2021-11-24T10:14:55.000Z",
-      },
-      {
-        id: 19,
-        UserId: 8,
-        account: "user8",
-        name: "User8",
-        comment:
-          "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
-        avatar: "https://randomuser.me/api/portraits/women/17.jpg",
-        createdAt: "2021-11-23T10:14:55.000Z",
-      },
-      {
-        id: 20,
-        UserId: 10,
-        account: "user10",
-        name: "User10",
-        comment: "fuga modi ipsa",
-        avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-        createdAt: "2021-11-22T10:14:55.000Z",
-      },
-      {
-        id: 36,
-        UserId: 6,
-        account: "user6",
-        name: "User6",
-        comment: "Non autem deleniti perspiciatis architecto.",
-        avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-        createdAt: "2021-11-21T10:14:55.000Z",
-      },
-      {
-        id: 39,
-        UserId: 8,
-        account: "user8",
-        name: "User8",
-        comment:
-          "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
-        avatar: "https://randomuser.me/api/portraits/men/46.jpg",
-        createdAt: "2021-11-18T10:14:55.000Z",
-      },
-      {
-        id: 40,
-        UserId: 10,
-        account: "user10",
-        name: "User10",
-        comment: "fuga modi deleniti perspiciatis perspiciatis architecto ipsa",
-        avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-        createdAt: "2021-11-06T10:14:55.000Z",
-      },
-      {
-        id: 45,
-        UserId: 15,
-        account: "user15",
-        name: "User15",
-        comment: "fugadeleniti perspiciatis modi ipsa",
-        avatar: "https://randomuser.me/api/portraits/women/36.jpg",
-        createdAt: "2021-11-05T10:14:55.000Z",
-      },
-      {
-        id: 49,
-        UserId: 152,
-        account: "user152",
-        name: "User152",
-        comment: "fuga perspiciatis architecto modi ipsa in ecpical",
-        avatar: "https://randomuser.me/api/portraits/men/16.jpg",
-        createdAt: "2021-10-06T10:14:55.000Z",
-      },
-    ],
-    Likes: [
-      {
-        id: 9,
-        UserId: 8,
-        account: "user8",
-        name: "User8",
-        comment:
-          "Laboriosam aut fugit eaque molestiae aspernatur velit fugit laudantium.",
-        avatar: "https://randomuser.me/api/portraits/men/6.jpg",
-        createdAt: "2021-12-04T10:14:55.000Z",
-        isLike: true,
-        replyCount: 45,
-        likeCount: 80,
-      },
-      {
-        id: 80,
-        UserId: 1,
-        account: "user1",
-        name: "User1",
-        comment: "vitae molestiae dolor sit amet consecte petur deserunt",
-        avatar: "https://randomuser.me/api/portraits/women/82.jpg",
-        createdAt: "2021-12-04T10:14:55.000Z",
-        isLike: true,
-        replyCount: 45,
-        likeCount: 80,
-      },
-      {
-        id: 49,
-        UserId: 152,
-        account: "user152",
-        name: "User152",
-        comment: "dolor sit amet consec tetur fuga modi ipsa",
-        avatar: "https://randomuser.me/api/portraits/women/16.jpg",
-        createdAt: "2021-11-26T10:14:55.000Z",
-        isLike: true,
-        replyCount: 39,
-        likeCount: 718,
-      },
-      {
-        id: 493,
-        UserId: 152,
-        account: "user152",
-        name: "User152",
-        comment:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, quidem?",
-        avatar: "https://randomuser.me/api/portraits/men/13.jpg",
-        createdAt: "2021-11-26T10:14:55.000Z",
-        isLike: true,
-        replyCount: 29,
-        likeCount: 71,
-      },
-    ],
-  },
-};
+import PageNameBanner from "../components/PageNameBanner.vue"
+import ProfileCard from "../components/ProfileCard.vue"
+import FeedsNavPills from "../components/FeedsNavPills.vue"
+import UserFeedList from "../components/UserFeedList.vue"
+import ProfileEditModal from "../components/ProfileEditModal.vue"
+import PopularUsersCard from "../components/PopularUsersCard.vue"
+import ReplyModal from "../components/ReplyModel.vue"
+import Toast from "../components/AlertToast.vue"
+import { mapState } from "vuex"
+import usersAPI from '../api/users.js'
 
 export default {
   name: "user",
@@ -313,6 +58,7 @@ export default {
     ProfileEditModal,
     PopularUsersCard,
     ReplyModal,
+    Toast,
   },
   data() {
     return {
@@ -324,77 +70,116 @@ export default {
         isShow: false,
         replyTweet: {},
       },
-    };
+      ToastMessage: {
+        message: "",
+        dataStatus: "",
+      },
+      isProcessing: false
+    }
   },
   beforeRouteUpdate(to, from, next) {
-    const feedsType = to.query.feeds ? to.query.feeds : "tweets";
-    this.currentFeeds = feedsType;
-    this.fetchFeedsData(feedsType);
-    next();
+    const feedsType = to.query.feeds ? to.query.feeds : "tweets"
+    this.currentFeeds = feedsType
+    this.fetchFeedsData(feedsType)
+    next()
   },
   methods: {
-    fetchUserData(userId) {
-      console.log("user id: ", userId);
+    async fetchUserData(userId) {
+      try {
+        const { data } = await usersAPI.getUser({ userId })
+        // console.log('使用者資料',data)
+        if (data.name.length === 0) {
+          throw new Error('無法取得使用者資料')
+        }
 
-      const {
-        id,
-        account,
-        email,
-        name,
-        avatar,
-        cover,
-        introduction,
-        role,
-        createdAt,
-        updatedAt,
-        followerCount,
-        followingCount,
-        tweetsCount,
-        isCurrentUser,
-        isFollowed,
-        isNoticed,
-        tweets,
-        Replies: replies,
-        Likes: likes,
-      } = dummyData.user;
+        const {
+          id,
+          account,
+          name,
+          avatar,
+          cover,
+          introduction,
+          role,
+          FollowerCount: followerCount,
+          FollowingCount: followingCount,
+          TweetCount: tweetsCount,
+          isCurrentUser,
+          isFollowed,
+          isNoticed,
+        } = data
 
-      this.user = {
-        id,
-        account,
-        email,
-        name,
-        avatar,
-        cover,
-        introduction,
-        tweetsCount,
-        role,
-        createdAt,
-        updatedAt,
-        followerCount,
-        followingCount,
-        isCurrentUser,
-        isFollowed,
-        isNoticed,
-        tweets,
-        replies,
-        likes,
-      };
+        this.user = {
+          id,
+          account,
+          name,
+          avatar,
+          cover,
+          introduction,
+          tweetsCount,
+          role,
+          followerCount,
+          followingCount,
+          isCurrentUser,
+          isFollowed,
+          isNoticed,
+        }
+
+      } catch (error) {
+        console.log(error)
+        this.ToastMessage.message = `無法取得使用者資料，請稍後再試`
+        this.ToastMessage.dataStatus = 'error'
+      }
     },
-    fetchFeedsData(feedsType) {
+    async fetchFeedsData(feedsType) {
+      const userId = this.$route.params.id
+      // 取得使用者推文紀錄
       if (feedsType === "tweets") {
-        // Get from API
-        // GET /api/users/:id/tweets
-
-        this.feeds = dummyData.user.Tweets;
+        try {
+          const { data } = await usersAPI.getUserTweets({ userId })
+          // console.log(`tweets list of user-${userId}`, data)
+          this.feeds = data
+        } catch (error) {
+          console.log(error)
+          this.ToastMessage.message = `無法取得推文資料，請稍後再試`
+          this.ToastMessage.dataStatus = 'error'
+        }
+        // 取得使用者回文紀錄
       } else if (feedsType === "reply") {
-        // Get from API
-        // GET /api/users/:id/replied_tweets
-
-        this.feeds = dummyData.user.Replies;
+        try {
+          const { data } = await usersAPI.getUserReply({ userId })
+          // console.log(`replies of user-${userId}`, data)
+          this.feeds = data.map(reply => {
+            const { TweetId, User, comment: description, createdAt } = reply
+            return {
+              TweetId, User, description, createdAt
+            }
+          })
+        } catch (error) {
+          console.log(error)
+          this.ToastMessage.message = `無法取得推文與回覆資料，請稍後再試`
+          this.ToastMessage.dataStatus = 'error'
+        }
       } else if (feedsType === "like") {
-        // Get from API
-        // GET /api/users/:id/likes
-        this.feeds = dummyData.user.Likes;
+        try {
+          const { data } = await usersAPI.getUserLike({ userId })
+          console.log(`Like tweets of user-${userId}`, data)
+          this.feeds = data.map(likeFeed => {
+            const { TweetId, User, Tweet, createdAt } = likeFeed
+            return {
+              TweetId,
+              User,
+              createdAt,
+              description: Tweet.description,
+              isLiked: Tweet.isLike,
+              ReplyCount: Tweet.ReplyCount,
+              LikeCount: Tweet.LikeCount
+            }
+          })
+        } catch (error) {
+          console.log(error)
+          this.ToastMessage.message = `無法取得喜愛的內容，請稍後再試`
+          this.ToastMessage.dataStatus = 'error'
+        }
       }
     },
     afterToggleNotification(status) {
@@ -403,52 +188,80 @@ export default {
       // } else {
       //   API put 讓 toggleIsFollowed = false
       // }
-      console.log(`Notification: ${status}`);
+      console.log(`Notification: ${status}`)
     },
     afterToggleIsFollowed(status) {
+
       // if (this.user.toggleIsFollowed) {
       //   API put 讓 toggleIsFollowed = true
       // } else {
       //   API put 讓 toggleIsFollowed = false
       // }
-      console.log(`Toggle isFollowed status to ${status}`);
+      console.log(`Toggle isFollowed status to ${status}`)
     },
-    afterToggleLike({ feedId, status }) {
-      // if (status) {
-      //   API put 讓 isLike = true
-      // } else {
-      //   API put 讓 isLike = false
-      // }
-      console.log(`Toggle isLike of id-${feedId} status to ${status}`);
+    async afterToggleLike({ feedId, status }) {
+      try {
+        if (status) {
+          // put isLike via API-addLike
+          const {data} = await usersAPI.addLike({ tweetId: feedId })
+          if (data.status !== 'success') {
+            throw new Error(data.message)
+          }
+        } else {
+          // delete isLike via API-deleteLike
+          const {data} = await usersAPI.deleteLike({ tweetId: feedId })
+          if (data.status !== 'success') {
+            throw new Error(data.message)
+          }
+        }
+        // toggle the like-icon 
+        this.feeds = this.feeds.map(feed => {
+        if (feed.TweetId === feedId) {
+          return {
+            ...feed,
+            isLiked: status,
+          }
+        } else {
+          return feed
+        }
+      })
+      } catch (error) {
+        console.log(error)
+        this.ToastMessage.message = `無法更新最愛，請稍後再試`
+        this.ToastMessage.dataStatus = 'error'
+      }
+      
     },
     afterShowSettingForm() {
-      this.showSettingForm = true;
+      this.showSettingForm = true
     },
     afterCloseSettingForm() {
-      this.showSettingForm = false;
+      this.showSettingForm = false
     },
     afterProfileFormSubmit(data) {
-      console.log("submit profile form", data);
+      this.isProcessing = true
+      console.log("submit profile form", data)
       // TODO : 串接 API
-      this.showSettingForm = false;
+      this.showSettingForm = false
+      this.isProcessing = false
     },
     afterShowReplyModal(tweetId) {
-      this.replyModal.isShow = true;
+      this.replyModal.isShow = true
       this.replyModal.replyTweet = this.feeds.find(
         (tweet) => tweet.id === tweetId
-      );
+      )
     },
     afterCommentCheckout() {
-      this.replyModal.isShow = false;
-      this.replyModal.replyTweet = {};
+      this.replyModal.isShow = false
+      this.replyModal.replyTweet = {}
     },
   },
   created() {
-    const { id: userId } = this.$route.params;
-    const feedsType = this.$route.query.feeds;
-    this.fetchUserData(userId);
-    this.currentFeeds = feedsType ? feedsType : "tweets";
-    this.fetchFeedsData(this.currentFeeds);
+    const { id: userId } = this.$route.params
+    const feedsType = this.$route.query.feeds
+    this.fetchUserData(userId)
+    this.currentFeeds = feedsType ? feedsType : "tweets"
+    this.fetchFeedsData(this.currentFeeds)
   },
   computed: {
     ...mapState(["currentUser"]),
