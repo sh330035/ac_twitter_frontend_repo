@@ -28,16 +28,18 @@
     <!-- other page banner -->
     <div class="banner" v-else>
       <div v-if="bannerTitle" class="banner__other-page d-flex">
-        <h2>
-          <span
-            v-if="bannerLinkBack"
+        <span v-if="bannerLinkBack" class="banner__other-page__image"
+          ><img
             @click="$router.back()"
+            src="../assets/images/back.svg"
+            alt=""
             class="banner__other-page__arrow"
-          >
-            &larr;
-          </span>
-          {{ bannerTitle }}
-        </h2>
+        /></span>
+        <span class="banner__other-page__info">
+          <h2>
+            {{ bannerTitle }}
+          </h2>
+        </span>
       </div>
     </div>
   </div>
