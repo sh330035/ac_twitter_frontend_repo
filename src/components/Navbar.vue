@@ -86,8 +86,6 @@ export default {
         message: "",
         dataStatus: "",
       },
-      // 預設後端回傳正確訊息
-      backendReturnStatus: true,
     };
   },
   computed: {
@@ -100,9 +98,8 @@ export default {
     afterTweetCheckout() {
       this.isModelShowed = false;
     },
-    afterTweetSend() {
-      // Toast 測試 模擬Email重複
-      if (!this.backendReturnStatus) {
+    afterTweetSend(dataStatus) {
+      if (!dataStatus) {
         this.sendToastMessage("error");
       } else {
         this.sendToastMessage("success");

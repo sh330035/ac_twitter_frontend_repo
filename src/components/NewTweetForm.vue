@@ -34,6 +34,7 @@
 
 <script>
 import Toast from "../components/AlertToast.vue";
+import tweetsAPI from "../api/tweets";
 
 export default {
   name: "new-tweet-form",
@@ -53,8 +54,6 @@ export default {
         message: "",
         dataStatus: "",
       },
-      // 預設後端回傳正確訊息
-      backendReturnStatus: true,
     };
   },
   watch: {
@@ -68,8 +67,9 @@ export default {
     },
   },
   methods: {
-    handleFormSubmit() {
+    async handleFormSubmit() {
       if (this.description.trim().length == 0) {
+        console.log("trim test");
         this.formValidation.tweet.error = true;
         this.formValidation.tweet.message = "推文不能為空白";
         this.description = "";
@@ -77,19 +77,32 @@ export default {
       if (this.formValidation.tweet.error) {
         return;
       }
-      console.log("推特內容送出：", this.description);
 
-      if (!this.backendReturnStatus) {
-        this.sendToastMessage("error");
-      } else {
-        this.sendToastMessage("success");
+      try {
+        const description = { description: this.description };
+        const { data } = await tweetsAPI.createTweet({ description });
+
+        if (!data.status) {
+          this.sendToastMessage("error");
+        } else {
+          this.sendToastMessage("success");
+        }
+        console.log("推特內容送出：", this.description);
+        this.description = "";
+        this.$emit("after-submit-tweet-form");
+      } catch (error) {
+        console.log(error);
       }
-      this.description = "";
     },
     sendToastMessage(status) {
       this.ToastMessage.dataStatus = "";
       this.ToastMessage.dataStatus = status;
-      this.ToastMessage.message = "推文發送成功";
+      if (status == "success") {
+        this.ToastMessage.message = "推文發送成功";
+      } else {
+        this.ToastMessage.message = "推文發送失敗";
+      }
+      return;
     },
   },
 };
