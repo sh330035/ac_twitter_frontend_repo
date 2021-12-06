@@ -6,18 +6,18 @@
     novalidate
   >
     <div class="form-row">
-      <label for="email" class="form-row__label"> Email </label>
+      <label for="account" class="form-row__label"> 帳號 </label>
       <input
-        v-model="accountDetail.email"
-        id="email"
+        v-model="accountDetail.account"
+        id="account"
         class="form-row__input"
-        :class="{ invalid: formValidation.email.error }"
-        type="email"
-        name="email"
+        :class="{ invalid: formValidation.account.error }"
+        type="text"
+        name="account"
         required
       />
-      <div v-if="formValidation.email.error" class="form-row__error-message">
-        {{ formValidation.email.message }}
+      <div v-if="formValidation.account.error" class="form-row__error-message">
+        {{ formValidation.account.message }}
       </div>
     </div>
     <div class="form-row">
@@ -53,12 +53,12 @@ export default {
   data() {
     return {
       accountDetail: {
-        email: "",
+        account: "",
         password: "",
         role: "user",
       },
       formValidation: {
-        email: {
+        account: {
           error: false,
           message: "",
         },
@@ -77,31 +77,22 @@ export default {
         this.formValidation[name].error = false;
         this.formValidation[name].message = "";
       });
-      // form validation of email
-      if (this.accountDetail.email.trim().length === 0) {
-        this.formValidation.email.error = true;
-        this.formValidation.email.message = "請填入信箱";
-        return;
-      } else if (
-        !this.accountDetail.email.includes("@") ||
-        !this.accountDetail.email.includes(".com")
-      ) {
-        this.formValidation.email.error = true;
-        12313;
-        this.formValidation.email.message = "請填入正確的信箱格式";
+
+      // form validation of account
+      if (this.accountDetail.account.trim().length === 0) {
+        this.formValidation.account.error = true;
+        this.formValidation.account.message = "請填入帳號";
         return;
       }
+
       // form validation of password
       if (this.accountDetail.password.trim().length === 0) {
         this.formValidation.password.error = true;
         this.formValidation.password.message = "請填入密碼";
         return;
       }
-
       // formSubmit
       this.$emit("after-form-submit", this.accountDetail);
-      // 因為資料有拆到form裡，不好從catch error控制，設定成每次發送都刪除密碼
-      this.accountDetail.password = "";
     },
   },
 };
