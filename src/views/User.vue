@@ -4,12 +4,13 @@
       <page-name-banner :user="user" />
       <profile-card :initial-user="user" @after-toggle-notification="afterToggleNotification" @after-toggle-isFollowed="afterToggleIsFollowed" @show-setting-form="afterShowSettingForm" />
       <feeds-nav-pills />
-      <user-feed-list :initial-user="user" :current-feeds="currentFeeds" :initial-feeds="feeds" @after-toggle-like="afterToggleLike"/>
+      <user-feed-list :initial-user="user" :current-feeds="currentFeeds" :initial-feeds="feeds" @after-toggle-like="afterToggleLike" @after-show-reply-modal="afterShowReplyModal" />
       <profile-edit-modal v-show="showSettingForm" :initial-user="user" @close-setting-form="afterCloseSettingForm" @after-profile-form-submit="afterProfileFormSubmit" />
     </section>
     <section class="right-card">
       <popular-users-card />
     </section>
+    <reply-modal v-show="replyModal.isShow" :reply-tweet="replyModal.replyTweet" @after-comment-checkout="afterCommentCheckout" />
   </div>
 </template>
 
@@ -20,6 +21,7 @@ import FeedsNavPills from '../components/FeedsNavPills.vue'
 import UserFeedList from '../components/UserFeedList.vue'
 import ProfileEditModal from '../components/ProfileEditModal.vue'
 import PopularUsersCard from "../components/PopularUsersCard.vue"
+import ReplyModal from '../components/ReplyModel.vue'
 import { mapState } from "vuex"
 
 const dummyData = {
@@ -38,8 +40,8 @@ const dummyData = {
     followerCount: 137,
     followingCount: 12345,
     tweetsCount: 189,
-    isCurrentUser: true,
-    isFollowed: true,
+    isCurrentUser: false,
+    isFollowed: false,
     isNoticed: true,
     Tweets: [
       {
@@ -285,13 +287,18 @@ export default {
     UserFeedList,
     ProfileEditModal,
     PopularUsersCard,
+    ReplyModal
   },
   data() {
     return {
       user: {},
       currentFeeds: 'tweets',
       feeds: [],
-      showSettingForm: false
+      showSettingForm: false,
+      replyModal: {
+        isShow: false,
+        replyTweet: {}
+      }
     }
   },
   beforeRouteUpdate(to, from, next) {
@@ -400,6 +407,14 @@ export default {
       console.log('submit profile form', data)
       // TODO : 串接 API
       this.showSettingForm = false
+    },
+    afterShowReplyModal (tweetId) {
+      this.replyModal.isShow = true 
+      this.replyModal.replyTweet = this.feeds.find(tweet => tweet.id === tweetId)
+    },
+    afterCommentCheckout () {
+      this.replyModal.isShow = false
+      this.replyModal.replyTweet = {}
     }
   },
   created() {

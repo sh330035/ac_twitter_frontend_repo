@@ -1,0 +1,15 @@
+// Syntax: @extend %placeholder-name ;
+
+%avatar-hover-effect {
+  &:hover {
+    filter: brightness(92%);
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+%tweet-block-hover-effect {
+  &:hover {
+      background-color: $twitter-hover-bg;
+      transition: all 0.2s ease-in-out;
+    }
+}
