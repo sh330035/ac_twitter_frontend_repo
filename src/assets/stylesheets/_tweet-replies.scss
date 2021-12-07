@@ -2,6 +2,7 @@
   padding: 15px;
   border-bottom: 1px solid $border-gray;
   text-align: left;
+  cursor: default;
   &__author {
     height: 80px;
     width: 100%;
@@ -90,6 +91,7 @@
   .reply {
     position: relative;
     border-bottom: 1px solid $border-gray;
+    padding: 15px;
     display: flex;
     cursor: default;
     &__avatar{
