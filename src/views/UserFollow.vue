@@ -5,8 +5,8 @@
       <FollowsNavPills />
       <FollowList
         :follows="follows"
-        @after-add-follow="afterAddFollow"
-        @after-delete-follow="afterDeleteFollow"
+        @after-add-follow="addFollowing"
+        @after-delete-follow="deleteFollowing"
       />
     </section>
     <section class="right-card">
@@ -96,11 +96,16 @@ export default {
         console.log(error);
       }
     },
-
-    // 無法成功
-    async afterAddFollow(userId) {
+    async addFollowing(userId) {
       try {
-        const { data } = await userAPI.addFollowing({ id: userId });
+        console.log("userId", userId);
+        const id = { id: userId };
+
+        if (this.currentUser.id == userId) {
+          throw new Error("無法自己追蹤自己");
+        }
+
+        const { data } = await userAPI.addFollowing({ id });
 
         if (data.status !== "success") {
           throw new Error(data.message);
@@ -120,9 +125,10 @@ export default {
         });
       } catch (error) {
         console.log(error);
+        console.log("add error");
       }
     },
-    async afterDeleteFollow(userId) {
+    async deleteFollowing(userId) {
       try {
         const { data } = await userAPI.deleteFollowing({ userId });
 
