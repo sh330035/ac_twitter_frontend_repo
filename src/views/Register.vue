@@ -40,6 +40,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         } else {
+          this.ToastMessage.dataStatus = "";
           this.ToastMessage.dataStatus = "success"
           this.ToastMessage.message = `${data.message}`
           setTimeout(() => {
@@ -47,6 +48,7 @@ export default {
           }, 1200)
         }
       } catch (error) {
+        this.ToastMessage.dataStatus = "";
         this.ToastMessage.dataStatus = "error"
         this.ToastMessage.message = `${error}`
       }

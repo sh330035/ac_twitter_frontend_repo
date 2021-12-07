@@ -28,7 +28,7 @@
       <popular-users-card />
     </section>
     <reply-modal
-      v-show="replyModal.isShow"
+      v-if="replyModal.isShow"
       :reply-tweet="replyModal.replyTweet"
       @after-comment-checkout="afterCommentCheckout"
     />
@@ -128,6 +128,7 @@ export default {
       } catch (error) {
         console.log(error)
         this.ToastMessage.message = `無法取得使用者資料，請稍後再試`
+        this.ToastMessage.dataStatus = "";
         this.ToastMessage.dataStatus = 'error'
       }
     },
@@ -147,6 +148,7 @@ export default {
         } catch (error) {
           console.log(error)
           this.ToastMessage.message = `無法取得推文資料，請稍後再試`
+          this.ToastMessage.dataStatus = "";
           this.ToastMessage.dataStatus = 'error'
         }
         // 取得使用者回文紀錄
@@ -161,6 +163,7 @@ export default {
           })
         } catch (error) {
           console.log(error)
+          this.ToastMessage.dataStatus = "";
           this.ToastMessage.message = `無法取得推文與回覆資料，請稍後再試`
           this.ToastMessage.dataStatus = 'error'
         }
@@ -183,6 +186,7 @@ export default {
           })
         } catch (error) {
           console.log(error)
+          this.ToastMessage.dataStatus = "";
           this.ToastMessage.message = `無法取得喜愛的內容，請稍後再試`
           this.ToastMessage.dataStatus = 'error'
         }
@@ -226,6 +230,7 @@ export default {
             return {
               ...feed,
               isLiked: status,
+              LikeCount: status ? feed.LikeCount + 1 : feed.LikeCount - 1
             }
           } else {
             return feed
@@ -233,10 +238,10 @@ export default {
         })
       } catch (error) {
         console.log(error)
+        this.ToastMessage.dataStatus = "";
         this.ToastMessage.message = `無法更新最愛，請稍後再試`
         this.ToastMessage.dataStatus = 'error'
       }
-
     },
     afterShowSettingForm() {
       this.showSettingForm = true
@@ -252,6 +257,7 @@ export default {
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
+        this.ToastMessage.dataStatus = "";
         this.ToastMessage.message = '個人資料已成功更新'
         this.ToastMessage.dataStatus = 'success'
         this.showSettingForm = false
@@ -259,15 +265,16 @@ export default {
         this.fetchUserData(userId)
       } catch (error) {
         console.log('error:', error)
+        this.ToastMessage.dataStatus = "";
         this.ToastMessage.message = `無法更新個人資料，請稍後再試`
         this.ToastMessage.dataStatus = 'error'
       }
     },
     afterShowReplyModal(tweetId) {
       this.replyModal.isShow = true
-      this.replyModal.replyTweet = this.feeds.find(
-        (tweet) => tweet.id === tweetId
-      )
+      const replyTweet = this.feeds.find((tweet) => tweet.TweetId === tweetId )
+      const { User, createdAt, description } = replyTweet
+      this.replyModal.replyTweet = { id: tweetId, name: User.name, account: User.account, createdAt, avatar: User.avatar, description } 
     },
     afterCommentCheckout() {
       this.replyModal.isShow = false

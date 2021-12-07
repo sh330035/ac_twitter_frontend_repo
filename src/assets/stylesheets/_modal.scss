@@ -184,7 +184,8 @@
 .line {
   display: block;
   position: absolute;
-  height: 30%;
+  top: 73px;
+  bottom: 20px;
   width: 2px;
   transform: translate(24px, 8px);
   background-color: $reply-modal-line;

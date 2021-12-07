@@ -74,7 +74,6 @@ export default {
   methods: {
     updateTweetData() {
       const { id, UserId: userId,account, name, avatar, description, createdAt, replyCount, likeCount, isLike } = this.initialTweet
-
       this.tweet = {
         ...this.tweet,
         id, userId,account, name, avatar, description, createdAt, replyCount, likeCount, isLike,

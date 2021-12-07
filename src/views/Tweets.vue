@@ -3,7 +3,6 @@
     <section class="center-view">
       <ReplyModal
         v-if="isReplyModalShow"
-        @after-comment-send="afterCommentSend"
         @after-comment-checkout="afterCommentCheckout"
         :replyTweet="replyTweet"
       />
@@ -101,13 +100,10 @@ export default {
     },
     // reply Modal 控制區
     afterLaunchReplyModal(tweetId) {
-      console.log(tweetId);
-      this.replyTweet = this.tweets.find((tweet) => tweet.id == tweetId);
-      console.log(this.replyTweet);
+      const replyTweet =  this.tweets.find((tweet) => tweet.id == tweetId);
+      const { User, createdAt, description } = replyTweet
+      this.replyTweet = { id: tweetId, name: User.name, account: User.account, createdAt, avatar: User.avatar, description } 
       this.isReplyModalShow = true;
-    },
-    afterCommentSend(comment) {
-      console.log("回覆內容送出：123", comment);
     },
     afterCommentCheckout() {
       this.isReplyModalShow = false;
