@@ -16,8 +16,8 @@ export default {
     return apiHelper.get(`/tweets/${tweetId}`)
   },
   // 發布給特定推文的回文
-  createTweetReply ({ tweetId , description }) {
-    return apiHelper.post(`/tweets/${tweetId}/replies`, { description })
+  createTweetReply ({ tweetId , comment }) {
+    return apiHelper.post(`/tweets/${tweetId}/replies`, { comment })
   },
   // 取得給特定推文的所有回文
   getTweetReplies ({ tweetId }) {

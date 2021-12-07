@@ -21,7 +21,7 @@
               ><a href="">
                 <img
                   @click.prevent.stop="checkoutHandler"
-                  src="https://randomuser.me/api/portraits/women/81.jpg"
+                  :src="replyTweet.avatar"
                   alt=""
                   class="reply-modal__tweet__image avatar-50"
               /></a>
@@ -30,12 +30,12 @@
             <div class="reply-modal__tweet__container d-flex-col">
               <div class="reply-modal__tweet__user">
                 <h2 class="reply-modal__tweet__user__name user-name-text">
-                  apple
+                  {{ replyTweet.name }}
                 </h2>
                 <span
                   class="reply-modal__tweet__user__account user-account-text"
-                  >{{ "apple" | accountTag }}・{{
-                    replyTweet.updatedAt | fromNow
+                  >{{ replyTweet.account | accountTag }}・{{
+                    replyTweet.createdAt | fromNow
                   }}</span
                 >
               </div>
@@ -47,7 +47,7 @@
               <div class="reply-modal__tweet__accout">
                 <p class="reply-account-13">
                   回覆給
-                  <span class="ac-orange">{{ "apple" | accountTag }}</span>
+                  <span class="ac-orange">{{ replyTweet.account | accountTag }}</span>
                 </p>
               </div>
             </div>
@@ -86,14 +86,21 @@
         </div>
       </form>
     </div>
+    <Toast :ToastMessage="ToastMessage" />
   </div>
 </template>
 
 <script>
-import { fromNowFilter, accountFilter } from "../utils/mixins.js";
+import { fromNowFilter, accountFilter } from "../utils/mixins.js"
+import tweetsAPI from '../api/tweets'
+import Toast from "../components/AlertToast.vue"
+import { mapState } from 'vuex'
 
 export default {
   name: "reply-modal",
+  components: {
+    Toast
+  },
   props: {
     replyTweet: {
       type: Object,
@@ -103,6 +110,14 @@ export default {
   mixins: [fromNowFilter, accountFilter],
   data() {
     return {
+      // tweet: {
+      //   id: -1,
+      //   name: '',
+      //   account: '',
+      //   createdAt: '',
+      //   avatar: '',
+      //   description: ''
+      // },
       comment: "",
       formValidation: {
         comment: {
@@ -111,39 +126,60 @@ export default {
           message: "",
         },
       },
-    };
+      ToastMessage: {
+        message: "",
+        dataStatus: "",
+      },
+    }
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   watch: {
     comment: function () {
       if (this.comment.length > this.formValidation.comment.lengthLimit) {
-        this.formValidation.comment.error = true;
-        this.formValidation.comment.message = "字數不可超過 140 字";
+        this.formValidation.comment.error = true
+        this.formValidation.comment.message = "字數不可超過 140 字"
       } else if (this.comment.length == 0) {
-        this.formValidation.comment.error = true;
-        this.formValidation.comment.message = "推文不能為空白";
+        this.formValidation.comment.error = true
+        this.formValidation.comment.message = "推文不能為空白"
       } else {
-        this.formValidation.comment.error = false;
+        this.formValidation.comment.error = false
       }
     },
   },
   methods: {
-    handleFormSubmit() {
-      if (this.comment.length == 0) {
-        this.formValidation.comment.error = true;
-        this.formValidation.comment.message = "推文不能為空白";
+    async handleFormSubmit() {
+      try {
+        if (this.comment.length == 0) {
+          this.formValidation.comment.error = true
+          this.formValidation.comment.message = "推文不能為空白"
+        }
+        if (this.formValidation.comment.error) {
+          return
+        }
+        // this.$emit("after-comment-send", this.comment)
+        const {data} = await tweetsAPI.createTweetReply({ tweetId: this.replyTweet.id, comment: this.comment })
+        console.log(data)
+        if (data.status !== "success") {
+          throw new Error(data.message)
+        }
+        this.ToastMessage.dataStatus = "";
+        this.ToastMessage.dataStatus = "success"
+        this.ToastMessage.message = `回文已成功送出`
+        setTimeout(() => {
+            this.checkoutHandler()
+            this.comment = ""
+          }, 1000)
+      } catch (error) {
+        console.log(error)
+        this.ToastMessage.dataStatus = "error"
+        this.ToastMessage.message = '推文失敗，請稍後再試'
       }
-      if (this.formValidation.comment.error) {
-        return;
-      }
-      console.log("回覆內容送出：", this.comment);
-
-      this.$emit("after-comment-send", this.comment);
-      this.checkoutHandler();
-      this.comment = ""
     },
     checkoutHandler() {
       console.log('click')
-      this.$emit("after-comment-checkout");
+      this.$emit("after-comment-checkout")
     },
 
   },
