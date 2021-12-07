@@ -29,14 +29,16 @@
         <div class="popular__card__user__button">
           <button
             class="btn-follow"
-            v-if="!popularUser.isFollowed"
+            v-if="!popularUser.isFollowed && currentUser.id != popularUser.id"
             @click.prevent.stop="addFollowing(popularUser.id)"
           >
             跟隨
           </button>
           <button
             class="btn-following"
-            v-else
+            v-else-if="
+              popularUser.isFollowed && currentUser.id != popularUser.id
+            "
             @click.prevent.stop="deleteFollowing(popularUser.id)"
           >
             正在跟隨
@@ -50,6 +52,7 @@
 <script>
 import { accountFilter } from "../utils/mixins.js";
 import popularUsersAPI from "../api/users";
+import { mapState } from "vuex";
 
 export default {
   name: "popular-user",
@@ -62,6 +65,9 @@ export default {
   created() {
     this.fetchPopularUsers();
   },
+  computed: {
+    ...mapState(["currentUser"]),
+  },
   methods: {
     async fetchPopularUsers() {
       try {
@@ -72,10 +78,15 @@ export default {
         console.log(error);
       }
     },
-    // 無法成功
     async addFollowing(userId) {
       try {
-        const { data } = await popularUsersAPI.addFollowing({ id: userId });
+        const id = { id: userId };
+
+        if (this.currentUser.id == userId) {
+          throw new Error("無法自己追蹤自己");
+        }
+
+        const { data } = await popularUsersAPI.addFollowing({ id });
 
         if (data.status !== "success") {
           throw new Error(data.message);
@@ -95,6 +106,7 @@ export default {
         });
       } catch (error) {
         console.log(error);
+        console.log("add error");
       }
     },
     async deleteFollowing(userId) {

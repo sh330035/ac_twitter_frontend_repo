@@ -30,14 +30,14 @@
       <div class="follow__list__button">
         <button
           class="btn-follow"
-          v-if="!follow.isFollowed"
+          v-if="!follow.isFollowed && currentUser.id != follow.id"
           @click.prevent.stop="addFollowhandler(follow.id)"
         >
           跟隨
         </button>
         <button
           class="btn-following"
-          v-else
+          v-else-if="follow.isFollowed && currentUser.id != follow.id"
           @click.prevent.stop="deleteFollowhandler(follow.id)"
         >
           正在跟隨
@@ -49,6 +49,7 @@
 
 <script>
 import { fromNowFilter, accountFilter } from "../utils/mixins.js";
+import { mapState } from "vuex";
 
 export default {
   name: "follow-list",
@@ -57,6 +58,9 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  computed: {
+    ...mapState(["currentUser"]),
   },
   mixins: [fromNowFilter, accountFilter],
   methods: {
