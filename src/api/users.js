@@ -81,5 +81,15 @@ export default {
     return apiHelper.post(`/tweets/${tweetId}/unlike`, null, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
+  },
+  updateUserProfile({ userId, formData }) {
+    return apiHelper.put(`/users/${userId}`, formData, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
+  updateUserSetting({ userId, formData }) {
+    return apiHelper.put(`/users/${userId}/setting`, formData, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
   }
 }

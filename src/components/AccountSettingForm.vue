@@ -91,7 +91,7 @@
         {{ formValidation.checkPassword.message }}
       </div>
     </div>
-    <button type="submit" class="account-setting-form__submit-btn btn">
+    <button :disabled="isProcessing" type="submit" class="account-setting-form__submit-btn btn">
       {{ initialAccountDetail ? '儲存' : '註冊'}}
     </button>
   </form>
@@ -104,6 +104,10 @@ export default {
     initialAccountDetail: {
       type: Object,
     },
+    isProcessing: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
