@@ -21,7 +21,7 @@
           回覆
           <router-link :to="{name: 'user', params: {id: tweet.UserId}}" class="reply__detail__reply-to__account">{{ tweet.name | accountTag }}</router-link >
         </div>
-        <div class="reply__detail__comment">{{ reply.comment }}...</div>
+        <div class="reply__detail__comment">{{ reply.comment }}</div>
       </div>
     </div>
     <!-- V-for End -->

@@ -32,9 +32,7 @@ export const accountFilter = {
 export const numberFilterEng = {
   filters: {
     numberFormatEng(number) {
-      if (!number) {
-        return
-      } else if (number >= 1000000000) {
+      if (number >= 1000000000) {
         const shortValue = number / 1000000000
         const isTensDigit = shortValue / 10 >= 1
         return isTensDigit ? shortValue.toFixed(0) + 'G' : shortValue.toFixed(1) + 'G'
@@ -59,9 +57,7 @@ export const numberFilterEng = {
 export const numberFilterTC = {
   filters: {
     numberFormatTC(number) {
-      if (!number) {
-        return
-      } else if (number >= 100000000) {
+      if (number >= 100000000) {
         const shortValue = number / 100000000
         const isTensDigit = shortValue / 10 >= 1
         return isTensDigit ? shortValue.toFixed(0) + '億' : shortValue.toFixed(1) + '億'
