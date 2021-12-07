@@ -1,6 +1,5 @@
 <template>
   <div class="test-page">
-    <!-- 測試頁面，確認字體有拉到 SCSS 的樣式 -->
     <section class="center-view">
       <PageNameBanner :user="user" />
       <FollowsNavPills />

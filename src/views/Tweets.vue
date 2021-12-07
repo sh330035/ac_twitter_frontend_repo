@@ -8,7 +8,7 @@
         :replyTweet="replyTweet"
       />
       <PageNameBanner :banner-title="bannerTitle" />
-      <NewTweetForm />
+      <NewTweetForm @after-submit-tweet-form="afterSumbitTweetForm" />
       <NewestFeedList
         v-for="tweet in tweets"
         :key="tweet.id"
@@ -111,6 +111,10 @@ export default {
     },
     afterCommentCheckout() {
       this.isReplyModalShow = false;
+    },
+    // 發文後刷新畫面
+    afterSumbitTweetForm() {
+      this.fetchTweetsData();
     },
   },
 };
