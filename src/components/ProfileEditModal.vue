@@ -235,8 +235,7 @@ export default {
       }
     },
     handleFormSubmit() {
-      this.$emit("after-profile-form-submit", "profile data");
-      this.updateUserProfile();
+      this.$emit("after-profile-form-submit", this.user);
     },
   },
 };
