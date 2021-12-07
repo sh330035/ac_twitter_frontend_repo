@@ -2,7 +2,7 @@
   <div class="user-feed-list">
     <!-- v-for Start -->
     <router-link
-      :to="{ name: 'tweet-replies', params: { id: feed.TweetId } }"
+      :to="{ name: 'tweet-replies', params: { id: feed.keyId } }"
       v-for="feed in feeds"
       :key="feed.TweetId"
       class="feed"

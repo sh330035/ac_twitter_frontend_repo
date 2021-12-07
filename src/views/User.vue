@@ -17,7 +17,7 @@
         @after-show-reply-modal="afterShowReplyModal"
       />
       <profile-edit-modal
-        v-show="showSettingForm"
+        v-if="showSettingForm"
         :initial-user="user"
         :is-processing="isProcessing"
         @close-setting-form="afterCloseSettingForm"
@@ -137,7 +137,12 @@ export default {
         try {
           const { data } = await usersAPI.getUserTweets({ userId })
           // console.log(`tweets list of user-${userId}`, data)
-          this.feeds = data
+
+          this.feeds = data.map(feed => {
+            const { TweetId, User, description, createdAt, isLiked, ReplyCount, LikeCount } = feed
+            return { keyId: TweetId, TweetId, User, description, createdAt, isLiked, ReplyCount, LikeCount }
+          })
+
         } catch (error) {
           console.log(error)
           this.ToastMessage.message = `無法取得推文資料，請稍後再試`
@@ -147,11 +152,11 @@ export default {
       } else if (feedsType === "reply") {
         try {
           const { data } = await usersAPI.getUserReply({ userId })
-          // console.log(`replies of user-${userId}`, data)
+          console.log(`replies of user-${userId}`, data)
           this.feeds = data.map(reply => {
-            const { TweetId, User, comment: description, createdAt } = reply
+            const { id, TweetId, User, comment: description, createdAt } = reply
             return {
-              TweetId, User, description, createdAt
+              keyId: id, TweetId, User, description, createdAt
             }
           })
         } catch (error) {
@@ -162,10 +167,11 @@ export default {
       } else if (feedsType === "like") {
         try {
           const { data } = await usersAPI.getUserLike({ userId })
-          console.log(`Like tweets of user-${userId}`, data)
+          // console.log(`Like tweets of user-${userId}`, data)
           this.feeds = data.map(likeFeed => {
-            const { TweetId, User, Tweet, createdAt } = likeFeed
+            const { TweetId, User, Tweet, createdAt, LikeId } = likeFeed
             return {
+              keyId: LikeId,
               TweetId,
               User,
               createdAt,
@@ -203,34 +209,34 @@ export default {
       try {
         if (status) {
           // put isLike via API-addLike
-          const {data} = await usersAPI.addLike({ tweetId: feedId })
+          const { data } = await usersAPI.addLike({ tweetId: feedId })
           if (data.status !== 'success') {
             throw new Error(data.message)
           }
         } else {
           // delete isLike via API-deleteLike
-          const {data} = await usersAPI.deleteLike({ tweetId: feedId })
+          const { data } = await usersAPI.deleteLike({ tweetId: feedId })
           if (data.status !== 'success') {
             throw new Error(data.message)
           }
         }
         // toggle the like-icon 
         this.feeds = this.feeds.map(feed => {
-        if (feed.TweetId === feedId) {
-          return {
-            ...feed,
-            isLiked: status,
+          if (feed.TweetId === feedId) {
+            return {
+              ...feed,
+              isLiked: status,
+            }
+          } else {
+            return feed
           }
-        } else {
-          return feed
-        }
-      })
+        })
       } catch (error) {
         console.log(error)
         this.ToastMessage.message = `無法更新最愛，請稍後再試`
         this.ToastMessage.dataStatus = 'error'
       }
-      
+
     },
     afterShowSettingForm() {
       this.showSettingForm = true
