@@ -49,8 +49,8 @@ export default {
   },
   // follow button api
   // 須研究如何不用 userId 啟動
-  addFollowing() {
-    return apiHelper.post(`/followships`, null, {
+  addFollowing({ id }) {
+    return apiHelper.post(`/followships`, id, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
