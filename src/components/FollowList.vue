@@ -1,45 +1,44 @@
 <template>
   <div class="follow">
-    <div class="follow__list d-flex">
+    <div class="follow__list d-flex" v-for="follow in follows" :key="follow.id">
       <span>
         <img
-          src="https://randomuser.me/api/portraits/women/81.jpg"
+          :src="follow.avatar"
           alt=""
           class="follow__list__image avatar-50"
-          @click.prevent.stop="toUserPage(1)"
+          @click.prevent.stop="toUserPage(follow.id)"
         />
       </span>
       <div class="follow__list__container d-flex-col">
         <div class="follow__list__user">
           <h2
             class="follow__list__user__name user-name-text"
-            @click.prevent.stop="toUserPage(1)"
+            @click.prevent.stop="toUserPage(follow.id)"
           >
-            apple
+            {{ follow.name }}
           </h2>
           <span class="follow__list__user__account user-account-text">{{
-            "apple" | accountTag
+            follow.account | accountTag
           }}</span>
         </div>
         <div class="follow__list__descriptoion">
           <p class="description-15">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium
-            olestias dolor quisquam aspernatur quod Lorem ipsum dolor sit
+            {{ follow.introduction }}
           </p>
         </div>
       </div>
       <div class="follow__list__button">
         <button
           class="btn-follow"
-          v-if="!Follower.isFollowed"
-          @click.prevent.stop="addFollowing(Follower.id)"
+          v-if="!follow.isFollowed"
+          @click.prevent.stop="addFollowhandler(follow.id)"
         >
           跟隨
         </button>
         <button
           class="btn-following"
           v-else
-          @click.prevent.stop="deleteFollowing(Follower.id)"
+          @click.prevent.stop="deleteFollowhandler(follow.id)"
         >
           正在跟隨
         </button>
@@ -53,25 +52,22 @@ import { fromNowFilter, accountFilter } from "../utils/mixins.js";
 
 export default {
   name: "follow-list",
-  props: {},
-  // 假的資料，之後要用prop傳
-  data() {
-    return {
-      Follower: { id: 1, isFollowed: false },
-    };
+  props: {
+    follows: {
+      type: Array,
+      required: true,
+    },
   },
   mixins: [fromNowFilter, accountFilter],
   methods: {
     toUserPage(userId) {
       this.$router.push({ name: "user", params: { id: userId } });
     },
-    addFollowing(userId) {
-      console.log(userId);
-      this.Follower.isFollowed = true;
+    addFollowhandler(userId) {
+      this.$emit("after-add-follow", userId);
     },
-    deleteFollowing(userId) {
-      console.log(userId);
-      this.Follower.isFollowed = false;
+    deleteFollowhandler(userId) {
+      this.$emit("after-delete-follow", userId);
     },
   },
 };
