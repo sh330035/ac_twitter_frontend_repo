@@ -110,8 +110,11 @@ export default {
     this.updateUserData();
   },
   watch: {
-    "initialUser.id": function () {
-      this.updateUserData();
+    initialUser: {
+      handler: function(){
+        this.updateUserData()
+      },
+      deep: true
     },
   },
   methods: {

@@ -78,8 +78,10 @@ export default {
     }
   },
   beforeRouteUpdate(to, from, next) {
+    const userId = to.params.id
     const feedsType = to.query.feeds ? to.query.feeds : "tweets"
     this.currentFeeds = feedsType
+    this.fetchUserData(userId)
     this.fetchFeedsData(feedsType)
     next()
   },
@@ -91,7 +93,6 @@ export default {
         if (data.name.length === 0) {
           throw new Error('無法取得使用者資料')
         }
-
         const {
           id,
           account,
@@ -152,7 +153,6 @@ export default {
       } else if (feedsType === "reply") {
         try {
           const { data } = await usersAPI.getUserReply({ userId })
-          console.log(`replies of user-${userId}`, data)
           this.feeds = data.map(reply => {
             const { id, TweetId, User, comment: description, createdAt } = reply
             return {
@@ -244,12 +244,24 @@ export default {
     afterCloseSettingForm() {
       this.showSettingForm = false
     },
-    afterProfileFormSubmit(data) {
-      this.isProcessing = true
-      console.log("submit profile form", data)
-      // TODO : 串接 API
-      this.showSettingForm = false
-      this.isProcessing = false
+    async afterProfileFormSubmit(formData) {
+      try {
+        const userId = this.user.id
+        this.isProcessing = true
+        const { data } = await usersAPI.updateUserProfile({ userId, formData })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.ToastMessage.message = '個人資料已成功更新'
+        this.ToastMessage.dataStatus = 'success'
+        this.showSettingForm = false
+        this.isProcessing = false
+        this.fetchUserData(userId)
+      } catch (error) {
+        console.log('error:', error)
+        this.ToastMessage.message = `無法更新個人資料，請稍後再試`
+        this.ToastMessage.dataStatus = 'error'
+      }
     },
     afterShowReplyModal(tweetId) {
       this.replyModal.isShow = true
