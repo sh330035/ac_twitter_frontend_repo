@@ -74,21 +74,21 @@
       </div>
     </div>
     <div class="form-row">
-      <label for="passwordCheck" class="form-row__label"> 密碼確認 </label>
+      <label for="checkPassword" class="form-row__label"> 密碼確認 </label>
       <input
-        v-model="accountDetail.passwordCheck"
-        id="passwordCheck"
+        v-model="accountDetail.checkPassword"
+        id="checkPassword"
         class="form-row__input"
-        :class="{ invalid: formValidation.passwordCheck.error }"
+        :class="{ invalid: formValidation.checkPassword.error }"
         type="password"
-        name="passwordCheck"
+        name="checkPassword"
         required
       />
       <div
-        v-if="formValidation.passwordCheck.error"
+        v-if="formValidation.checkPassword.error"
         class="form-row__error-message"
       >
-        {{ formValidation.passwordCheck.message }}
+        {{ formValidation.checkPassword.message }}
       </div>
     </div>
     <button type="submit" class="account-setting-form__submit-btn btn">
@@ -112,7 +112,7 @@ export default {
         name: "",
         email: "",
         password: "",
-        passwordCheck: "",
+        checkPassword: "",
         role: "user",
       },
       formValidation: {
@@ -133,7 +133,7 @@ export default {
           error: false,
           message: "",
         },
-        passwordCheck: {
+        checkPassword: {
           error: false,
           message: "",
         },
@@ -204,16 +204,16 @@ export default {
         this.formValidation.password.message = "請填入密碼";
         return;
       }
-      if (this.accountDetail.passwordCheck.trim().length === 0) {
-        this.formValidation.passwordCheck.error = true;
-        this.formValidation.passwordCheck.message = "請再次填入密碼已進行確認";
+      if (this.accountDetail.checkPassword.trim().length === 0) {
+        this.formValidation.checkPassword.error = true;
+        this.formValidation.checkPassword.message = "請再次填入密碼已進行確認";
         return;
       } else if (
-        this.accountDetail.password !== this.accountDetail.passwordCheck
+        this.accountDetail.password !== this.accountDetail.checkPassword
       ) {
-        this.formValidation.passwordCheck.error = true;
-        this.formValidation.passwordCheck.message = "密碼不相符，請重新確認";
-        this.accountDetail.passwordCheck = "";
+        this.formValidation.checkPassword.error = true;
+        this.formValidation.checkPassword.message = "密碼不相符，請重新確認";
+        this.accountDetail.checkPassword = "";
         return;
       }
       // formSubmit
