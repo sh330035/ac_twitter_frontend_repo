@@ -2,10 +2,10 @@
   <div class="test-page">
     <!-- 測試頁面，確認字體有拉到 SCSS 的樣式 -->
     <section class="center-view">
-      <PageNameBanner :user="currentUser" />
+      <PageNameBanner :user="user" />
       <FollowsNavPills />
       <FollowList
-        :follows="this.follows"
+        :follows="follows"
         @after-add-follow="afterAddFollow"
         @after-delete-follow="afterDeleteFollow"
       />
@@ -21,7 +21,7 @@ import PopularUsersCard from "../components/PopularUsersCard.vue";
 import PageNameBanner from "../components/PageNameBanner.vue";
 import FollowsNavPills from "../components/FollowsNavPills.vue";
 import FollowList from "../components/FollowList.vue";
-import followListAPI from "../api/users";
+import userAPI from "../api/users";
 import { mapState } from "vuex";
 
 export default {
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       user: {
-        id: 8,
+        id: -1,
         account: "",
         name: "",
         tweetsCount: -1,
@@ -50,17 +50,48 @@ export default {
     this.fetchUserFollow(this.user.id, followType);
     next();
   },
+  created() {
+    const { id: userId } = this.$route.params;
+    const { follow = "" } = this.$route.query;
+
+    if (follow) {
+      this.followPageStatus = "following";
+    } else {
+      this.followPageStatus = "followers";
+    }
+    // 須轉成 Number 再傳
+    this.fetchUserFollow(parseInt(userId, 10), this.followPageStatus);
+    this.fetchUsers(parseInt(userId, 10));
+  },
   methods: {
+    // 取得目前頁面之用戶資料
+    async fetchUsers(userId) {
+      try {
+        const { data } = await userAPI.getUser({ userId });
+
+        this.user = {
+          id: data.id,
+          account: data.account,
+          name: data.name,
+          tweetsCount: data.TweetCount,
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async fetchUserFollow(userId, followType) {
+      console.log(userId, followType);
       try {
         if (followType == "following") {
-          const { data } = await followListAPI.getUserFollowings(userId);
+          const { data } = await userAPI.getUserFollowings(userId);
+          this.follows = data;
+          return;
+        } else if (followType == "followers") {
+          const { data } = await userAPI.getUserFollowers(userId);
           this.follows = data;
           return;
         } else {
-          const { data } = await followListAPI.getUserFollowers(userId);
-          this.follows = data;
-          return;
+          throw new Error();
         }
       } catch (error) {
         console.log(error);
@@ -70,7 +101,7 @@ export default {
     // 無法成功
     async afterAddFollow(userId) {
       try {
-        const { data } = await followListAPI.addFollowing({ id: userId });
+        const { data } = await userAPI.addFollowing({ id: userId });
 
         if (data.status !== "success") {
           throw new Error(data.message);
@@ -94,7 +125,7 @@ export default {
     },
     async afterDeleteFollow(userId) {
       try {
-        const { data } = await followListAPI.deleteFollowing({ userId });
+        const { data } = await userAPI.deleteFollowing({ userId });
 
         if (data.status !== "success") {
           throw new Error(data.message);
@@ -117,18 +148,7 @@ export default {
       }
     },
   },
-  created() {
-    const { id: userId } = this.$route.params;
-    const { follow = "" } = this.$route.query;
 
-    if (follow) {
-      this.followPageStatus = "following";
-    } else {
-      this.followPageStatus = "follower";
-    }
-    console.log(userId, follow);
-    this.fetchUserFollow(userId, this.followPageStatus);
-  },
   computed: {
     ...mapState(["currentUser"]),
   },

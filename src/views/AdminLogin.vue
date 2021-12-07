@@ -4,7 +4,10 @@
       <Toast :ToastMessage="ToastMessage" />
       <div class="logo"></div>
       <h2>後台登入</h2>
-      <account-login-form @after-form-submit="afterFormSubmit" />
+      <account-login-form
+        @after-form-submit="afterFormSubmit"
+        :isProcessing="isProcessing"
+      />
       <div class="login__actions">
         <router-link class="link" to="/login">前台登入</router-link>
       </div>
@@ -46,17 +49,18 @@ export default {
           password: accountDetail.password,
         });
 
-        console.log(data);
+        // 檢驗登入成功 & 帳號 role
         if (data.status !== "success") {
           this.sendToastMessage(data.message);
           throw new Error(data.message);
+        } else if (data.user.role !== "admin") {
+          this.sendToastMessage("帳號不存在或密碼錯誤!");
+          throw new Error();
         }
 
         // 將 token 存放在 localStorage 內
         localStorage.setItem("token", data.token);
 
-        console.log(data.status, data.message);
-        console.log("data.user", data.user);
         // 將資料傳到 Vuex 中
         this.$store.commit("setCurrentUser", data.user);
 
