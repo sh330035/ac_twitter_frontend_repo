@@ -2,7 +2,7 @@
   <div id="twitter-app">
     <Navbar v-if="isAuthenticated" />
     <main>
-      <router-view v-if="isRouteAlive" @reload="reload" />
+      <router-view />
     </main>
   </div>
 </template>
@@ -15,18 +15,10 @@ export default {
   name: "App",
   components: { Navbar },
   data() {
-    return {
-      isRouteAlive: true,
-    };
+    return {};
   },
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
-  },
-  methods: {
-    reload() {
-      this.isRouteAlive = false;
-      this.isRouteAlive = true;
-    },
   },
 };
 </script>

@@ -35,6 +35,7 @@ import ReplyModal from "../components/ReplyModel.vue"
 import newestTweetsAPI from "../api/tweets"
 import likeTweetsAPI from "../api/users"
 import Toast from "../components/AlertToast.vue"
+import { mapState } from "vuex"
 
 export default {
   name: "Tweets",
@@ -61,6 +62,17 @@ export default {
   },
   created() {
     this.fetchTweetsData()
+  },
+  computed: {
+    ...mapState(["isRenderTweetList"]),
+  },
+  watch: {
+    isRenderTweetList: {
+      handler: function () {
+        this.fetchTweetsData()
+      },
+      deep: true,
+    },
   },
   methods: {
     async fetchTweetsData() {
