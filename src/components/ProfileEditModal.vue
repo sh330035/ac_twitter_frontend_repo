@@ -2,6 +2,8 @@
   <div class="modal-mask" @click.self.prevent="closeSettingForm">
     <div class="modal-wrapper modal__profile-setting">
       <form
+        enctype="multipart/form-data"
+        novalidate
         @submit.prevent.stop="handleFormSubmit"
         action=""
         class="profile-setting-form"
@@ -14,7 +16,9 @@
           <span class="profile-setting-form__header__title">編輯個人資料</span>
           <button
             :disabled="
-              formValidation.name.error || formValidation.introduction.error || isProcessing
+              formValidation.name.error ||
+              formValidation.introduction.error ||
+              isProcessing
             "
             class="profile-setting-form__header__save-btn btn"
             type="submit"
@@ -146,9 +150,7 @@ export default {
         id: -1,
         name: "",
         avatar: "",
-        avatarFile: '',
         cover: "",
-        coverFile: '',
         introduction: "",
       },
       formValidation: {
@@ -163,21 +165,21 @@ export default {
           message: "",
         },
       },
-    };
+    }
   },
   created() {
-    this.updateUserProfile();
+    this.updateUserProfile()
   },
   watch: {
     initialUser: function () {
-      this.updateUserProfile();
+      this.updateUserProfile()
     },
     "user.name": function () {
       if (this.user.name.length > this.formValidation.name.lengthLimit) {
-        this.formValidation.name.error = true;
-        this.formValidation.name.message = "字數超過限制";
+        this.formValidation.name.error = true
+        this.formValidation.name.message = "字數超過限制"
       } else {
-        this.formValidation.name.error = false;
+        this.formValidation.name.error = false
       }
     },
     "user.introduction": function () {
@@ -185,16 +187,16 @@ export default {
         this.user.introduction.length >
         this.formValidation.introduction.lengthLimit
       ) {
-        this.formValidation.introduction.error = true;
-        this.formValidation.introduction.message = "字數超過限制";
+        this.formValidation.introduction.error = true
+        this.formValidation.introduction.message = "字數超過限制"
       } else {
-        this.formValidation.introduction.error = false;
+        this.formValidation.introduction.error = false
       }
     },
   },
   methods: {
     updateUserProfile() {
-      const { id, name, avatar, cover, introduction } = this.initialUser;
+      const { id, name, avatar, cover, introduction } = this.initialUser
       this.user = {
         ...this.user,
         id,
@@ -202,52 +204,49 @@ export default {
         avatar,
         cover,
         introduction,
-      };
+      }
     },
     closeSettingForm() {
-      // if (event.target.matches('.modal-mask') || event.target.matches('.profile-setting-form__header__close-icon'))
-      this.$emit("close-setting-form");
-      this.updateUserProfile();
+      this.$emit("close-setting-form")
+      this.updateUserProfile()
     },
     handleCoverChange(e) {
-      const { files } = e.target;
-      console.log("cover files", files);
+      const { files } = e.target
       if (files.length === 0) {
-        // 使用者沒有選擇上傳的檔案
-        return;
+        // 使用者沒有選擇上傳的檔案，直接返回
+        return
       } else {
         // 否則產生預覽圖
-        this.user.coverFile = files[0]
-        const imageURL = window.URL.createObjectURL(files[0]);
-        this.user.cover = imageURL;
+        const imageURL = window.URL.createObjectURL(files[0])
+        this.user.cover = imageURL
       }
     },
     deleteCoverImage() {
-      this.user.cover = "";
+      this.user.cover = ""
     },
     handleAvatarChange(e) {
-      const { files } = e.target;
-      console.log("avatar files", files);
+      const { files } = e.target
       if (files.length === 0) {
-        // 使用者沒有選擇上傳的檔案
-        this.user.avatar = "";
+        // 使用者沒有選擇上傳的檔案，直接返回
+        return
       } else {
         // 否則產生預覽圖
-        this.user.avatarFile = files[0]
-        const imageURL = window.URL.createObjectURL(files[0]);
-        this.user.avatar = imageURL;
+        const imageURL = window.URL.createObjectURL(files[0])
+        this.user.avatar = imageURL
       }
     },
     handleFormSubmit() {
-      const filePack = {
-        id: this.user.id ,
-        name: this.user.name,
-        avatar: this.user.avatarFile,
-        cover: this.user.coverFile,
-        introduction: this.user.introduction,
+      const form = event.target
+      const formData = new FormData(form)
+      // for (let [name, value] of formData.entries()) {
+      //   console.log(name + ':' + value)
+      // }
+
+      if (this.user.cover.length === 0) {
+        // 若使用者刪除封面照，則在 cover 欄位回傳與後端約定的 'delete' 刪除照片
+        formData.set('cover','delete')
       }
-      console.log('submit user profile', filePack)
-      this.$emit("after-profile-form-submit", filePack);
+      this.$emit("after-profile-form-submit", formData)
     },
   },
 };

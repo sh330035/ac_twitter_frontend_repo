@@ -49,6 +49,7 @@
     height: 50px;
     width: 50px;
     border-radius: 50px;
+    object-fit: cover;
   }
   .modal-body_new-tweet {
     margin-left: 10px;
@@ -152,6 +153,9 @@
   &__reply {
     margin-top: 5px;
     padding: 0px 15px;
+    &__image {
+      object-fit: cover;
+    }
     &__comment {
       flex-grow: 1;
       margin-left: 10px;

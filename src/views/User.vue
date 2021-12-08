@@ -343,6 +343,7 @@ export default {
         this.ToastMessage.dataStatus = "";
         this.ToastMessage.message = `無法更新個人資料，請稍後再試`;
         this.ToastMessage.dataStatus = "error";
+        this.isProcessing = false;
       }
     },
     afterShowReplyModal(tweetId) {
