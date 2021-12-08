@@ -61,8 +61,8 @@ export default {
   },
   // notice button api
   // 須研究如何不用 userId 啟動
-  addNotice() {
-    return apiHelper.post(`/notice`, null, {
+  addNotice({ id }) {
+    return apiHelper.post(`/notice`, id, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
