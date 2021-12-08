@@ -3,8 +3,8 @@
     <!-- v-for Start -->
     <div v-for="user in users" :key="user.id" class="user-card">
       <div class="user-card__pictures">
-        <img class="user-card__pictures__cover" src="https://loremflickr.com/320/240/city/?random=21" alt="User Cover">
-        <img class="user-card__pictures__avatar" src="https://randomuser.me/api/portraits/women/16.jpg" alt="">
+        <img class="user-card__pictures__cover" :src="user.cover">
+        <img class="user-card__pictures__avatar" :src="user.avatar" alt="">
       </div>
       <div class="user-card__detail">
         <div class="user-card__detail__name">{{ user.name }}</div>

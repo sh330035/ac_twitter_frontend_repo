@@ -7,6 +7,7 @@
       <account-login-form
         @after-form-submit="afterFormSubmit"
         :isProcessing="isProcessing"
+        :clearPasswordInput="clearPasswordInput"
       />
       <div class="login__actions">
         <router-link class="link" to="/register">註冊 Alphitter</router-link>
@@ -30,13 +31,13 @@ export default {
   },
   data() {
     return {
-      // 母層須 props 此物件給 Toast 做為控制參數
       ToastMessage: {
         message: "",
         dataStatus: "",
       },
       // 防止使用者重複點擊
       isProcessing: false,
+      clearPasswordInput: false,
     };
   },
   methods: {
@@ -45,6 +46,7 @@ export default {
         console.log("使用者登入資訊：", accountDetail);
 
         this.isProcessing = true;
+        this.clearPasswordInput = false
 
         const response = await authorizationAPI.signIn({
           account: accountDetail.account,
@@ -73,7 +75,7 @@ export default {
         console.log(error);
 
         this.isProcessing = false;
-
+        this.clearPasswordInput = true
         return;
       }
     },

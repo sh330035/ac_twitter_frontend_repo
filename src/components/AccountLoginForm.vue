@@ -35,7 +35,7 @@
         {{ formValidation.password.message }}
       </div>
     </div>
-    <button type="submit" class="account-setting-form__submit-btn btn">
+    <button type="submit" class="account-setting-form__submit-btn btn" :disabled="isProcessing">
       登入
     </button>
   </form>
@@ -49,6 +49,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    clearPasswordInput: {
+        type: Boolean,
+        default: false
+      },
   },
   data() {
     return {
@@ -68,6 +72,13 @@ export default {
         },
       },
     };
+  },
+  watch: {
+    clearPasswordInput: function () {
+      if (this.clearPasswordInput) {
+        this.clearInput()
+      }
+    }
   },
   methods: {
     handleFormSubmit() {
@@ -94,6 +105,9 @@ export default {
       // formSubmit
       this.$emit("after-form-submit", this.accountDetail);
     },
+    clearInput () {
+      this.accountDetail.password = ''
+    }
   },
 };
 </script>
