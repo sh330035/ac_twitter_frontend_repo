@@ -84,7 +84,10 @@ export default {
   },
   updateUserProfile({ userId, formData }) {
     return apiHelper.put(`/users/${userId}`, formData, {
-      headers: { Authorization: `Bearer ${getToken()}` }
+      headers: {
+        Authorization: `Bearer ${getToken()}`, headers: {
+          'Content-Type': 'multipart/form-data'
+        }}
     })
   },
   updateUserSetting({ userId, formData }) {
