@@ -104,6 +104,7 @@ export default {
       } else {
         this.sendToastMessage("success");
       }
+      this.$emit("reload");
     },
     // 修改 toast message 讓 toast 監看到變化，觸發視窗跳出
     sendToastMessage(status) {
