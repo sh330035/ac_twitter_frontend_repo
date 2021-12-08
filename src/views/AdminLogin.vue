@@ -7,6 +7,7 @@
       <account-login-form
         @after-form-submit="afterFormSubmit"
         :isProcessing="isProcessing"
+        :clearPasswordInput="clearPasswordInput"
       />
       <div class="login__actions">
         <router-link class="link" to="/login">前台登入</router-link>
@@ -36,6 +37,7 @@ export default {
       backendReturnStatus: false,
       // 防止使用者重複點擊
       isProcessing: false,
+      clearPasswordInput: false,
     };
   },
   methods: {
@@ -43,6 +45,8 @@ export default {
       try {
         console.log("後台登入資料送出：", accountDetail);
         this.isProcessing = true;
+        this.clearPasswordInput = false
+        
 
         const { data } = await adminAPI.adminSignIn({
           account: accountDetail.account,
@@ -68,6 +72,7 @@ export default {
       } catch (error) {
         console.log(error);
         this.isProcessing = false;
+        this.clearPasswordInput = true
       }
     },
     // 修改 toast message 讓 toast 監看到變化，觸發視窗跳出

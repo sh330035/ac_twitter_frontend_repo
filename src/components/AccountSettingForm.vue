@@ -91,7 +91,7 @@
         {{ formValidation.checkPassword.message }}
       </div>
     </div>
-    <button :disabled="isProcessing" type="submit" class="account-setting-form__submit-btn btn">
+    <button :disabled="isProcessing || formValidation.name.error" type="submit" class="account-setting-form__submit-btn btn">
       {{ initialAccountDetail ? '儲存' : '註冊'}}
     </button>
   </form>
@@ -107,7 +107,11 @@ export default {
     isProcessing: {
       type: Boolean,
       default: false
-    }
+    },
+    clearPasswordInput: {
+        type: Boolean,
+        default: false
+      },
   },
   data() {
     return {
@@ -161,6 +165,11 @@ export default {
         this.formValidation.name.error = false;
       }
     },
+    clearPasswordInput: function () {
+      if (this.clearPasswordInput) {
+        this.clearInput()
+      }
+    }
   },
   methods: {
     updateAccountDetail() {
@@ -223,6 +232,10 @@ export default {
       // formSubmit
       this.$emit("after-form-submit", this.accountDetail);
     },
+    clearInput () {
+      this.accountDetail.password = ''
+      this.accountDetail.checkPassword = ''
+    }
   },
 };
 </script>

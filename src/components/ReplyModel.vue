@@ -151,9 +151,10 @@ export default {
   methods: {
     async handleFormSubmit() {
       try {
-        if (this.comment.length == 0) {
+        if (this.comment.trim().length == 0) {
           this.formValidation.comment.error = true
           this.formValidation.comment.message = "推文不能為空白"
+          this.comment = ''
         }
         if (this.formValidation.comment.error) {
           return
@@ -171,6 +172,7 @@ export default {
             this.checkoutHandler()
             this.comment = ""
           }, 1000)
+        this.$emit('after-reply-submit')
       } catch (error) {
         console.log(error)
         this.ToastMessage.dataStatus = "error"

@@ -19,6 +19,7 @@
     <reply-model
       v-show="showReplyModal"
       :reply-tweet="tweet"
+      @after-reply-submit="afterReplySubmit"
       @after-comment-checkout="afterCommentCheckout"
     />
     <Toast :ToastMessage="ToastMessage" />
@@ -81,6 +82,10 @@ export default {
     },
     afterCommentCheckout() {
       this.showReplyModal = false
+    },
+    afterReplySubmit() {
+      const tweetId = this.$route.params.id
+      this.fetchTweetData(tweetId)
     },
     async afterAddLike(tweetId){
       try {

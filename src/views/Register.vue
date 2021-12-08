@@ -5,7 +5,7 @@
 
       <div class="logo"></div>
       <h2>建立你的帳號</h2>
-      <account-setting-form @after-form-submit="afterFormSubmit" />
+      <account-setting-form @after-form-submit="afterFormSubmit" :clearPasswordInput="clearPasswordInput" />
       <span class="link" @click="$router.push('/login')">取消</span>
     </div>
   </section>
@@ -28,6 +28,8 @@ export default {
         message: "",
         dataStatus: "",
       },
+      isProcessing: false,
+      clearPasswordInput: false,
       // 預設後端回傳錯誤訊息
       backendReturnStatus: false,
     }
@@ -35,6 +37,8 @@ export default {
   methods: {
     async afterFormSubmit({ account, name, email, password, checkPassword }) {
       try {
+        this.isProcessing = true;
+        this.clearPasswordInput = false
         const { data } = await authorizationAPI.signUp({ account, name, email, password, checkPassword })
         console.log(data)
         if (data.status !== 'success') {
@@ -48,6 +52,8 @@ export default {
           }, 1200)
         }
       } catch (error) {
+        this.isProcessing = false;
+        this.clearPasswordInput = true
         this.ToastMessage.dataStatus = "";
         this.ToastMessage.dataStatus = "error"
         this.ToastMessage.message = `${error}`
