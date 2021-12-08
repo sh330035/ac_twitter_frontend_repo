@@ -1,3 +1,4 @@
+#snackbar__App,
 #snackbar__navbar,
 #snackbar {
   visibility: hidden;
@@ -28,6 +29,7 @@
   height: 56px;
   width: 56px;
 }
+#snackbar__App.show,
 #snackbar__navbar.show,
 #snackbar.show {
   visibility: visible;

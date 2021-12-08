@@ -288,7 +288,7 @@ export default {
         }
         // 修改 vuex 狀態
         this.$store.commit("render");
-        this.$store.commit("renderSwitch");
+        this.$store.commit("render");
       } catch (error) {
         console.log(error);
         this.ToastMessage.dataStatus = "";
