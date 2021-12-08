@@ -47,7 +47,9 @@
               <div class="reply-modal__tweet__accout">
                 <p class="reply-account-13">
                   回覆給
-                  <span class="ac-orange">{{ replyTweet.account | accountTag }}</span>
+                  <span class="ac-orange">{{
+                    replyTweet.account | accountTag
+                  }}</span>
                 </p>
               </div>
             </div>
@@ -91,15 +93,15 @@
 </template>
 
 <script>
-import { fromNowFilter, accountFilter } from "../utils/mixins.js"
-import tweetsAPI from '../api/tweets'
-import Toast from "../components/AlertToast.vue"
-import { mapState } from 'vuex'
+import { fromNowFilter, accountFilter } from "../utils/mixins.js";
+import tweetsAPI from "../api/tweets";
+import Toast from "../components/AlertToast.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "reply-modal",
   components: {
-    Toast
+    Toast,
   },
   props: {
     replyTweet: {
@@ -130,21 +132,21 @@ export default {
         message: "",
         dataStatus: "",
       },
-    }
+    };
   },
   computed: {
-    ...mapState(['currentUser'])
+    ...mapState(["currentUser"]),
   },
   watch: {
     comment: function () {
       if (this.comment.length > this.formValidation.comment.lengthLimit) {
-        this.formValidation.comment.error = true
-        this.formValidation.comment.message = "字數不可超過 140 字"
+        this.formValidation.comment.error = true;
+        this.formValidation.comment.message = "字數不可超過 140 字";
       } else if (this.comment.length == 0) {
-        this.formValidation.comment.error = true
-        this.formValidation.comment.message = "推文不能為空白"
+        this.formValidation.comment.error = true;
+        this.formValidation.comment.message = "推文不能為空白";
       } else {
-        this.formValidation.comment.error = false
+        this.formValidation.comment.error = false;
       }
     },
   },
@@ -152,38 +154,40 @@ export default {
     async handleFormSubmit() {
       try {
         if (this.comment.trim().length == 0) {
-          this.formValidation.comment.error = true
-          this.formValidation.comment.message = "推文不能為空白"
-          this.comment = ''
+          this.formValidation.comment.error = true;
+          this.formValidation.comment.message = "推文不能為空白";
+          this.comment = "";
         }
         if (this.formValidation.comment.error) {
-          return
+          return;
         }
         // this.$emit("after-comment-send", this.comment)
-        const {data} = await tweetsAPI.createTweetReply({ tweetId: this.replyTweet.id, comment: this.comment })
-        console.log(data)
+        const { data } = await tweetsAPI.createTweetReply({
+          tweetId: this.replyTweet.id,
+          comment: this.comment,
+        });
+        console.log(data);
         if (data.status !== "success") {
-          throw new Error(data.message)
+          throw new Error(data.message);
         }
         this.ToastMessage.dataStatus = "";
-        this.ToastMessage.dataStatus = "success"
-        this.ToastMessage.message = `回文已成功送出`
+        this.ToastMessage.dataStatus = "success";
+        this.ToastMessage.message = `回文已成功送出`;
         setTimeout(() => {
-            this.checkoutHandler()
-            this.comment = ""
-          }, 1000)
-        this.$emit('after-reply-submit')
+          this.checkoutHandler();
+          this.comment = "";
+        }, 1000);
+        this.$emit("after-reply-submit", this.replyTweet.id);
       } catch (error) {
-        console.log(error)
-        this.ToastMessage.dataStatus = "error"
-        this.ToastMessage.message = '推文失敗，請稍後再試'
+        console.log(error);
+        this.ToastMessage.dataStatus = "error";
+        this.ToastMessage.message = "推文失敗，請稍後再試";
       }
     },
     checkoutHandler() {
-      console.log('click')
-      this.$emit("after-comment-checkout")
+      console.log("click");
+      this.$emit("after-comment-checkout");
     },
-
   },
 };
 </script>

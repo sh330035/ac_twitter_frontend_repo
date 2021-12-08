@@ -31,6 +31,7 @@
       v-if="replyModal.isShow"
       :reply-tweet="replyModal.replyTweet"
       @after-comment-checkout="afterCommentCheckout"
+      @after-reply-submit="afterReplySubmit"
     />
     <Toast :ToastMessage="ToastMessage" />
   </div>
@@ -82,14 +83,22 @@ export default {
     const feedsType = to.query.feeds ? to.query.feeds : "tweets";
     this.currentFeeds = feedsType;
     this.fetchUserData(userId);
-    this.fetchFeedsData( userId, feedsType);
+    this.fetchFeedsData(userId, feedsType);
     next();
+  },
+  watch: {
+    isRender: {
+      handler: function () {
+        this.fetchUserData(this.user.id);
+      },
+      deep: true,
+    },
   },
   methods: {
     async fetchUserData(userId) {
       try {
         const { data } = await usersAPI.getUser({ userId });
-        console.log('使用者資料',data)
+        console.log("使用者資料", data);
         if (data.name.length === 0) {
           throw new Error("無法取得使用者資料");
         }
@@ -115,7 +124,7 @@ export default {
           name,
           avatar,
           cover,
-          introduction: introduction ? introduction : '',
+          introduction: introduction ? introduction : "",
           tweetsCount,
           role,
           followerCount,
@@ -131,7 +140,7 @@ export default {
         this.ToastMessage.dataStatus = "error";
       }
     },
-    async fetchFeedsData(userId ,feedsType) {
+    async fetchFeedsData(userId, feedsType) {
       // const userId = this.$route.params.id;
       // 取得使用者推文紀錄
       if (feedsType === "tweets") {
@@ -160,7 +169,7 @@ export default {
               LikeCount,
               Avatar: User.avatar,
               Name: User.name,
-              Account: User.account
+              Account: User.account,
             };
           });
         } catch (error) {
@@ -192,7 +201,7 @@ export default {
               createdAt,
               Avatar: User.avatar,
               Name: User.name,
-              Account: User.account
+              Account: User.account,
             };
           });
         } catch (error) {
@@ -218,7 +227,7 @@ export default {
               LikeCount: Tweet.LikeCount,
               Avatar: Tweet.User.avatar,
               Name: Tweet.User.name,
-              Account: Tweet.User.account
+              Account: Tweet.User.account,
             };
           });
         } catch (error) {
@@ -277,6 +286,9 @@ export default {
             throw new Error(data.message);
           }
         }
+        // 修改 vuex 狀態
+        this.$store.commit("render");
+        this.$store.commit("renderSwitch");
       } catch (error) {
         console.log(error);
         this.ToastMessage.dataStatus = "";
@@ -358,6 +370,18 @@ export default {
         description,
       };
     },
+    afterReplySubmit(tweetId) {
+      this.feeds = this.feeds.map((tweet) => {
+        if (tweet.TweetId !== tweetId) {
+          return tweet;
+        } else {
+          return {
+            ...tweet,
+            ReplyCount: tweet.ReplyCount + 1,
+          };
+        }
+      });
+    },
     afterCommentCheckout() {
       this.replyModal.isShow = false;
       this.replyModal.replyTweet = {};
@@ -368,10 +392,10 @@ export default {
     const feedsType = this.$route.query.feeds;
     this.fetchUserData(userId);
     this.currentFeeds = feedsType ? feedsType : "tweets";
-    this.fetchFeedsData( userId, this.currentFeeds);
+    this.fetchFeedsData(userId, this.currentFeeds);
   },
   computed: {
-    ...mapState(["currentUser"]),
+    ...mapState(["currentUser", "isRender"]),
   },
 };
 </script>
