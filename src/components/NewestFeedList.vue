@@ -47,7 +47,7 @@
           </div>
           <div class="newest__tweet__icon__like d-flex">
             <img
-              v-if="tweet.isLike"
+              v-if="tweet.isLiked"
               @click.prevent.stop="deleteLike(tweet.id)"
               src="../assets/images/like-red.svg"
               alt=""
@@ -62,7 +62,7 @@
             />
             <span
               class="newest__tweet__icon__count count-13"
-              :class="{ red: tweet.isLike }"
+              :class="{ red: tweet.isLiked }"
               >{{ tweet.likeCount }}</span
             >
           </div>

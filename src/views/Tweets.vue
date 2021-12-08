@@ -7,7 +7,9 @@
         :replyTweet="replyTweet"
       />
       <PageNameBanner :banner-title="bannerTitle" />
-      <NewTweetForm @after-submit-tweet-form="afterSumbitTweetForm" />
+      <NewTweetForm
+        @after-submit-tweet-form="afterSumbitTweetForm"
+      />
       <NewestFeedList
         v-for="tweet in tweets"
         :key="tweet.id"
@@ -20,17 +22,19 @@
     <section class="right-card">
       <PopularUsersCard />
     </section>
+    <Toast :ToastMessage="ToastMessage" />
   </div>
 </template>
 
 <script>
-import PopularUsersCard from "../components/PopularUsersCard.vue";
-import PageNameBanner from "../components/PageNameBanner.vue";
-import NewTweetForm from "../components/NewTweetForm.vue";
-import NewestFeedList from "../components/NewestFeedList.vue";
-import ReplyModal from "../components/ReplyModel.vue";
-import newestTweetsAPI from "../api/tweets";
-import likeTweetsAPI from "../api/users";
+import PopularUsersCard from "../components/PopularUsersCard.vue"
+import PageNameBanner from "../components/PageNameBanner.vue"
+import NewTweetForm from "../components/NewTweetForm.vue"
+import NewestFeedList from "../components/NewestFeedList.vue"
+import ReplyModal from "../components/ReplyModel.vue"
+import newestTweetsAPI from "../api/tweets"
+import likeTweetsAPI from "../api/users"
+import Toast from "../components/AlertToast.vue"
 
 export default {
   name: "Tweets",
@@ -40,6 +44,7 @@ export default {
     NewTweetForm,
     NewestFeedList,
     ReplyModal,
+    Toast,
   },
   data() {
     return {
@@ -48,69 +53,84 @@ export default {
       // reply modal
       isReplyModalShow: false,
       replyTweet: {},
-    };
+      ToastMessage: {
+        message: "",
+        dataStatus: "",
+      },
+    }
   },
   created() {
-    this.fetchTweetsData();
+    this.fetchTweetsData()
   },
   methods: {
     async fetchTweetsData() {
       try {
-        const { data } = await newestTweetsAPI.getNewestTweets();
-
-        this.tweets = data;
+        const { data } = await newestTweetsAPI.getNewestTweets()
+        this.tweets = data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
     async addLikeHandler(tweetId) {
       try {
-        const { data } = await likeTweetsAPI.addLike({ tweetId });
-
-        console.log(data.message);
-
+        const { data } = await likeTweetsAPI.addLike({ tweetId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
         this.tweets = this.tweets.map((tweet) => {
           if (tweet.id !== tweetId) {
-            return tweet;
+            return tweet
           } else {
             return {
               ...tweet,
               likeCount: tweet.likeCount + 1,
-              isLike: true,
-            };
+              isLiked: true,
+            }
           }
-        });
+        })
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
-    deleteLikeHandler(tweetId) {
-      console.log("emit", tweetId);
-      this.tweets = this.tweets.map((tweet) => {
-        if (tweet.id !== tweetId) {
-          return tweet;
-        } else {
-          return {
-            ...tweet,
-            likeCount: tweet.likeCount - 1,
-            isLike: false,
-          };
+    async deleteLikeHandler(tweetId) {
+      try {
+        const { data } = await likeTweetsAPI.deleteLike({ tweetId })
+        if (data.status !== 'success') {
+          throw new Error(data.message)
         }
-      });
+        this.tweets = this.tweets.map((tweet) => {
+          if (tweet.id !== tweetId) {
+            return tweet
+          } else {
+            return {
+              ...tweet,
+              likeCount: tweet.likeCount - 1,
+              isLiked: false,
+            }
+          }
+        })
+      } catch (error) {
+        console.log('error', error)
+        this.ToastMessage.message = `無法取消讚，請稍後再試`
+        this.ToastMessage.dataStatus = ""
+        this.ToastMessage.dataStatus = "error"
+
+      }
+
     },
     // reply Modal 控制區
     afterLaunchReplyModal(tweetId) {
-      const replyTweet =  this.tweets.find((tweet) => tweet.id == tweetId);
+      const replyTweet = this.tweets.find((tweet) => tweet.id == tweetId)
       const { User, createdAt, description } = replyTweet
-      this.replyTweet = { id: tweetId, name: User.name, account: User.account, createdAt, avatar: User.avatar, description } 
-      this.isReplyModalShow = true;
+      this.replyTweet = { id: tweetId, name: User.name, account: User.account, createdAt, avatar: User.avatar, description }
+      this.isReplyModalShow = true
     },
     afterCommentCheckout() {
-      this.isReplyModalShow = false;
+      this.isReplyModalShow = false
     },
     // 發文後刷新畫面
     afterSumbitTweetForm() {
-      this.fetchTweetsData();
+      this.fetchTweetsData()
     },
   },
 };
