@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // 向後端確認後再修正
-const baseURL = 'https://alphitter-api-server.herokuapp.com/api'
+const baseURL = 'https://alphitter-api-server.herokuapp.com/api/'
 
 const axiosInstance = axios.create({
   baseURL

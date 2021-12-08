@@ -17,7 +17,8 @@ export default new Vuex.Store({
     },
     //預設
     isAuthenticated: false,
-    token: ''
+    token: '',
+    isRenderTweetList: false
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -32,6 +33,13 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       state.token = ''
       localStorage.removeItem('token')
+    },
+    // 監控 navbar tweet Modal
+    renderTweetList(state) {
+      state.isRenderTweetList = true
+    },
+    renderTweetListSwitch(state) {
+      state.isRenderTweetList = false
     }
   },
   actions: {
