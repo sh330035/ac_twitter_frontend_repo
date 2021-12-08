@@ -146,7 +146,9 @@ export default {
         id: -1,
         name: "",
         avatar: "",
+        avatarFile: '',
         cover: "",
+        coverFile: '',
         introduction: "",
       },
       formValidation: {
@@ -209,12 +211,13 @@ export default {
     },
     handleCoverChange(e) {
       const { files } = e.target;
-
+      console.log("cover files", files);
       if (files.length === 0) {
         // 使用者沒有選擇上傳的檔案
         return;
       } else {
         // 否則產生預覽圖
+        this.user.coverFile = files[0]
         const imageURL = window.URL.createObjectURL(files[0]);
         this.user.cover = imageURL;
       }
@@ -224,18 +227,27 @@ export default {
     },
     handleAvatarChange(e) {
       const { files } = e.target;
-      console.log("files", files);
+      console.log("avatar files", files);
       if (files.length === 0) {
         // 使用者沒有選擇上傳的檔案
         this.user.avatar = "";
       } else {
         // 否則產生預覽圖
+        this.user.avatarFile = files[0]
         const imageURL = window.URL.createObjectURL(files[0]);
         this.user.avatar = imageURL;
       }
     },
     handleFormSubmit() {
-      this.$emit("after-profile-form-submit", this.user);
+      const filePack = {
+        id: this.user.id ,
+        name: this.user.name,
+        avatar: this.user.avatarFile,
+        cover: this.user.coverFile,
+        introduction: this.user.introduction,
+      }
+      console.log('submit user profile', filePack)
+      this.$emit("after-profile-form-submit", filePack);
     },
   },
 };
