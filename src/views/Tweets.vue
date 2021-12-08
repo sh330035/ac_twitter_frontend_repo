@@ -31,6 +31,7 @@ import NewestFeedList from "../components/NewestFeedList.vue";
 import ReplyModal from "../components/ReplyModel.vue";
 import newestTweetsAPI from "../api/tweets";
 import likeTweetsAPI from "../api/users";
+import { mapState } from "vuex";
 
 export default {
   name: "Tweets",
@@ -52,6 +53,17 @@ export default {
   },
   created() {
     this.fetchTweetsData();
+  },
+  computed: {
+    ...mapState(["isRenderTweetList"]),
+  },
+  watch: {
+    isRenderTweetList: {
+      handler: function () {
+        this.fetchTweetsData();
+      },
+      deep: true,
+    },
   },
   methods: {
     async fetchTweetsData() {
@@ -100,9 +112,16 @@ export default {
     },
     // reply Modal 控制區
     afterLaunchReplyModal(tweetId) {
-      const replyTweet =  this.tweets.find((tweet) => tweet.id == tweetId);
-      const { User, createdAt, description } = replyTweet
-      this.replyTweet = { id: tweetId, name: User.name, account: User.account, createdAt, avatar: User.avatar, description } 
+      const replyTweet = this.tweets.find((tweet) => tweet.id == tweetId);
+      const { User, createdAt, description } = replyTweet;
+      this.replyTweet = {
+        id: tweetId,
+        name: User.name,
+        account: User.account,
+        createdAt,
+        avatar: User.avatar,
+        description,
+      };
       this.isReplyModalShow = true;
     },
     afterCommentCheckout() {
