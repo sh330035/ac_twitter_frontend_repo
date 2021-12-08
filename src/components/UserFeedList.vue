@@ -2,16 +2,16 @@
   <div class="user-feed-list">
     <!-- v-for Start -->
     <router-link
-      :to="{ name: 'tweet-replies', params: { id: feed.keyId } }"
+      :to="{ name: 'tweet-replies', params: { id: feed.TweetId } }"
       v-for="feed in feeds"
-      :key="feed.TweetId"
+      :key="feed.keyId"
       class="feed"
     >
       <router-link
         :to="{ name: 'user', params: { id: feed.User.id } }"
         class="feed__avatar"
       >
-        <img :src="feed.User.avatar" class="feed__avatar__img" alt="Avatar" />
+        <img :src="feed.Avatar" class="feed__avatar__img" alt="Avatar" />
       </router-link>
       <div class="feed__detail">
         <div class="feed__detail__author">
@@ -19,10 +19,10 @@
             :to="{ name: 'user', params: { id: feed.User.id } }"
             class="feed__detail__author__name"
           >
-            {{ feed.User.name }}
+            {{ feed.Name }}
           </router-link>
           <span class="feed__detail__author__account">
-            {{ feed.User.account | accountTag }}
+            {{ feed.Account | accountTag }}
           </span>
           <span class="feed__detail__author__post-time">
             ・{{ feed.createdAt | fromNow }}
@@ -33,7 +33,7 @@
           <router-link
             :to="{ name: 'user', params: { id: feed.User.id } }"
             class="feed__detail__reply-to__account"
-            >{{ feed.User.account | accountTag }}</router-link
+            >{{ feed.TweetAccount | accountTag }}</router-link
           >
         </div>
         <div class="feed__detail__comment">{{ feed.description }}</div>
@@ -103,10 +103,7 @@ export default {
       this.feeds = this.initialFeeds
     },
     toggleLike(feedId, status) {
-
       this.$emit('after-toggle-like', { feedId, status })
-
-      
     },
     showReplyModal(feedId) {
       this.$emit('after-show-reply-modal', feedId)

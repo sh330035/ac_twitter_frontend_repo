@@ -82,14 +82,14 @@ export default {
     const feedsType = to.query.feeds ? to.query.feeds : "tweets";
     this.currentFeeds = feedsType;
     this.fetchUserData(userId);
-    this.fetchFeedsData(feedsType);
+    this.fetchFeedsData( userId, feedsType);
     next();
   },
   methods: {
     async fetchUserData(userId) {
       try {
         const { data } = await usersAPI.getUser({ userId });
-        // console.log('使用者資料',data)
+        console.log('使用者資料',data)
         if (data.name.length === 0) {
           throw new Error("無法取得使用者資料");
         }
@@ -115,7 +115,7 @@ export default {
           name,
           avatar,
           cover,
-          introduction,
+          introduction: introduction ? introduction : '',
           tweetsCount,
           role,
           followerCount,
@@ -131,8 +131,8 @@ export default {
         this.ToastMessage.dataStatus = "error";
       }
     },
-    async fetchFeedsData(feedsType) {
-      const userId = this.$route.params.id;
+    async fetchFeedsData(userId ,feedsType) {
+      // const userId = this.$route.params.id;
       // 取得使用者推文紀錄
       if (feedsType === "tweets") {
         try {
@@ -158,6 +158,9 @@ export default {
               isLiked,
               ReplyCount,
               LikeCount,
+              Avatar: User.avatar,
+              Name: User.name,
+              Account: User.account
             };
           });
         } catch (error) {
@@ -170,20 +173,26 @@ export default {
       } else if (feedsType === "reply") {
         try {
           const { data } = await usersAPI.getUserReply({ userId });
+          // console.log(`Reply tweets of user-${userId}`, data)
           this.feeds = data.map((reply) => {
             const {
               id,
               TweetId,
+              Tweet,
               User,
               comment: description,
               createdAt,
             } = reply;
             return {
               keyId: id,
+              TweetAccount: Tweet.User.account,
               TweetId,
               User,
               description,
               createdAt,
+              Avatar: User.avatar,
+              Name: User.name,
+              Account: User.account
             };
           });
         } catch (error) {
@@ -207,6 +216,9 @@ export default {
               isLiked: Tweet.isLiked,
               ReplyCount: Tweet.ReplyCount,
               LikeCount: Tweet.LikeCount,
+              Avatar: Tweet.User.avatar,
+              Name: Tweet.User.name,
+              Account: Tweet.User.account
             };
           });
         } catch (error) {
@@ -230,7 +242,6 @@ export default {
           if (data.status !== "success") {
             throw new Error(data.message);
           }
-          console.log(id, data);
         } else {
           const id = this.user.id;
           const { data } = await usersAPI.deleteNotice({ userId: id });
@@ -238,7 +249,6 @@ export default {
           if (data.status !== "success") {
             throw new Error(data.message);
           }
-          console.log(id, data);
         }
       } catch (error) {
         console.log(error);
@@ -246,8 +256,6 @@ export default {
         this.ToastMessage.message = `無法更新追蹤狀態，請稍後再試`;
         this.ToastMessage.dataStatus = "error";
       }
-
-      console.log(`Notification: ${status}`);
     },
     async afterToggleIsFollowed(status) {
       try {
@@ -261,7 +269,6 @@ export default {
           if (data.status !== "success") {
             throw new Error(data.message);
           }
-          console.log(id, data);
         } else {
           const id = this.user.id;
           const { data } = await usersAPI.deleteFollowing({ userId: id });
@@ -269,7 +276,6 @@ export default {
           if (data.status !== "success") {
             throw new Error(data.message);
           }
-          console.log(id, data);
         }
       } catch (error) {
         console.log(error);
@@ -277,7 +283,6 @@ export default {
         this.ToastMessage.message = `無法更新追蹤狀態，請稍後再試`;
         this.ToastMessage.dataStatus = "error";
       }
-      console.log(`Toggle isFollowed status to ${status}`);
     },
     async afterToggleLike({ feedId, status }) {
       try {
@@ -334,7 +339,7 @@ export default {
         this.isProcessing = false;
         this.fetchUserData(userId);
       } catch (error) {
-        console.log("error:", error);
+        console.log("error", error);
         this.ToastMessage.dataStatus = "";
         this.ToastMessage.message = `無法更新個人資料，請稍後再試`;
         this.ToastMessage.dataStatus = "error";
@@ -363,7 +368,7 @@ export default {
     const feedsType = this.$route.query.feeds;
     this.fetchUserData(userId);
     this.currentFeeds = feedsType ? feedsType : "tweets";
-    this.fetchFeedsData(this.currentFeeds);
+    this.fetchFeedsData( userId, this.currentFeeds);
   },
   computed: {
     ...mapState(["currentUser"]),
