@@ -12,7 +12,7 @@
       <div class="banner-user__user-page d-flex">
         <span
           ><img
-            @click="$router.back()"
+            @click="$router.push({name: 'tweets'})"
             src="../assets/images/back.svg"
             alt=""
             class="banner-user__user-page__back"
