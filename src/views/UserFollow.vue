@@ -68,6 +68,21 @@ export default {
     this.fetchUserFollow(parseInt(userId, 10), this.followPageStatus);
     this.fetchUsers(parseInt(userId, 10));
   },
+  watch: {
+    isRender: {
+      handler: function () {
+        const userId = this.user.id;
+        const { follow = "" } = this.$route.query;
+        if (follow) {
+          this.followPageStatus = "following";
+        } else {
+          this.followPageStatus = "followers";
+        }
+        this.fetchUserFollow(parseInt(userId, 10), this.followPageStatus);
+      },
+      deep: true,
+    },
+  },
   methods: {
     // 取得目前頁面之用戶資料
     async fetchUsers(userId) {
@@ -85,7 +100,6 @@ export default {
       }
     },
     async fetchUserFollow(userId, followType) {
-      console.log(userId, followType);
       try {
         if (followType == "following") {
           const { data } = await userAPI.getUserFollowings(userId);
@@ -119,8 +133,8 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-
-        console.log(data.message);
+        // 修改 vuex 狀態
+        this.$store.commit("render");
 
         this.follows = this.follows.map((user) => {
           if (user.id !== userId) {
@@ -134,7 +148,6 @@ export default {
         });
       } catch (error) {
         console.log(error);
-        console.log("add error");
       }
     },
     async deleteFollowing(userId) {
@@ -144,6 +157,8 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
+        // 修改 vuex 狀態
+        this.$store.commit("render");
 
         this.follows = this.follows.map((user) => {
           if (user.id !== userId) {
@@ -155,8 +170,6 @@ export default {
             };
           }
         });
-
-        console.log("deleteFollow, success");
       } catch (error) {
         console.log(error);
       }
@@ -164,7 +177,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["currentUser"]),
+    ...mapState(["currentUser", "isRender"]),
   },
 };
 </script>

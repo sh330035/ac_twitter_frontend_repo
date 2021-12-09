@@ -114,7 +114,6 @@ export default {
         console.log(data.message);
         // 修改 vuex 狀態
         this.$store.commit("render");
-        this.$store.commit("render");
         // 修改按鈕狀態
         this.popularUsers = this.popularUsers.map((user) => {
           if (user.id !== userId) {
@@ -128,7 +127,6 @@ export default {
         });
       } catch (error) {
         console.log(error);
-        console.log("add error");
       }
     },
     async deleteFollowing(userId) {
@@ -139,7 +137,6 @@ export default {
           throw new Error(data.message);
         }
         // 修改 vuex 狀態
-        this.$store.commit("render");
         this.$store.commit("render");
         // 修改按鈕狀態
         this.popularUsers = this.popularUsers.map((user) => {
@@ -152,8 +149,6 @@ export default {
             };
           }
         });
-
-        console.log("deleteFollow, success");
       } catch (error) {
         console.log(error);
       }
