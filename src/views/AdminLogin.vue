@@ -43,11 +43,9 @@ export default {
   methods: {
     async afterFormSubmit(accountDetail) {
       try {
-        console.log("後台登入資料送出：", accountDetail);
         this.isProcessing = true;
         this.clearPasswordInput = false
         
-
         const { data } = await adminAPI.adminSignIn({
           account: accountDetail.account,
           password: accountDetail.password,

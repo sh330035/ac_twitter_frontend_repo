@@ -110,8 +110,6 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-
-        console.log(data.message);
         // 修改 vuex 狀態
         this.$store.commit("render");
         // 修改按鈕狀態

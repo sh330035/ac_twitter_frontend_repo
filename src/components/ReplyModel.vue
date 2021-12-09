@@ -179,7 +179,6 @@ export default {
       }
     },
     checkoutHandler() {
-      console.log("click");
       this.$emit("after-comment-checkout");
     },
   },

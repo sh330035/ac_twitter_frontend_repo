@@ -83,7 +83,6 @@ export default {
       this.tweets = this.initialTweets;
     },
     handleTweetDelete(tweetId) {
-      console.log(tweetId);
       this.$emit("after-tweet-delete", { tweetId });
       this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
     },

@@ -121,9 +121,7 @@ export default {
     },
     async addFollowing(userId) {
       try {
-        console.log("userId", userId);
         const id = { id: userId };
-
         if (this.currentUser.id == userId) {
           throw new Error("無法自己追蹤自己");
         }

@@ -113,7 +113,6 @@ export default {
     async fetchUserData(userId) {
       try {
         const { data } = await usersAPI.getUser({ userId });
-        console.log("使用者資料", data);
         if (data.name.length === 0) {
           throw new Error("無法取得使用者資料");
         }

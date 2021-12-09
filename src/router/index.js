@@ -93,8 +93,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  console.log('to', to)
-  console.log('from', from)
   const token = localStorage.getItem('token')
   // 預設是尚未驗證
   let isAuthenticated = false
@@ -115,9 +113,6 @@ router.beforeEach(async (to, from, next) => {
     next('/login')
     return
   }
-
-  console.log(store.state.currentUser.role)
-
   if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
     if (store.state.currentUser.role == 'user') {
       next('/tweets')

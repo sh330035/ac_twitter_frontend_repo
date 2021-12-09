@@ -116,7 +116,6 @@ export default {
       this.NavbarToastMessage.message = "推文發送成功";
     },
     logout() {
-      console.log("log-out");
       this.$store.commit("revokeAuthentication");
       this.$router.push("/login");
     },

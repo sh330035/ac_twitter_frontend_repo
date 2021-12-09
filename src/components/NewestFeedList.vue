@@ -85,11 +85,9 @@ export default {
   mixins: [fromNowFilter, accountFilter],
   methods: {
     addLike(tweetId) {
-      console.log("add", tweetId);
       this.$emit("after-add-like", tweetId);
     },
     deleteLike(tweetId) {
-      console.log("delete", tweetId);
       this.$emit("after-delete-like", tweetId);
     },
     replyLaunchHandler(tweetId) {
