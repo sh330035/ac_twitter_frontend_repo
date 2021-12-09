@@ -43,8 +43,6 @@ export default {
   methods: {
     async afterFormSubmit(accountDetail) {
       try {
-        console.log("使用者登入資訊：", accountDetail);
-
         this.isProcessing = true;
         this.clearPasswordInput = false
 

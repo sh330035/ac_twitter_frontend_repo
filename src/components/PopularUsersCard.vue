@@ -1,5 +1,7 @@
 <template>
   <div class="popular">
+    <ScaleLoader :is-loading="isLoading"/>
+    <template v-if="!isLoading"> 
     <div class="popular__card">
       <h2 class="popular__card__title">Popular</h2>
       <div
@@ -46,10 +48,12 @@
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
 <script>
+import ScaleLoader from "../components/ScaleLoader.vue"
 import { accountFilter } from "../utils/mixins.js";
 import popularUsersAPI from "../api/users";
 import { mapState } from "vuex";
@@ -57,12 +61,17 @@ import { mapState } from "vuex";
 export default {
   name: "popular-user",
   mixins: [accountFilter],
+  components: {
+    ScaleLoader,
+  },
   data() {
     return {
       popularUsers: [],
+      isLoading: true,
     };
   },
   created() {
+    this.isLoading = true
     this.fetchPopularUsers();
   },
   computed: {
@@ -82,8 +91,10 @@ export default {
         const { data } = await popularUsersAPI.getPopularUsers();
 
         this.popularUsers = data.users;
+        this.isLoading = false
       } catch (error) {
         console.log(error);
+        this.isLoading = false
       }
     },
     async addFollowing(userId) {
@@ -99,8 +110,6 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-
-        console.log(data.message);
         // 修改 vuex 狀態
         this.$store.commit("render");
         // 修改按鈕狀態

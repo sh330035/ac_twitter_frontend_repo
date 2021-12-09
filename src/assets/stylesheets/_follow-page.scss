@@ -42,6 +42,7 @@
     }
     &__image {
       cursor: pointer;
+      object-fit: cover;
       @extend %avatar-hover-effect;
     }
     &__user {

@@ -20,6 +20,7 @@ $picture-bg-color: #c4c4c4;
       &__cover {
         width: 100%;
         height: 140px;
+        object-fit: cover;
       }
       &__avatar {
         position: absolute;

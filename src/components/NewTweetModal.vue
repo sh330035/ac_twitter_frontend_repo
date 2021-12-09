@@ -96,7 +96,6 @@ export default {
         const description = { description: this.description };
         const { data } = await tweetsAPI.createTweet({ description });
 
-        console.log("推特內容送出：", this.description);
         this.description = "";
         this.isProcessing = false
         this.$emit("after-tweet-send", data.status);
