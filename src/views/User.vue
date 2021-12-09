@@ -93,6 +93,15 @@ export default {
       },
       deep: true,
     },
+    isRenderTweet: {
+      handler: function () {
+        // 只有在自己的個人資料的推文頁面時，會刷新 feeds data
+        if (this.user.id == this.currentUser.id && !this.$route.query.feeds) {
+          this.fetchFeedsData(this.user.id, "tweets");
+        }
+      },
+      deep: true,
+    },
   },
   methods: {
     async fetchUserData(userId) {
@@ -396,7 +405,7 @@ export default {
     this.fetchFeedsData(userId, this.currentFeeds);
   },
   computed: {
-    ...mapState(["currentUser", "isRender"]),
+    ...mapState(["currentUser", "isRender", "isRenderTweet"]),
   },
 };
 </script>

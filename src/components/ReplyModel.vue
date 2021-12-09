@@ -82,7 +82,12 @@
               >
                 {{ formValidation.comment.message }}
               </div>
-              <button class="btn modal-button">推文</button>
+              <button
+                class="btn modal-button"
+                :disabled="formValidation.comment.error"
+              >
+                推文
+              </button>
             </div>
           </div>
         </div>
