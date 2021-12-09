@@ -4,7 +4,7 @@
 
 本專案為前、後端分離之團隊開發專案，模擬簡易社群網站之開發。使用者可進行註冊、登入、登出、發文、回覆、追蹤、按讚、修改個人資料...等功能。並有管理者帳號，區別使用者與管理者之權限。
 
-#### 快速瀏覽專案
+### 快速瀏覽專案
 - 請進入網站： _[Twitter](https://sh330035.github.io/twitter-frontend/)_
 - 前台測試帳號： account：user1 / password：12345678
 - 後台測試帳號： account：root  / password：12345678
@@ -70,4 +70,18 @@ npm run serve
 
 - Open the browser and navigate to http://localhost:8080 👀  （打開瀏覽器並於 http://localhost:8080 查看）
 
+## ❖ 相關連結
+### 前端
+- github：https://github.com/sh330035/twitter-frontend
+- Github Page：https://sh330035.github.io/twitter-frontend/
 
+### 後端
+- github：https://github.com/jadokao/twitter-api-2020
+- Heroku：https://alphitter-api-server.herokuapp.com/api/
+
+
+## ❖ Team / 團隊成員
+- [Dolly Chen](https://github.com/DollyChen-CYC)
+- [David](https://github.com/sh330035)
+- [WenTing](https://github.com/wentingliuu)
+- [Ming](https://github.com/jadokao)
