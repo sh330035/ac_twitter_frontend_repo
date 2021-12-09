@@ -29,6 +29,7 @@ $picture-bg-color: #c4c4c4;
         border-radius: 50%;
         width: 100px;
         height: 100px;
+        object-fit: cover;
       }
     }
     &__detail {

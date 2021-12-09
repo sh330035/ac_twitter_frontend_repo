@@ -8,7 +8,7 @@
       class="feed"
     >
       <router-link
-        :to="{ name: 'user', params: { id: feed.User.id } }"
+        :to="{ name: 'user', params: { id: feed.LinkAccountId } }"
         class="feed__avatar"
       >
         <img :src="feed.Avatar" class="feed__avatar__img" alt="Avatar" />
@@ -16,7 +16,7 @@
       <div class="feed__detail">
         <div class="feed__detail__author">
           <router-link
-            :to="{ name: 'user', params: { id: feed.User.id } }"
+            :to="{ name: 'user', params: { id: feed.LinkAccountId } }"
             class="feed__detail__author__name"
           >
             {{ feed.Name }}

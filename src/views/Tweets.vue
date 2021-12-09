@@ -8,7 +8,8 @@
         :replyTweet="replyTweet"
       />
       <PageNameBanner :banner-title="bannerTitle" />
-      <NewTweetForm @after-submit-tweet-form="afterSumbitTweetForm" />
+      <NewTweetForm @after-submit-tweet-form="afterSumbitTweetForm"  />
+      <ScaleLoader :is-loading="isLoading"/>
       <NewestFeedList
         v-for="tweet in tweets"
         :key="tweet.id"
@@ -34,6 +35,7 @@ import ReplyModal from "../components/ReplyModel.vue";
 import newestTweetsAPI from "../api/tweets";
 import likeTweetsAPI from "../api/users";
 import Toast from "../components/AlertToast.vue";
+import ScaleLoader from "../components/ScaleLoader.vue"
 import { mapState } from "vuex";
 
 export default {
@@ -45,6 +47,7 @@ export default {
     NewestFeedList,
     ReplyModal,
     Toast,
+    ScaleLoader,
   },
   data() {
     return {
@@ -57,9 +60,11 @@ export default {
         message: "",
         dataStatus: "",
       },
+      isLoading: true,
     };
   },
   created() {
+    this.isLoading = true
     this.fetchTweetsData();
     // 首頁自動刷新功能 (每30秒)
     setInterval(() => {
@@ -82,9 +87,10 @@ export default {
       try {
         const { data } = await newestTweetsAPI.getNewestTweets();
         this.tweets = data;
-        console.log("fetch Tweets");
+        this.isLoading = false
       } catch (error) {
         console.log(error);
+        this.isLoading = false
       }
     },
     async addLikeHandler(tweetId) {

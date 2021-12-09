@@ -39,7 +39,7 @@
               >
                 {{ formValidation.tweet.message }}
               </div>
-              <button class="btn modal-button">推文</button>
+              <button class="btn modal-button" :disabled="isProcessing || formValidation.tweet.error">推文</button>
             </div>
           </div>
         </div>
@@ -63,18 +63,20 @@ export default {
           message: "",
         },
       },
+      isProcessing: false,
     };
   },
   watch: {
     description: function () {
-      if (this.description.length > this.formValidation.tweet.lengthLimit) {
+      if (this.description.trim().length > this.formValidation.tweet.lengthLimit) {
         this.formValidation.tweet.error = true;
         this.formValidation.tweet.message = "字數不可超過 140 字";
-      } else if (this.description.length == 0) {
+      } else if (this.description.trim().length == 0 && this.description.length !== 0) {
         this.formValidation.tweet.error = true;
         this.formValidation.tweet.message = "推文不能為空白";
       } else {
         this.formValidation.tweet.error = false;
+        this.formValidation.tweet.message = "";
       }
     },
   },
@@ -90,16 +92,18 @@ export default {
       }
 
       try {
+        this.isProcessing = true
         const description = { description: this.description };
         const { data } = await tweetsAPI.createTweet({ description });
 
         console.log("推特內容送出：", this.description);
         this.description = "";
-
+        this.isProcessing = false
         this.$emit("after-tweet-send", data.status);
         this.checkoutHandler();
       } catch (error) {
         console.log(error);
+        this.isProcessing = false
       }
     },
     checkoutHandler() {
