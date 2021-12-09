@@ -1,11 +1,11 @@
-# Twitter Vue Project
+# Alphitter - Twitter Vue Project
 
 ## ❖ 專案介紹：
 
 本專案為前、後端分離之團隊開發專案，模擬簡易社群網站之開發。使用者可進行註冊、登入、登出、發文、回覆、追蹤、按讚、修改個人資料...等功能。並有管理者帳號，區別使用者與管理者之權限。
 
 ### 快速瀏覽專案
-- 請進入網站： _[Twitter](https://sh330035.github.io/twitter-frontend/)_
+- 請進入網站： _[Alphitter](https://sh330035.github.io/twitter-frontend/)_
 - 前台測試帳號： account：user1 / password：12345678
 - 後台測試帳號： account：root  / password：12345678
 
