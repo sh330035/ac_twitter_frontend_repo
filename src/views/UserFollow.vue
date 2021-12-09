@@ -3,7 +3,9 @@
     <section class="center-view">
       <PageNameBanner :user="user" />
       <FollowsNavPills />
+      <ScaleLoader :is-loading="isLoading"/>
       <FollowList
+        v-if="!isLoading"
         :follows="follows"
         @after-add-follow="addFollowing"
         @after-delete-follow="deleteFollowing"
@@ -20,6 +22,7 @@ import PopularUsersCard from "../components/PopularUsersCard.vue";
 import PageNameBanner from "../components/PageNameBanner.vue";
 import FollowsNavPills from "../components/FollowsNavPills.vue";
 import FollowList from "../components/FollowList.vue";
+import ScaleLoader from "../components/ScaleLoader.vue"
 import userAPI from "../api/users";
 import { mapState } from "vuex";
 
@@ -30,6 +33,7 @@ export default {
     PageNameBanner,
     FollowsNavPills,
     FollowList,
+    ScaleLoader,
   },
   data() {
     return {
@@ -41,6 +45,7 @@ export default {
       },
       follows: [],
       followPageStatus: "",
+      isLoading: true,
     };
   },
   beforeRouteUpdate(to, from, next) {
@@ -50,6 +55,7 @@ export default {
     next();
   },
   created() {
+    this.isLoading = true
     const { id: userId } = this.$route.params;
     const { follow = "" } = this.$route.query;
 
@@ -84,16 +90,19 @@ export default {
         if (followType == "following") {
           const { data } = await userAPI.getUserFollowings(userId);
           this.follows = data;
+          this.isLoading = false
           return;
         } else if (followType == "followers") {
           const { data } = await userAPI.getUserFollowers(userId);
           this.follows = data;
+          this.isLoading = false
           return;
         } else {
           throw new Error();
         }
       } catch (error) {
         console.log(error);
+        this.isLoading = false
       }
     },
     async addFollowing(userId) {
