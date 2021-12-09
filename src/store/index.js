@@ -17,6 +17,7 @@ export default new Vuex.Store({
     },
     //預設
     isAuthenticated: false,
+    alertAuthentication: false,
     token: '',
     isRenderTweet: false,
     isRender: false
@@ -35,19 +36,17 @@ export default new Vuex.Store({
       state.token = ''
       localStorage.removeItem('token')
     },
+    // 認證 Toast 驅動
+    alert(state) {
+      state.alertAuthentication = !state.alertAuthentication
+    },
     // 監控 navbar tweet Modal
     renderTweet(state) {
-      state.isRenderTweet = true
+      state.isRenderTweet = !state.isRenderTweet
     },
-    renderTweetSwitch(state) {
-      state.isRenderTweet = false
-    },
-    // 監控 navbar tweet Modal
+    // 監控 followship status
     render(state) {
-      state.isRender = true
-    },
-    renderSwitch(state) {
-      state.isRender = false
+      state.isRender = !state.isRender
     }
   },
   actions: {

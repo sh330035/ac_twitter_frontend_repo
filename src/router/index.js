@@ -107,7 +107,11 @@ router.beforeEach(async (to, from, next) => {
 
   // 如果 token 無效則轉址到登入頁
   if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
-    alert('帳號不存在')
+    // 控制 Toast
+    store.commit('alert')
+    setTimeout(() => {
+      store.commit('alert')
+    }, 2450)
     next('/login')
     return
   }
