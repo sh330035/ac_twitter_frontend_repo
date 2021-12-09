@@ -26,6 +26,7 @@ export default {
 <style>
 .v-spinner {
   text-align: center;
+  margin: 20px auto;
 }
 
 .spinner-Style {

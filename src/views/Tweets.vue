@@ -64,6 +64,7 @@ export default {
     };
   },
   created() {
+    this.isLoading = true
     this.fetchTweetsData();
     // 首頁自動刷新功能 (每30秒)
     setInterval(() => {
@@ -84,10 +85,9 @@ export default {
   methods: {
     async fetchTweetsData() {
       try {
-        this.isLoading = true
         const { data } = await newestTweetsAPI.getNewestTweets();
-        this.isLoading = false
         this.tweets = data;
+        this.isLoading = false
       } catch (error) {
         console.log(error);
         this.isLoading = false

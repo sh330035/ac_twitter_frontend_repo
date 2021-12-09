@@ -2,7 +2,9 @@
   <div class="setting">
     <section class="center-view">
       <PageNameBanner :banner-title="bannerTitle" />
+      <ScaleLoader :is-loading="isLoading"/>
       <account-setting-form
+        v-if="!isLoading" 
         :initial-account-detail="accountDetail"
         :is-processing="isProcessing"
         @after-form-submit="afterFormSubmit"
@@ -17,6 +19,7 @@ import AccountSettingForm from "../components/AccountSettingForm.vue";
 import PageNameBanner from "../components/PageNameBanner.vue";
 import usersAPI from "../api/users.js";
 import Toast from "../components/AlertToast.vue";
+import ScaleLoader from "../components/ScaleLoader.vue"
 
 export default {
   name: "Setting",
@@ -24,6 +27,7 @@ export default {
     PageNameBanner,
     AccountSettingForm,
     Toast,
+    ScaleLoader,
   },
   data() {
     return {
@@ -42,12 +46,12 @@ export default {
         message: "",
         dataStatus: "",
       },
+      isLoading: true,
     };
   },
   created() {
-    // TODO : 等 route 建好後，需更新此行：
-    // const userId = this.$route.id
-    const userId = 2;
+    this.isLoading = true
+    const userId = this.$route.id
     this.fetchUserAccountDetail(userId);
   },
   methods: {
@@ -58,10 +62,12 @@ export default {
           ...this.accountDetail,
           ...data,
         };
+        this.isLoading = false
       } catch (error) {
         console.log("error:", error);
         this.ToastMessage.message = `無法取得設定資料，請稍後再試`;
         this.ToastMessage.dataStatus = "error";
+        this.isLoading = false
       }
     },
     async afterFormSubmit(formData) {
