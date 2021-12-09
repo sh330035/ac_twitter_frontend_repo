@@ -54,7 +54,6 @@
               </div>
             </div>
           </div>
-
           <div class="reply-modal__reply d-flex">
             <span>
               <img
@@ -82,12 +81,7 @@
               >
                 {{ formValidation.comment.message }}
               </div>
-              <button
-                class="btn modal-button"
-                :disabled="formValidation.comment.error"
-              >
-                推文
-              </button>
+              <button class="btn modal-button" :disabled="isProcessing || formValidation.comment.error">推文</button>
             </div>
           </div>
         </div>
@@ -117,14 +111,6 @@ export default {
   mixins: [fromNowFilter, accountFilter],
   data() {
     return {
-      // tweet: {
-      //   id: -1,
-      //   name: '',
-      //   account: '',
-      //   createdAt: '',
-      //   avatar: '',
-      //   description: ''
-      // },
       comment: "",
       formValidation: {
         comment: {
@@ -137,6 +123,7 @@ export default {
         message: "",
         dataStatus: "",
       },
+      isProcessing: false,
     };
   },
   computed: {
@@ -144,14 +131,15 @@ export default {
   },
   watch: {
     comment: function () {
-      if (this.comment.length > this.formValidation.comment.lengthLimit) {
+      if (this.comment.trim().length > this.formValidation.comment.lengthLimit) {
         this.formValidation.comment.error = true;
         this.formValidation.comment.message = "字數不可超過 140 字";
-      } else if (this.comment.length == 0) {
+      } else if (this.comment.trim().length == 0 && this.comment.length !== 0) {
         this.formValidation.comment.error = true;
         this.formValidation.comment.message = "推文不能為空白";
       } else {
         this.formValidation.comment.error = false;
+        this.formValidation.comment.message = '';
       }
     },
   },
@@ -166,12 +154,11 @@ export default {
         if (this.formValidation.comment.error) {
           return;
         }
-        // this.$emit("after-comment-send", this.comment)
+        this.isProcessing = true
         const { data } = await tweetsAPI.createTweetReply({
           tweetId: this.replyTweet.id,
           comment: this.comment,
         });
-        console.log(data);
         if (data.status !== "success") {
           throw new Error(data.message);
         }
@@ -183,10 +170,12 @@ export default {
           this.comment = "";
         }, 1000);
         this.$emit("after-reply-submit", this.replyTweet.id);
+        this.isProcessing = false
       } catch (error) {
         console.log(error);
         this.ToastMessage.dataStatus = "error";
         this.ToastMessage.message = "推文失敗，請稍後再試";
+        this.isProcessing = false
       }
     },
     checkoutHandler() {

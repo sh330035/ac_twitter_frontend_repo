@@ -5,13 +5,15 @@
         :banner-title="bannerTitle"
         :banner-link-back="bannerLinkBack"
       />
+      <ScaleLoader :is-loading="isLoading"/>
       <tweet-card
+        v-if="!isLoading"
         :initial-tweet="tweet"
         @after-show-reply-modal="afterShowReplyModal"
         @after-add-like="afterAddLike"
         @after-delete-like="afterDeleteLike"
       />
-      <reply-list :tweet="tweet" />
+      <reply-list v-if="!isLoading" :tweet="tweet" />
     </section>
     <section class="right-card">
       <popular-users-card />
@@ -33,6 +35,7 @@ import ReplyList from "../components/ReplyList.vue";
 import PopularUsersCard from "../components/PopularUsersCard.vue";
 import ReplyModel from "../components/ReplyModel.vue";
 import Toast from "../components/AlertToast.vue";
+import ScaleLoader from "../components/ScaleLoader.vue"
 import tweetsAPI from "../api/tweets.js";
 import usersAPI from "../api/users.js";
 
@@ -44,6 +47,7 @@ export default {
     PopularUsersCard,
     ReplyModel,
     Toast,
+    ScaleLoader,
   },
   data() {
     return {
@@ -55,9 +59,11 @@ export default {
         message: "",
         dataStatus: "",
       },
+      isLoading: true,
     };
   },
   created() {
+    this.isLoading = true
     const tweetId = this.$route.params.id;
     this.fetchTweetData(tweetId);
   },
@@ -103,10 +109,12 @@ export default {
             createdAt,
           };
         });
+        this.isLoading = false
       } catch (error) {
         console.log(error);
         this.ToastMessage.message = `無法取得推文資料，請稍後再試`;
         this.ToastMessage.dataStatus = "error";
+        this.isLoading = false
       }
     },
     afterShowReplyModal() {

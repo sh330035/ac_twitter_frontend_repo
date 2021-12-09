@@ -64,13 +64,15 @@ export default {
   },
   watch: {
     description: function () {
-      if (this.description.length > this.formValidation.tweet.lengthLimit) {
+      if (this.description.trim().length > this.formValidation.tweet.lengthLimit) {
         this.formValidation.tweet.error = true
         this.formValidation.tweet.message = "字數不可超過 140 字"
-        this.formValidation.disabledBtn = true
-      } else if (this.description.trim().length > 0) {
+      } else if (this.description.trim().length === 0 && this.description.length !== 0 ) {
+        this.formValidation.tweet.error = true;
+        this.formValidation.tweet.message = "推文不能為空白";
+      } else {
         this.formValidation.tweet.error = false
-        this.formValidation.disabledBtn = false
+        this.formValidation.tweet.message = ''
       }
     },
   },
@@ -98,7 +100,6 @@ export default {
         this.$emit("after-submit-tweet-form")
         this.isProcessing = false
         this.formValidation.tweet.error = false
-        this.formValidation.disabledBtn = false
       } catch (error) {
         console.log(error)
         this.isProcessing = false

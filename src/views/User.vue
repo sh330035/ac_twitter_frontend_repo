@@ -2,14 +2,17 @@
   <div class="user-page">
     <section class="center-view">
       <page-name-banner :user="user" />
+      <ScaleLoader :is-loading="isLoading"/>
       <profile-card
+        v-show="!isLoading"
         :initial-user="user"
         @after-toggle-notification="afterToggleNotification"
         @after-toggle-isFollowed="afterToggleIsFollowed"
         @show-setting-form="afterShowSettingForm"
       />
-      <feeds-nav-pills />
+      <feeds-nav-pills v-show="!isLoading" />
       <user-feed-list
+        v-show="!isLoading"
         :initial-user="user"
         :current-feeds="currentFeeds"
         :initial-feeds="feeds"
@@ -46,6 +49,7 @@ import ProfileEditModal from "../components/ProfileEditModal.vue";
 import PopularUsersCard from "../components/PopularUsersCard.vue";
 import ReplyModal from "../components/ReplyModel.vue";
 import Toast from "../components/AlertToast.vue";
+import ScaleLoader from "../components/ScaleLoader.vue"
 import { mapState } from "vuex";
 import usersAPI from "../api/users.js";
 
@@ -60,6 +64,7 @@ export default {
     PopularUsersCard,
     ReplyModal,
     Toast,
+    ScaleLoader,
   },
   data() {
     return {
@@ -76,6 +81,7 @@ export default {
         dataStatus: "",
       },
       isProcessing: false,
+      isLoading: true,
     };
   },
   beforeRouteUpdate(to, from, next) {
@@ -150,7 +156,6 @@ export default {
       }
     },
     async fetchFeedsData(userId, feedsType) {
-      // const userId = this.$route.params.id;
       // 取得使用者推文紀錄
       if (feedsType === "tweets") {
         try {
@@ -179,13 +184,16 @@ export default {
               Avatar: User.avatar,
               Name: User.name,
               Account: User.account,
+              LinkAccountId: User.id,
             };
           });
+          this.isLoading= false
         } catch (error) {
           console.log(error);
           this.ToastMessage.message = `無法取得推文資料，請稍後再試`;
           this.ToastMessage.dataStatus = "";
           this.ToastMessage.dataStatus = "error";
+          this.isLoading= false
         }
         // 取得使用者回文紀錄
       } else if (feedsType === "reply") {
@@ -211,6 +219,7 @@ export default {
               Avatar: User.avatar,
               Name: User.name,
               Account: User.account,
+              LinkAccountId: User.id,
             };
           });
         } catch (error) {
@@ -237,6 +246,7 @@ export default {
               Avatar: Tweet.User.avatar,
               Name: Tweet.User.name,
               Account: Tweet.User.account,
+              LinkAccountId: Tweet.User.id,
             };
           });
         } catch (error) {
@@ -397,6 +407,7 @@ export default {
     },
   },
   created() {
+    this.isLoading = true
     const { id: userId } = this.$route.params;
     const feedsType = this.$route.query.feeds;
     this.fetchUserData(userId);
