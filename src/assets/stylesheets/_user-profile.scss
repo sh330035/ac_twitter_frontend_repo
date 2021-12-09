@@ -134,7 +134,7 @@
     line-height: 22px;
     &.active {
       border-bottom: 2px solid $ac-orange;
-      color: $text-black;
+      color: $ac-orange;
     }
   }
 }
@@ -197,6 +197,7 @@
       }
       &__social-count {
         width: 100%;
+        padding-top: 8px;
         display: flex;
         gap: 50px;
         font-size: 13px;
