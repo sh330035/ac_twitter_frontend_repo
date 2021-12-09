@@ -46,6 +46,8 @@
     }
     &__user {
       align-items: flex-start;
+      display: flex;
+      flex-direction: column;
       &__name {
         text-align: start;
         &:hover {
