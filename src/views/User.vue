@@ -150,7 +150,6 @@ export default {
       }
     },
     async fetchFeedsData(userId, feedsType) {
-      // const userId = this.$route.params.id;
       // 取得使用者推文紀錄
       if (feedsType === "tweets") {
         try {
@@ -179,6 +178,7 @@ export default {
               Avatar: User.avatar,
               Name: User.name,
               Account: User.account,
+              LinkAccountId: User.id,
             };
           });
         } catch (error) {
@@ -211,6 +211,7 @@ export default {
               Avatar: User.avatar,
               Name: User.name,
               Account: User.account,
+              LinkAccountId: User.id,
             };
           });
         } catch (error) {
@@ -237,6 +238,7 @@ export default {
               Avatar: Tweet.User.avatar,
               Name: Tweet.User.name,
               Account: Tweet.User.account,
+              LinkAccountId: Tweet.User.id,
             };
           });
         } catch (error) {
