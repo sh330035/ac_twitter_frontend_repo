@@ -61,6 +61,10 @@ export default {
   },
   created() {
     this.fetchTweetsData();
+    // 首頁自動刷新功能 (每30秒)
+    setInterval(() => {
+      this.fetchTweetsData();
+    }, 30000);
   },
   computed: {
     ...mapState(["isRenderTweet"]),
@@ -78,6 +82,7 @@ export default {
       try {
         const { data } = await newestTweetsAPI.getNewestTweets();
         this.tweets = data;
+        console.log("fetch Tweets");
       } catch (error) {
         console.log(error);
       }
