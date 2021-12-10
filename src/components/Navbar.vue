@@ -10,8 +10,26 @@
           <h2 class="navbar_link_text">首頁</h2>
         </div>
       </router-link>
+      <router-link to="/notice" class="link navbar_link_notice">
+        <div class="navbar_link_content">
+          <div class="navbar_link_icon navbar_link_icon_notice"></div>
+          <h2 class="navbar_link_text">通知</h2>
+        </div>
+      </router-link>
+      <router-link to="/chatroom" class="link navbar_link_chatroom">
+        <div class="navbar_link_content">
+          <div class="navbar_link_icon navbar_link_icon_chatroom"></div>
+          <h2 class="navbar_link_text">公開聊天室</h2>
+        </div>
+      </router-link>
+      <router-link to="/messages" class="link navbar_link_messages">
+        <div class="navbar_link_content">
+          <div class="navbar_link_icon navbar_link_icon_messages"></div>
+          <h2 class="navbar_link_text">私人訊息</h2>
+        </div>
+      </router-link>
       <router-link
-        :to="{ name: 'user', params: { id: this.$store.state.currentUser.id } }"
+        :to="{ name: 'user', params: { id: currentUser.id } }"
         class="link navbar_link_user-page"
       >
         <div class="navbar_link_content">

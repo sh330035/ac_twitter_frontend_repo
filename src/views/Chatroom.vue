@@ -1,7 +1,7 @@
 <template>
   <div class="notice">
     <section class="center-view">
-      <h1>Chatroom</h1>
+      <LoginUser />
     </section>
     <section class="right-room">
       <h1>Chatroom</h1>
@@ -10,8 +10,9 @@
 </template>
 
 <script>
+import LoginUser from "../components/LoginUser.vue";
 export default {
   name: "Chatroom",
-  components: {},
+  components: { LoginUser },
 };
 </script>
