@@ -1,16 +1,18 @@
 <template>
-  <div class="page-name-banner">
-    <div class="banner">
-      <div class="banner__other-page d-flex">
-        <span class="banner__other-page__info">
-          <h2>上線使用者 ({{ userCount }})</h2>
-        </span>
+  <section class="login-users">
+    <div class="page-name-banner">
+      <div class="banner">
+        <div class="banner__other-page d-flex">
+          <span class="banner__other-page__info">
+            <h2>上線使用者 ({{ userCount }})</h2>
+          </span>
+        </div>
+      </div>
+      <div class="login-user">
+        <div class="login-user__list"></div>
       </div>
     </div>
-    <div class="login-user">
-      <div class="login-user__list"></div>
-    </div>
-  </div>
+  </section>
 </template>
 
 <script>
