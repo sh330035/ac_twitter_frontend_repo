@@ -3,10 +3,16 @@ $home-url: url(../images/home.svg);
 $person-url: url(../images/person.svg);
 $setting-url: url(../images/setting.svg);
 $logout-url: url(../images/logout.svg);
+$notice-url: url(../images/notice.svg);
+$mail-url: url(../images/mail.svg);
 
 $home-orange-url: url(../images/home_orange.svg);
 $person-orange-url: url(../images/person_orange.svg);
 $setting-orange-url: url(../images/setting_orange.svg);
+$notice-orange-url: url(../images/notice_orange.svg);
+$mail-orange-url: url(../images/mail_orange.svg);
+
+$new-point: url(../images/orange_point.svg);
 
 .navbar {
   padding-left: 30px;
@@ -38,13 +44,30 @@ $setting-orange-url: url(../images/setting_orange.svg);
       margin-left: 12px;
       margin-bottom: 20px;
       display: flex;
+      position: relative;
     }
     &_icon {
       width: 24px;
       height: 24px;
       background-size: 100% 100%;
+      &_new {
+        width: 8px;
+        height: 8px;
+        background-image: $new-point;
+        position: absolute;
+        left: 20px;
+      }
       &_home-page {
         background-image: $home-url;
+      }
+      &_notice {
+        background-image: $notice-url;
+      }
+      &_chatroom {
+        background-image: $mail-url;
+      }
+      &_messages {
+        background-image: $mail-url;
       }
       &_user-page {
         background-image: $person-url;
@@ -72,6 +95,13 @@ $setting-orange-url: url(../images/setting_orange.svg);
         cursor: pointer;
       }
     }
+    :hover {
+      .navbar_link {
+        &_text {
+          opacity: 0.7;
+        }
+      }
+    }
     .active {
       .navbar_link {
         &_icon {
@@ -84,9 +114,19 @@ $setting-orange-url: url(../images/setting_orange.svg);
           &_setting-page {
             background-image: $setting-orange-url;
           }
+          &_notice {
+            background-image: $notice-orange-url;
+          }
+          &_chatroom {
+            background-image: $mail-orange-url;
+          }
+          &_messages {
+            background-image: $mail-orange-url;
+          }
         }
         &_text {
           color: $ac-orange;
+          opacity: 1;
         }
       }
     }
