@@ -59,6 +59,26 @@ const routes = [
     component: () => import('../views/Setting.vue')
   },
   {
+    path: '/chatroom',
+    name: 'chatroom',
+    component: () => import('../views/Chatroom.vue')
+  },
+  {
+    path: '/messages',
+    name: 'messages',
+    component: () => import('../views/Messages.vue')
+  },
+  {
+    path: '/messages/:id',
+    name: 'messages-to-user',
+    component: () => import('../views/Messages.vue')
+  },
+  {
+    path: '/notice',
+    name: 'notice',
+    component: () => import('../views/Notice.vue')
+  },
+  {
     path: '/admin',
     name: 'admin-root',
     redirect: '/admin/login'
