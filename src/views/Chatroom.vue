@@ -1,17 +1,21 @@
 <template>
-  <div class="notice">
+  <div class="chatroom">
     <section class="center-view">
-      <h1>Chatroom</h1>
-    </section>
-    <section class="right-room">
-      <h1>Chatroom</h1>
+      <login-users />
+      <chat-window />
     </section>
   </div>
 </template>
 
 <script>
+import LoginUsers from '../components/chatRoom/LoginUsers.vue'
+import ChatWindow from '../components/chatRoom/ChatWindow.vue'
+
 export default {
   name: "Chatroom",
-  components: {},
+  components: {
+    LoginUsers,
+    ChatWindow
+  },
 };
 </script>
