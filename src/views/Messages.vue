@@ -1,17 +1,21 @@
 <template>
-  <div class="notice">
+  <div class="messages-page chat-feature-page">
     <section class="center-view">
-      <h1>Message</h1>
-    </section>
-    <section class="right-room">
-      <h1>Message</h1>
+      <message-inbox />
+      <message-window />
     </section>
   </div>
 </template>
 
 <script>
+import MessageInbox from '../components/chatRoom/MessageInbox.vue'
+import MessageWindow from '../components/chatRoom/MessageWindow.vue'
+
 export default {
   name: "Message",
-  components: {},
+  components: {
+    MessageInbox,
+    MessageWindow
+  },
 };
 </script>
