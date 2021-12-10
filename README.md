@@ -45,6 +45,9 @@ git clone -b main https://github.com/sh330035/twitter-frontend
 
 ### Step 2 . Project Setup
 - Install dependencies
+```bash
+cd twitter-frontend
+```
 
 ```bash
 npm install
@@ -60,9 +63,6 @@ const baseURL = 'https://....' // modify this line
 ### Step 3. Project Run
 
 - Run Server  (若資料載於 local，則需同時啟動後端伺服器)
-```bash
-cd twitter-frontend
-```
 
 ```bash
 npm run serve
