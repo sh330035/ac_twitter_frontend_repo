@@ -128,8 +128,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.popular__card__user__name {
-  flex-wrap: wrap;
-}
-</style>
