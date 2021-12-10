@@ -8,14 +8,14 @@
 </template>
 
 <script>
-import LoginUsers from '../components/chatRoom/LoginUsers.vue'
-import ChatWindow from '../components/chatRoom/ChatWindow.vue'
+import LoginUsers from "../components/chatRoom/LoginUsers.vue";
+import ChatWindow from "../components/chatRoom/ChatWindow.vue";
 
 export default {
   name: "Chatroom",
   components: {
     LoginUsers,
-    ChatWindow
+    ChatWindow,
   },
 };
 </script>
