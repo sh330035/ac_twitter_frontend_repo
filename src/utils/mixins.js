@@ -21,6 +21,17 @@ export const timeFormatFilter = {
   },
 }
 
+export const timeFormatToShortFilter = {
+  filters: {
+    timeFormatToShort(datetime) {
+      // setting language as Traditional Chinese
+      moment.locale('zh-tw')
+      // setting time format
+      return datetime ? moment(datetime).format('a h:mm・MMMDo') : '-'
+    },
+  },
+}
+
 export const accountFilter = {
   filters: {
     accountTag(account) {
