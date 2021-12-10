@@ -1,5 +1,5 @@
 <template>
-  <div class="messages">
+  <div class="messages-page chat-feature-page">
     <section class="center-view">
       <message-inbox />
       <message-window />

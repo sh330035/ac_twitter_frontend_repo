@@ -1,5 +1,5 @@
 <template>
-  <div class="chatroom">
+  <div class="chatroom-page chat-feature-page">
     <section class="center-view">
       <login-users />
       <chat-window />

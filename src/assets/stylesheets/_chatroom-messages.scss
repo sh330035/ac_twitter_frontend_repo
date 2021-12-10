@@ -1,0 +1,41 @@
+// Basic Setting for Chatting feature
+.chat-feature-page {
+  section.center-view {
+    display: flex;
+    flex-direction: row;
+    .login-users, .message-inbox {
+      border-right: 1px solid $border-gray;
+      border-left: 1px solid $border-gray;
+      flex-basis: 390px;
+      min-width: 220px;
+      // flex-shrink: 0;
+    }
+    .chat-window, .message-window {
+      flex-grow: 1;
+      min-width: 250px;
+    }
+  }
+}
+
+// Chatroom
+.chatroom-page {
+  .login-users {
+    background-color: wheat;
+    // ......
+  }
+
+  .chat-window {
+    background-color: lightblue;
+    // ....
+  }
+}
+
+.messages-page {
+  .message-inbox {
+    background-color: wheat;
+  }
+
+  .message-window {
+    background-color: lightblue;
+  }
+}
