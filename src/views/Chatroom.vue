@@ -1,5 +1,5 @@
 <template>
-  <div class="notice">
+  <div class="chatroom">
     <section class="center-view">
       <LoginUser />
     </section>
