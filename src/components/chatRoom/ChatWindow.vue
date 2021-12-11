@@ -3,12 +3,6 @@
     <div class="chatroom-banner">
       <h2>公開聊天室</h2>
     </div>
-
-    <!-- 測試用 -->
-    <!-- <button @click.stop.prevent="emitTest" class="btn">
-      Click here to emit Something with socket.io
-    </button> -->
-
     <div class="message-container">
       <!-- v-for START -->
       <div
@@ -85,7 +79,7 @@
           class="chat-input-box__form__input"
           placeholder="輸入訊息 ..."
         />
-        <button type="submit" class="chat-input-box__form__send-btn"></button>
+        <button :disabled="isProcessing" type="submit" class="chat-input-box__form__send-btn"></button>
       </form>
     </div>
   </section>
@@ -159,7 +153,7 @@ const dummyData = {
   ]
 }
 
-// chatBubbles 的資料格式：
+// chatBubbles 處理後的資料格式：
 // chatBubbles = [
 //   { bubbleType: 'message',
 //     data: {
@@ -189,6 +183,7 @@ export default {
     return {
       chatBubbles: [],
       chatInput: '',
+      isProcessing: false,
     }
   },
   computed: {
@@ -261,32 +256,27 @@ export default {
     },
     handleFormSubmit() {
       console.log('送出訊息', this.chatInput)
-      const newMessage = {
-        bubbleType: 'message',
-        data: {
-          eventId: -1,
-          content: this.chatInput,
-          createdAt: new Date(),
-          user: {
-            avatar: this.currentUser.avatar,
-            id: this.currentUser.id
+      this.isProcessing = true
+      // form validation
+      if (this.chatInput.trim().length > 0) {
+        const newMessage = {
+          bubbleType: 'message',
+          data: {
+            eventId: -1,
+            content: this.chatInput,
+            createdAt: new Date(),
+            user: {
+              avatar: this.currentUser.avatar,
+              id: this.currentUser.id
+            }
           }
         }
-      }
-      this.chatBubbles.push(newMessage)
-      this.chatInput = ''
-      // socket 測試用！
-      this.emitTest()
+        this.chatBubbles.push(newMessage)
+        this.$emit('after-form-submit', {input: this.chatInput} )
+        this.chatInput = ''
+      } 
+      this.isProcessing = false
     },
-    emitTest() {
-      console.log('emit')
-      this.$socket.emit("onlineHint", {
-        userName: 'Hi!'
-      })
-      this.$socket.subscribe('onlineHint', username => {
-        console.log(username)
-      })
-    }
   }
 }
 </script>

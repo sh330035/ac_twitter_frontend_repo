@@ -7,24 +7,39 @@ import '@fortawesome/fontawesome-free/js/all.js'
 import store from './store'
 import VueSocketIO from 'vue-socket.io'
 
+// const token = localStorage.getItem('token')
+
 // user Socket.io :
 Vue.use(new VueSocketIO({
   debug: true,
   // // connection : Websocket server url or socket.io-client instance
   // connection: 'https://alphitter-api-server.herokuapp.com/api/',
-  connection: 'http//:localhost:3000/',
-  vuex: {
-    store,
-    actionPrefix: 'SOCKET_',
-    mutationPrefix: 'SOCKET_'
-  },
-  // options: {
-  //   path: 'http://localhost:3000/' } //Optional options
+  connection: ('http://localhost:3000/'
+  ),
+  // vuex: {
+  //   store,
+  //   actionPrefix: 'SOCKET_',
+  //   mutationPrefix: 'SOCKET_'
+  // },
 }))
 
 Vue.config.productionTip = false
 
 new Vue({
+  // sockets: {
+  //   connecting() {
+  //     console.log('正在連線')
+  //   },
+  //   disconnect() {
+  //     console.log("Socket 離線")
+  //   },
+  //   connect_failed() {
+  //     console.log('連線失敗')
+  //   },
+  //   connect() {
+  //     console.log('socket connected')
+  //   }
+  // },
   router,
   store,
   render: (h) => h(App)
