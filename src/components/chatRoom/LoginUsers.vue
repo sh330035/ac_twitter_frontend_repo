@@ -125,6 +125,9 @@ export default {
       // API 串接
       this.loginUsers = dummyData.userData;
     },
+    toUserPage(userId) {
+      this.$router.push({ name: "user", params: { id: userId } });
+    },
   },
 };
 </script>

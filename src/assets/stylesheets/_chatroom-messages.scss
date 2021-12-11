@@ -1,4 +1,6 @@
 // Basic Setting for Chatting feature
+$inbox-url: url(../images/message_inbox.svg);
+
 .chat-feature-page {
   section.center-view {
     display: flex;
@@ -53,7 +55,58 @@
 
 .messages-page {
   .message-inbox {
-    background-color: wheat;
+    &_banner {
+      justify-content: space-between;
+    }
+    &_personal {
+      &_list {
+        border-bottom: 1px solid $border-gray;
+        box-sizing: border-box;
+        > a {
+          border-right: 3px solid rgba(0, 0, 0, 0);
+        }
+        .active {
+          border-right: 3px solid $ac-orange;
+        }
+      }
+    }
+    &_icon {
+      width: 22px;
+      height: 21px;
+      background-size: 100% 100%;
+      background-image: $inbox-url;
+      cursor: pointer;
+    }
+    &_avatar {
+      margin: 15px 10px 15px 15px;
+      object-fit: cover;
+      @extend %avatar-hover-effect;
+    }
+    &_name {
+      margin-top: 15px;
+      flex-grow: 1;
+      max-height: 25px;
+      position: relative;
+      .user-name-text {
+        margin-right: 5px;
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+      &_date {
+        position: absolute;
+        right: 20px;
+      }
+    }
+    &_content_text {
+      text-align: start;
+      /* 隱藏超過第二行的字，以...呈現 */
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   }
 
   .message-window {
