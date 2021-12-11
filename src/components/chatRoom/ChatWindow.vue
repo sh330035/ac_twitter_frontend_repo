@@ -92,72 +92,77 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { timeFormatToShortFilter } from '../../utils/mixins.js'
+import { mapState } from "vuex";
+import { timeFormatToShortFilter } from "../../utils/mixins.js";
 
 const dummyData = {
   onlineHint: {
     eventId: 1,
     id: 5,
-    name: 'Hana',
-    account: 'user80',
-    avatar: 'https://randomuser.me/api/portraits/women/36.jpg'
+    name: "Hana",
+    account: "user80",
+    avatar: "https://randomuser.me/api/portraits/women/36.jpg",
   },
   message: {
     eventId: 2,
-    content: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.',
+    content:
+      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
     createdAt: new Date(),
     user: {
       id: 7,
-      avatar: 'https://randomuser.me/api/portraits/men/36.jpg'
-    }
+      avatar: "https://randomuser.me/api/portraits/men/36.jpg",
+    },
   },
   offlineHint: {
     eventId: 3,
     id: 10,
-    name: 'Adam',
-    account: 'user80',
-    avatar: 'https://randomuser.me/api/portraits/men/36.jpg'
+    name: "Adam",
+    account: "user80",
+    avatar: "https://randomuser.me/api/portraits/men/36.jpg",
   },
   historyMessages: [
     {
       chatId: 4,
-      content: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.',
+      content:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
       createdAt: new Date(),
       user: {
         id: 7,
-        avatar: 'https://randomuser.me/api/portraits/women/3.jpg'
-      }
+        avatar: "https://randomuser.me/api/portraits/women/3.jpg",
+      },
     },
     {
       chatId: 5,
-      content: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.',
+      content:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
       createdAt: new Date(),
       user: {
         id: 11,
-        avatar: 'https://randomuser.me/api/portraits/men/16.jpg'
-      }
+        avatar: "https://randomuser.me/api/portraits/men/16.jpg",
+      },
     },
     {
       chatId: 6,
-      content: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.',
+      content:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
       createdAt: new Date(),
       user: {
         id: 33,
-        avatar: 'https://randomuser.me/api/portraits/women/10.jpg'
-      }
+        avatar: "https://randomuser.me/api/portraits/women/10.jpg",
+      },
     },
     {
       chatId: 7,
-      content: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.',
+      content:
+        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
       createdAt: new Date(),
       user: {
         id: 25,
-        avatar: 'https://randomuser.me/api/portraits/men/6.jpg'
-      }
+        avatar: "https://randomuser.me/api/portraits/men/6.jpg",
+      },
     },
-  ]
-}
+  ],
+};
 
 // chatBubbles 的資料格式：
 // chatBubbles = [
@@ -188,105 +193,141 @@ export default {
   data() {
     return {
       chatBubbles: [],
-      chatInput: '',
-    }
+      chatInput: "",
+      message: [],
+    };
   },
   computed: {
-    ...mapState(['currentUser']),
+    ...mapState(["currentUser"]),
   },
   filters: {
     loginNotification(bubbleData) {
-      return bubbleData.status === 'online' ? bubbleData.name + ' 上線' : bubbleData.name + ' 下線'
+      return bubbleData.status === "online"
+        ? bubbleData.name + " 上線"
+        : bubbleData.name + " 下線";
       // {{ bubble.data.name }} {{ bubble.data.status === 'online' ? '上線' : '下線' }}
-    }
+    },
   },
   created() {
-    const userId = this.currentUser.id
-    this.fetchMessages(userId)
-    this.socketSubscribeOnlineHint()
-    this.socketSubscribeOfflineHint()
-    this.socketSubscribeGetMessage()
+    const userId = this.currentUser.id;
+    this.$socket.open();
+    console.log(this.$socket.connected);
+
+    this.fetchMessages(userId);
+    // this.socketSubscribeOnlineHint()
+    // this.socketSubscribeOfflineHint()
+    // this.socketSubscribeGetMessage()
+    // client receives the message
+    // this.sockets.subscribe("getMessage", (data) => {
+    //   this.messages.push({
+    //     id: data.id,
+    //     name: data.User.name,
+    //     message: data.content,
+    //     UserId: data.User.id,
+    //     time: data.createdAt,
+    //   });
+    // });
   },
   methods: {
     fetchMessages(userId) {
-      console.log(`現在的使用者 id-${userId}`)
-      const historyBubbles = dummyData.historyMessages.map(historyMessage => {
+      console.log(`現在的使用者 id-${userId}`);
+      console.log(this.$socket.connected);
+      const historyBubbles = dummyData.historyMessages.map((historyMessage) => {
         return {
-          bubbleType: 'message',
+          bubbleType: "message",
           data: {
             ...historyMessage,
-            eventId: historyMessage.chatId
-          }
-        }
-      })
+            eventId: historyMessage.chatId,
+          },
+        };
+      });
 
-      this.chatBubbles.push(...historyBubbles)
-      console.log(this.chatBubbles)
+      this.chatBubbles.push(...historyBubbles);
+      console.log(this.chatBubbles);
     },
-    // 暫時模仿 subscribe socket 得到有人上線的資訊
-    socketSubscribeOnlineHint() {
-      // 假設 onlineHint 一次只會回傳一筆 object 資料
-      const newStatusMessage = {
-        bubbleType: 'status',
-        data: {
-          ...dummyData.onlineHint,
-          status: 'online',
-        }
+    // client sends the message
+    send() {
+      if (this.message.match(/^\s+/) || !this.message) {
+        this.message = "";
+        return;
+      } else {
+        this.$socket.emit("getMessage", {
+          text: this.message,
+          UserId: this.currentUser.id,
+          name: this.currentUser.name,
+        });
+        this.message = "";
       }
-      this.chatBubbles.push(newStatusMessage)
-      console.log(this.chatBubbles)
     },
-    // 暫時模仿 subscribe socket 得到有人下線的資訊
-    socketSubscribeOfflineHint() {
-      // 假設 offlineHint 一次只會回傳一筆 object 資料
-      const newStatusMessage = {
-        bubbleType: 'status',
-        data: {
-          ...dummyData.offlineHint,
-          status: 'offline',
-        }
-      }
-      this.chatBubbles.push(newStatusMessage)
-      console.log(this.chatBubbles)
+    intoChatroom() {
+      console.log("123");
+      this.$socket.open();
     },
-    // 暫時模仿 subscribe socket 得到別人發送的新訊息
-    socketSubscribeGetMessage() {
-      // 假設 offlineHint 一次只會回傳一筆 object 資料
-      const newMessage = {
-        bubbleType: 'message',
-        data: dummyData.message
-      }
-      this.chatBubbles.push(newMessage)
-      console.log(this.chatBubbles)
-    },
+
+    // // 暫時模仿 subscribe socket 得到有人上線的資訊
+    // socketSubscribeOnlineHint() {
+    //   // 假設 onlineHint 一次只會回傳一筆 object 資料
+    //   const newStatusMessage = {
+    //     bubbleType: 'status',
+    //     data: {
+    //       ...dummyData.onlineHint,
+    //       status: 'online',
+    //     }
+    //   }
+    //   this.chatBubbles.push(newStatusMessage)
+    //   console.log(this.chatBubbles)
+    // },
+    // // 暫時模仿 subscribe socket 得到有人下線的資訊
+    // socketSubscribeOfflineHint() {
+    //   // 假設 offlineHint 一次只會回傳一筆 object 資料
+    //   const newStatusMessage = {
+    //     bubbleType: 'status',
+    //     data: {
+    //       ...dummyData.offlineHint,
+    //       status: 'offline',
+    //     }
+    //   }
+    //   this.chatBubbles.push(newStatusMessage)
+    //   console.log(this.chatBubbles)
+    // },
+    // // 暫時模仿 subscribe socket 得到別人發送的新訊息
+    // socketSubscribeGetMessage() {
+    //   // 假設 offlineHint 一次只會回傳一筆 object 資料
+    //   const newMessage = {
+    //     bubbleType: 'message',
+    //     data: dummyData.message
+    //   }
+    //   this.chatBubbles.push(newMessage)
+    //   console.log(this.chatBubbles)
+    // },
     handleFormSubmit() {
-      console.log('送出訊息', this.chatInput)
+      console.log("送出訊息", this.chatInput);
       const newMessage = {
-        bubbleType: 'message',
+        bubbleType: "message",
         data: {
           eventId: -1,
           content: this.chatInput,
           createdAt: new Date(),
           user: {
             avatar: this.currentUser.avatar,
-            id: this.currentUser.id
-          }
-        }
-      }
-      this.chatBubbles.push(newMessage)
-      this.chatInput = ''
+            id: this.currentUser.id,
+          },
+        },
+      };
+      this.chatBubbles.push(newMessage);
+      this.chatInput = "";
       // socket 測試用！
-      this.emitTest()
+      this.emitTest();
     },
     emitTest() {
-      console.log('emit')
+      console.log("emit");
       this.$socket.emit("onlineHint", {
-        userName: 'Hi!'
-      })
-      this.$socket.subscribe('onlineHint', username => {
-        console.log(username)
-      })
-    }
-  }
-}
+        userName: "Hi!",
+      });
+      this.$socket.subscribe("onlineHint", (username) => {
+        console.log(username);
+      });
+    },
+  },
+};
 </script>
