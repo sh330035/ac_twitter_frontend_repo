@@ -9,7 +9,20 @@
 
 %tweet-block-hover-effect {
   &:hover {
-      background-color: $twitter-hover-bg;
-      transition: all 0.2s ease-in-out;
-    }
+    background-color: $twitter-hover-bg;
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+%hidden-scrollbar-setting {
+  // scrollbar setting - make scrollbar transparent */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &::-webkit-scrollbar {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
 }
