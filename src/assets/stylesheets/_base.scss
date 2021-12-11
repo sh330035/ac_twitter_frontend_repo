@@ -129,6 +129,18 @@ h2 {
   color: $text-gray;
 }
 
+.black-mediun-15 {
+  font-size: 15px;
+  font-weight: 500;
+  color: $text-black;
+}
+
+.gray-mediun-15 {
+  font-size: 15px;
+  font-weight: 500;
+  color: $text-gray;
+}
+
 // 按鈕設定
 .btn {
   width: 100%;
@@ -155,5 +167,11 @@ h2 {
 .avatar-50 {
   height: 50px;
   width: 50px;
+  border-radius: 50px;
+}
+
+.avatar-30 {
+  height: 30px;
+  width: 30px;
   border-radius: 50px;
 }
