@@ -1,0 +1,20 @@
+.notice-list {
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid $border-gray;
+  &_avatar {
+    margin: 10px 0px 10px 15px;
+    object-fit: cover;
+    @extend %avatar-hover-effect;
+  }
+  &_title {
+    margin-left: 15px;
+    margin-bottom: 15px;
+  }
+  &_content {
+    text-align: start;
+    width: 80%;
+    margin-left: 15px;
+    margin-bottom: 15px;
+  }
+}

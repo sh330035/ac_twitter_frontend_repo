@@ -13,18 +13,21 @@
       <router-link to="/notice" class="link navbar_link_notice">
         <div class="navbar_link_content">
           <div class="navbar_link_icon navbar_link_icon_notice"></div>
+          <div class="navbar_link_icon_new" v-if="isNewNotice"></div>
           <h2 class="navbar_link_text">通知</h2>
         </div>
       </router-link>
       <router-link to="/chatroom" class="link navbar_link_chatroom">
         <div class="navbar_link_content">
           <div class="navbar_link_icon navbar_link_icon_chatroom"></div>
+          <div class="navbar_link_icon_new" v-if="isNewChat"></div>
           <h2 class="navbar_link_text">公開聊天室</h2>
         </div>
       </router-link>
       <router-link to="/messages" class="link navbar_link_messages">
         <div class="navbar_link_content">
           <div class="navbar_link_icon navbar_link_icon_messages"></div>
+          <div class="navbar_link_icon_new" v-if="isNewMessage"></div>
           <h2 class="navbar_link_text">私人訊息</h2>
         </div>
       </router-link>
@@ -104,6 +107,10 @@ export default {
         message: "",
         dataStatus: "",
       },
+      // 新訊息通知 ( 串API寫入資料 )
+      isNewNotice: true,
+      isNewChat: false,
+      isNewMessage: true,
     };
   },
   computed: {
