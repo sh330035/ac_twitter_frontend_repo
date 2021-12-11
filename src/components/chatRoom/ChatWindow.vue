@@ -3,17 +3,33 @@
     <div class="chatroom-banner">
       <h2>公開聊天室</h2>
     </div>
+
+    <!-- 測試用 -->
+    <!-- <button @click.stop.prevent="emitTest" class="btn">
+      Click here to emit Something with socket.io
+    </button> -->
+
     <div class="message-container">
       <!-- v-for START -->
-      <div v-for="bubble in chatBubbles" :key="bubble.data.eventId" class="message-container__chat-bubble">
+      <div
+        v-for="bubble in chatBubbles"
+        :key="bubble.data.eventId"
+        class="message-container__chat-bubble"
+      >
         <!-- 上線/下線狀態更新 -->
-        <div v-if="bubble.bubbleType === 'status'" class="message-container__chat-bubble__status-pill">
-          {{ bubble.data | loginNotification}}
+        <div
+          v-if="bubble.bubbleType === 'status'"
+          class="message-container__chat-bubble__status-pill"
+        >
+          {{ bubble.data | loginNotification }}
         </div>
         <!-- 回覆訊息 -->
-        <template v-if="bubble.bubbleType === 'message'" > 
+        <template v-if="bubble.bubbleType === 'message'">
           <!-- 他人訊息 -->
-          <div v-if="bubble.data.user.id !== currentUser.id" class="message-container__chat-bubble__received-message">
+          <div
+            v-if="bubble.data.user.id !== currentUser.id"
+            class="message-container__chat-bubble__received-message"
+          >
             <img
               :src="bubble.data.user.avatar"
               class="message-container__chat-bubble__received-message__avatar"
@@ -40,7 +56,10 @@
             </div>
           </div>
           <!-- 本人送出訊息 -->
-          <div v-if="bubble.data.user.id === currentUser.id" class="message-container__chat-bubble__message-sent">
+          <div
+            v-if="bubble.data.user.id === currentUser.id"
+            class="message-container__chat-bubble__message-sent"
+          >
             <div
               class="message-container__chat-bubble__message-sent__chat-content"
             >
@@ -55,7 +74,11 @@
       <!-- v-for END -->
     </div>
     <div class="chat-input-box">
-      <form @submit.stop.prevent="handleFormSubmit" action="" class="chat-input-box__form">
+      <form
+        @submit.stop.prevent="handleFormSubmit"
+        action=""
+        class="chat-input-box__form"
+      >
         <input
           v-model="chatInput"
           type="text"
@@ -172,7 +195,7 @@ export default {
     ...mapState(['currentUser']),
   },
   filters: {
-    loginNotification (bubbleData) {
+    loginNotification(bubbleData) {
       return bubbleData.status === 'online' ? bubbleData.name + ' 上線' : bubbleData.name + ' 下線'
       // {{ bubble.data.name }} {{ bubble.data.status === 'online' ? '上線' : '下線' }}
     }
@@ -181,7 +204,7 @@ export default {
     const userId = this.currentUser.id
     this.fetchMessages(userId)
     this.socketSubscribeOnlineHint()
-    this.socketSubscribeOfflineHint() 
+    this.socketSubscribeOfflineHint()
     this.socketSubscribeGetMessage()
   },
   methods: {
@@ -236,7 +259,7 @@ export default {
       this.chatBubbles.push(newMessage)
       console.log(this.chatBubbles)
     },
-    handleFormSubmit(){
+    handleFormSubmit() {
       console.log('送出訊息', this.chatInput)
       const newMessage = {
         bubbleType: 'message',
@@ -252,6 +275,17 @@ export default {
       }
       this.chatBubbles.push(newMessage)
       this.chatInput = ''
+      // socket 測試用！
+      this.emitTest()
+    },
+    emitTest() {
+      console.log('emit')
+      this.$socket.emit("onlineHint", {
+        userName: 'Hi!'
+      })
+      this.$socket.subscribe('onlineHint', username => {
+        console.log(username)
+      })
     }
   }
 }
