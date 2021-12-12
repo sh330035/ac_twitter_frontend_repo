@@ -38,26 +38,9 @@
 import { accountFilter } from "../../utils/mixins";
 import { mapState } from 'vuex'
 
-const dummyData = {
-  usersData: [
-    {
-      id: 8,
-      name: "Apple",
-      account: "apple",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-  ],
-};
-
 export default {
   name: "Login-users",
   mixins: [accountFilter],
-  // 感覺這邊應該用 props 的方式
-  // props: {
-  //   chatBubbles: {
-  //     type: Array,
-  //   },
-  // },
   data() {
     return {
       loginUsers: [
@@ -80,7 +63,7 @@ export default {
           name: this.currentUser.name,
           avatar: this.currentUser.avatar
         }]
-    this.fetchLoginUsers();
+    // this.fetchLoginUsers();
      // 上線發出訊息報到
     this.sockets.subscribe('onlineHint', profile => {
       this.loginUsers.push(profile)
@@ -90,14 +73,15 @@ export default {
     })
   },
   methods: {
-    // 目前為假資料
-    fetchLoginUsers() {
-      // API 串接
-      dummyData.usersData.forEach(user => {
-        this.loginUsers.push(user)
-      })
-      // this.loginUsers.push(...dummyData.userData);
-    },
+    // fetchLoginUsers() {
+    // this.sockets.subscribe('onlineMember', members => {
+    //   members.forEach(member=> {
+    //     if (member.id != this.currentUser.id) {
+    //       this.loginUsers.push(member)
+    //     }
+    //   })
+    // })
+    // },
     toUserPage(userId) {
       this.$router.push({ name: "user", params: { id: userId } });
     },
@@ -105,8 +89,10 @@ export default {
   sockets: {
     onlineHint: () => {},
     offlineHint: () => {
-      console.log('login user filter')
     },
+    // onlineMember: (members) => {
+    //   console.log('已上線的用戶',members)
+    // }
   }
 };
 </script>

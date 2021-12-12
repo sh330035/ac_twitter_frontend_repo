@@ -69,6 +69,8 @@ export default {
     ...mapState(["currentUser"]),
   },
   created() {
+    // 發出 hint 訊息向 socket 報到
+    this.$socket.emit('onlineHint', { name: this.currentUser.name, user: { id: this.currentUser.id, account: this.currentUser.account, avatar: this.currentUser.avatar } })
     // 獲取歷史訊息 
     this.fetchHistoryMessages()
     // 接收所有人的發出的 上線 訊息

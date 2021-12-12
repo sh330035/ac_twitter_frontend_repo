@@ -146,5 +146,8 @@ export default {
       this.$router.push("/login")
     },
   },
+  destroyed () {
+    this.$socket.emit('offlineHint', { name: this.currentUser.name, user: { id: this.currentUser.id, account: this.currentUser.account, avatar: this.currentUser.avatar } })
+  },
 };
 </script>
