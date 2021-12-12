@@ -1,71 +1,77 @@
 <template>
-  <section class="chat-window">
+  <section class="chat-window d-flex-col">
     <div class="chatroom-banner">
       <h2>公開聊天室</h2>
     </div>
-    <div class="message-container">
-      <!-- v-for START -->
-      <div
-        v-for="bubble in chatBubbles"
-        :key="bubble.data.eventId"
-        class="message-container__chat-bubble"
-      >
-        <!-- 上線/下線狀態更新 -->
+    <div class="wrapper">
+      <div class="message-container">
+        <!-- v-for START -->
         <div
-          v-if="bubble.bubbleType === 'status'"
-          class="message-container__chat-bubble__status-pill"
+          v-for="bubble in chatBubbles"
+          :key="bubble.data.eventId"
+          class="message-container__chat-bubble"
         >
-          {{ bubble.data | loginNotification }}
-        </div>
-        <!-- 回覆訊息 -->
-        <template v-if="bubble.bubbleType === 'message'">
-          <!-- 他人訊息 -->
+          <!-- 上線/下線狀態更新 -->
           <div
-            v-if="bubble.data.User.id !== currentUser.id"
-            class="message-container__chat-bubble__received-message"
+            v-if="bubble.bubbleType === 'status'"
+            class="message-container__chat-bubble__status-pill"
           >
-            <img
-              :src="bubble.data.User.avatar"
-              class="message-container__chat-bubble__received-message__avatar"
-            />
+            {{ bubble.data | loginNotification }}
+          </div>
+          <!-- 回覆訊息 -->
+          <template v-if="bubble.bubbleType === 'message'">
+            <!-- 他人訊息 -->
             <div
-              class="
-                message-container__chat-bubble__received-message__info-wrapper
-              "
+              v-if="bubble.data.User.id !== currentUser.id"
+              class="message-container__chat-bubble__received-message"
+            >
+              <img
+                :src="bubble.data.User.avatar"
+                class="message-container__chat-bubble__received-message__avatar"
+              />
+              <div
+                class="
+                  message-container__chat-bubble__received-message__info-wrapper
+                "
+              >
+                <div
+                  class="
+                    message-container__chat-bubble__received-message__info-wrapper__chat-content
+                  "
+                >
+                  {{ bubble.data.content }}
+                </div>
+                <div
+                  class="
+                    message-container__chat-bubble__received-message__info-wrapper__time
+                  "
+                >
+                  {{ bubble.data.createdAt | timeFormatToShort }}
+                </div>
+              </div>
+            </div>
+            <!-- 本人送出訊息 -->
+            <div
+              v-if="bubble.data.User.id === currentUser.id"
+              class="message-container__chat-bubble__message-sent"
             >
               <div
                 class="
-                  message-container__chat-bubble__received-message__info-wrapper__chat-content
+                  message-container__chat-bubble__message-sent__chat-content
                 "
               >
                 {{ bubble.data.content }}
               </div>
-              <div
-                class="
-                  message-container__chat-bubble__received-message__info-wrapper__time
-                "
-              >
+              <div class="message-container__chat-bubble__message-sent__time">
                 {{ bubble.data.createdAt | timeFormatToShort }}
               </div>
             </div>
-          </div>
-          <!-- 本人送出訊息 -->
-          <div
-            v-if="bubble.data.User.id === currentUser.id"
-            class="message-container__chat-bubble__message-sent"
-          >
-            <div
-              class="message-container__chat-bubble__message-sent__chat-content"
-            >
-              {{ bubble.data.content }}
-            </div>
-            <div class="message-container__chat-bubble__message-sent__time">
-              {{ bubble.data.createdAt | timeFormatToShort }}
-            </div>
-          </div>
-        </template>
+          </template>
+        </div>
+
+        <!-- v-for END -->
       </div>
-      <!-- v-for END -->
+      <div class="message-container__space"></div>
     </div>
     <div class="chat-input-box">
       <form
@@ -90,82 +96,9 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 import { mapState } from "vuex";
 import { timeFormatToShortFilter } from "../../utils/mixins.js";
-const dummyData = {
-  onlineHint: {
-    eventId: 1,
-    id: 5,
-    name: "Hana",
-    account: "user80",
-    avatar: "https://randomuser.me/api/portraits/women/36.jpg",
-  },
-  message: {
-    eventId: 2,
-    content:
-      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
-    createdAt: new Date(),
-    user: {
-      id: 7,
-      avatar: "https://randomuser.me/api/portraits/men/36.jpg",
-    },
-  },
-  offlineHint: {
-    eventId: 3,
-    id: 10,
-    name: "Adam",
-    account: "user80",
-    avatar: "https://randomuser.me/api/portraits/men/36.jpg",
-  },
-  historyMessages: [
-    {
-      chatId: 4,
-      content:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
-      createdAt: new Date(),
-      user: {
-        id: 7,
-        avatar: "https://randomuser.me/api/portraits/women/3.jpg",
-      },
-    },
-    {
-      chatId: 5,
-      content:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
-      createdAt: new Date(),
-      user: {
-        id: 11,
-        avatar: "https://randomuser.me/api/portraits/men/16.jpg",
-      },
-    },
-    {
-      chatId: 6,
-      content:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
-      createdAt: new Date(),
-      user: {
-        id: 33,
-        avatar: "https://randomuser.me/api/portraits/women/10.jpg",
-      },
-    },
-    {
-      chatId: 7,
-      content:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
-      createdAt: new Date(),
-      user: {
-        id: 25,
-        avatar: "https://randomuser.me/api/portraits/men/6.jpg",
-      },
-    },
-  ],
-};
-=======
-import { mapState } from 'vuex'
-import { timeFormatToShortFilter } from '../../utils/mixins.js'
 
->>>>>>> f4d41ed9d989c59ad2c94ea5f0c6766ff1101efa
 // chatBubbles 處理後的資料格式：
 // chatBubbles = [
 //   { bubbleType: 'message',
@@ -197,13 +130,16 @@ export default {
     },
     isProcessing: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      chatInput: '',
-    }
+      chatInput: "",
+    };
+  },
+  mounted() {
+    this.scrollBottom();
   },
   computed: {
     ...mapState(["currentUser"]),
@@ -218,25 +154,31 @@ export default {
   },
   methods: {
     handleFormSubmit() {
-      console.log('送出訊息', this.chatInput)
+      console.log("送出訊息", this.chatInput);
       // form validation
       if (this.chatInput.trim().length > 0) {
-        const newMessage = {
-          bubbleType: "message",
-          data: {
-            eventId: -1,
-            content: this.chatInput,
-            createdAt: new Date(),
-            User: {
-              avatar: this.currentUser.avatar,
-              id: this.currentUser.id
-            }
-          }
-        }
-        this.chatBubbles.push(newMessage)
-        this.$emit('after-form-submit', {input: this.chatInput} )
-        this.chatInput = ''
-      } 
+        // const newMessage = {
+        //   bubbleType: "message",
+        //   data: {
+        //     eventId: -1,
+        //     content: this.chatInput,
+        //     createdAt: new Date(),
+        //     User: {
+        //       avatar: this.currentUser.avatar,
+        //       id: this.currentUser.id,
+        //     },
+        //   },
+        // };
+        // this.chatBubbles.push(newMessage);
+        this.$emit("after-form-submit", { input: this.chatInput });
+        this.chatInput = "";
+      }
+      this.scrollBottom();
+    },
+    // 讓卷軸置底
+    scrollBottom() {
+      let div = document.querySelector(".chat-window");
+      div.scrollTop = div.scrollHeight;
     },
   },
 };

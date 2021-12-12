@@ -54,8 +54,7 @@ const dummyData = {
     },
     {
       eventId: 5,
-      content:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, ratione. Distinctio accusamus quo, qui aliquam doloremque voluptates itaque cupiditate porro.",
+      content: "Lorem",
       createdAt: new Date(),
       User: {
         id: 11,
@@ -182,7 +181,12 @@ export default {
       console.log(`1 -- function -- view is going to sent ${input} to socket`);
       this.$socket.emit("getMessage", {
         content: input,
-        user: { id: 3, name: "JJJ", avatar: "...", account: "user123" },
+        user: {
+          id: this.currentUser.id,
+          name: this.currentUser.name,
+          avatar: this.currentUser.avatar,
+          account: this.currentUser.account,
+        },
       });
       this.isProcessing = false;
     },
@@ -194,7 +198,7 @@ export default {
           bubbleType: "message",
           data: {
             ...receivedData,
-            eventId: 5,
+            eventId: receivedData.id,
           },
         };
         this.chatBubbles.push(newMessage);

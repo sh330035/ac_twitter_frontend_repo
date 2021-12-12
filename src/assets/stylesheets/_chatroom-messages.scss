@@ -4,13 +4,13 @@ $inbox-url: url(../images/message_inbox.svg);
 .chat-feature-page {
   section.center-view {
     height: 100vh;
-    overflow: auto;
+    // overflow: auto;
     display: flex;
     flex-direction: row;
     .login-users,
     .message-inbox {
       height: 100%;
-      overflow: auto;
+      overflow-y: scroll;
       flex-basis: 390px;
       min-width: 220px;
       flex-shrink: 1;
@@ -19,7 +19,7 @@ $inbox-url: url(../images/message_inbox.svg);
     .chat-window,
     .message-window {
       height: 100%;
-      overflow: auto;
+      overflow-y: scroll;
       border-left: 1px solid $border-gray;
       flex: 1 1 0;
       min-width: 280px;
@@ -68,13 +68,18 @@ $inbox-url: url(../images/message_inbox.svg);
     }
 
     .message-container {
-      width: 100%;
       min-height: 100%;
-      margin-top: 75px ;
+      width: 100%;
       padding: 15px 15px 40px 15px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      overflow-y: scroll;
+      @extend %hidden-scrollbar-setting;
+
+      &__space {
+        height: 120px;
+      }
 
       &__chat-bubble {
         width: 100%;
@@ -116,6 +121,7 @@ $inbox-url: url(../images/message_inbox.svg);
             flex-direction: column;
             gap: 2px;
             &__chat-content {
+              width: fit-content;
               padding: 10px 15px;
               background-color: $chat-bubble-bg;
               border-radius: 25px 25px 25px 0;
@@ -154,7 +160,9 @@ $inbox-url: url(../images/message_inbox.svg);
     }
 
     .chat-input-box {
-      position: sticky;
+      width: 682px;
+      min-width: 280px;
+      position: fixed;
       bottom: 0px;
       z-index: 1;
       height: 55px;
@@ -269,7 +277,7 @@ $inbox-url: url(../images/message_inbox.svg);
     .message-container {
       width: 100%;
       min-height: 100%;
-      margin-top: 75px ;
+      margin-top: 75px;
       padding: 15px 15px 40px 15px;
       display: flex;
       flex-direction: column;
@@ -300,6 +308,7 @@ $inbox-url: url(../images/message_inbox.svg);
             flex-direction: column;
             gap: 2px;
             &__chat-content {
+              width: fit-content;
               padding: 10px 15px;
               background-color: $chat-bubble-bg;
               border-radius: 25px 25px 25px 0;
