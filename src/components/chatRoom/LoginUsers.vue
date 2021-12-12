@@ -36,67 +36,14 @@
 
 <script>
 import { accountFilter } from "../../utils/mixins";
+import { mapState } from 'vuex'
 
 const dummyData = {
-  userData: [
+  usersData: [
     {
       id: 8,
       name: "Apple",
       account: "apple",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      id: 10,
-      name: "Orange",
-      account: "orange",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      id: 9,
-      name: "Apple",
-      account: "apple",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      id: 7,
-      name: "Orange",
-      account: "orange",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      id: 6,
-      name: "Apple",
-      account: "apple",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      id: 5,
-      name: "Orange",
-      account: "orange",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      id: 4,
-      name: "Apple",
-      account: "apple",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      id: 3,
-      name: "Orange",
-      account: "orange",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      id: 1,
-      name: "Apple",
-      account: "apple",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      id: 2,
-      name: "Orange",
-      account: "orange",
       avatar: "https://randomuser.me/api/portraits/women/6.jpg",
     },
   ],
@@ -106,28 +53,60 @@ export default {
   name: "Login-users",
   mixins: [accountFilter],
   // 感覺這邊應該用 props 的方式
+  // props: {
+  //   chatBubbles: {
+  //     type: Array,
+  //   },
+  // },
   data() {
     return {
-      loginUsers: [],
+      loginUsers: [
+        
+      ],
     };
   },
   computed: {
+    ...mapState(["currentUser"]),
     userCount() {
       const userCount = this.loginUsers.length;
       return userCount;
     },
   },
   created() {
+    // current user 為最上方的上線使用者
+    this.loginUsers = [{
+          id: this.currentUser.id,
+          account: this.currentUser.account,
+          name: this.currentUser.name,
+          avatar: this.currentUser.avatar
+        }]
     this.fetchLoginUsers();
+     // 上線發出訊息報到
+    this.sockets.subscribe('onlineHint', profile => {
+      this.loginUsers.push(profile)
+    })
+    this.sockets.subscribe('offlineHint', profile => {
+      this.loginUsers = this.loginUsers.filter(user => user.id !== profile.id)
+    })
   },
   methods: {
+    // 目前為假資料
     fetchLoginUsers() {
       // API 串接
-      this.loginUsers = dummyData.userData;
+      dummyData.usersData.forEach(user => {
+        this.loginUsers.push(user)
+      })
+      // this.loginUsers.push(...dummyData.userData);
     },
     toUserPage(userId) {
       this.$router.push({ name: "user", params: { id: userId } });
     },
   },
+  sockets: {
+    onlineHint: () => {},
+    offlineHint: () => {
+      console.log('login user filter')
+    },
+  }
 };
 </script>

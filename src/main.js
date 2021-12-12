@@ -14,8 +14,8 @@ Vue.use(
   new VueSocketIO({
     debug: true,
     // // connection : Websocket server url or socket.io-client instance
-    connection: 'https://alphitter-chatroom-api.herokuapp.com/'
-    // connection: ('http://localhost:3000/chat/public'),
+    // connection: 'https://alphitter-chatroom-api.herokuapp.com/',
+    connection: 'http://localhost:3000'
     // vuex: {
     //   store,
     //   actionPrefix: 'SOCKET_',
