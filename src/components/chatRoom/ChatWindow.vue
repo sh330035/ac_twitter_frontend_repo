@@ -143,19 +143,6 @@ export default {
       console.log('送出訊息', this.chatInput)
       // form validation
       if (this.chatInput.trim().length > 0) {
-        const newMessage = {
-          bubbleType: 'message',
-          data: {
-            eventId: -1,
-            content: this.chatInput,
-            createdAt: new Date(),
-            User: {
-              avatar: this.currentUser.avatar,
-              id: this.currentUser.id
-            }
-          }
-        }
-        this.chatBubbles.push(newMessage)
         this.$emit('after-form-submit', {input: this.chatInput} )
         this.chatInput = ''
       } 
