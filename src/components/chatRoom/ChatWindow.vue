@@ -92,7 +92,6 @@
 <script>
 import { mapState } from "vuex";
 import { timeFormatToShortFilter } from "../../utils/mixins.js";
-
 const dummyData = {
   onlineHint: {
     eventId: 1,
@@ -161,7 +160,6 @@ const dummyData = {
     },
   ],
 };
-
 // chatBubbles 處理後的資料格式：
 // chatBubbles = [
 //   { bubbleType: 'message',
@@ -185,7 +183,6 @@ const dummyData = {
 //     }
 //   },
 // ]
-
 export default {
   mixins: [timeFormatToShortFilter],
   data() {
@@ -208,28 +205,14 @@ export default {
   },
   created() {
     const userId = this.currentUser.id;
-    this.$socket.open();
-    console.log(this.$socket.connected);
-
     this.fetchMessages(userId);
-    // this.socketSubscribeOnlineHint()
-    // this.socketSubscribeOfflineHint()
-    // this.socketSubscribeGetMessage()
-    // client receives the message
-    // this.sockets.subscribe("getMessage", (data) => {
-    //   this.messages.push({
-    //     id: data.id,
-    //     name: data.User.name,
-    //     message: data.content,
-    //     UserId: data.User.id,
-    //     time: data.createdAt,
-    //   });
-    // });
+    this.socketSubscribeOnlineHint();
+    this.socketSubscribeOfflineHint();
+    this.socketSubscribeGetMessage();
   },
   methods: {
     fetchMessages(userId) {
       console.log(`現在的使用者 id-${userId}`);
-      console.log(this.$socket.connected);
       const historyBubbles = dummyData.historyMessages.map((historyMessage) => {
         return {
           bubbleType: "message",
@@ -239,65 +222,45 @@ export default {
           },
         };
       });
-
       this.chatBubbles.push(...historyBubbles);
       console.log(this.chatBubbles);
     },
-    // client sends the message
-    send() {
-      if (this.message.match(/^\s+/) || !this.message) {
-        this.message = "";
-        return;
-      } else {
-        this.$socket.emit("getMessage", {
-          text: this.message,
-          UserId: this.currentUser.id,
-          name: this.currentUser.name,
-        });
-        this.message = "";
-      }
+    // 暫時模仿 subscribe socket 得到有人上線的資訊
+    socketSubscribeOnlineHint() {
+      // 假設 onlineHint 一次只會回傳一筆 object 資料
+      const newStatusMessage = {
+        bubbleType: "status",
+        data: {
+          ...dummyData.onlineHint,
+          status: "online",
+        },
+      };
+      this.chatBubbles.push(newStatusMessage);
+      console.log(this.chatBubbles);
     },
-    intoChatroom() {
-      console.log("123");
-      this.$socket.open();
+    // 暫時模仿 subscribe socket 得到有人下線的資訊
+    socketSubscribeOfflineHint() {
+      // 假設 offlineHint 一次只會回傳一筆 object 資料
+      const newStatusMessage = {
+        bubbleType: "status",
+        data: {
+          ...dummyData.offlineHint,
+          status: "offline",
+        },
+      };
+      this.chatBubbles.push(newStatusMessage);
+      console.log(this.chatBubbles);
     },
-
-    // // 暫時模仿 subscribe socket 得到有人上線的資訊
-    // socketSubscribeOnlineHint() {
-    //   // 假設 onlineHint 一次只會回傳一筆 object 資料
-    //   const newStatusMessage = {
-    //     bubbleType: 'status',
-    //     data: {
-    //       ...dummyData.onlineHint,
-    //       status: 'online',
-    //     }
-    //   }
-    //   this.chatBubbles.push(newStatusMessage)
-    //   console.log(this.chatBubbles)
-    // },
-    // // 暫時模仿 subscribe socket 得到有人下線的資訊
-    // socketSubscribeOfflineHint() {
-    //   // 假設 offlineHint 一次只會回傳一筆 object 資料
-    //   const newStatusMessage = {
-    //     bubbleType: 'status',
-    //     data: {
-    //       ...dummyData.offlineHint,
-    //       status: 'offline',
-    //     }
-    //   }
-    //   this.chatBubbles.push(newStatusMessage)
-    //   console.log(this.chatBubbles)
-    // },
-    // // 暫時模仿 subscribe socket 得到別人發送的新訊息
-    // socketSubscribeGetMessage() {
-    //   // 假設 offlineHint 一次只會回傳一筆 object 資料
-    //   const newMessage = {
-    //     bubbleType: 'message',
-    //     data: dummyData.message
-    //   }
-    //   this.chatBubbles.push(newMessage)
-    //   console.log(this.chatBubbles)
-    // },
+    // 暫時模仿 subscribe socket 得到別人發送的新訊息
+    socketSubscribeGetMessage() {
+      // 假設 offlineHint 一次只會回傳一筆 object 資料
+      const newMessage = {
+        bubbleType: "message",
+        data: dummyData.message,
+      };
+      this.chatBubbles.push(newMessage);
+      console.log(this.chatBubbles);
+    },
     handleFormSubmit() {
       console.log("送出訊息", this.chatInput);
       this.isProcessing = true;
