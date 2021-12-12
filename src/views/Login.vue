@@ -67,7 +67,9 @@ export default {
 
         // 將資料傳到 Vuex 中
         this.$store.commit("setCurrentUser", data.user);
-
+        // 發出 login 訊息向 socket 報到
+        this.$socket.emit('onlineHint', { name: data.user.name, user: { id: data.user.id, account: data.user.account, avatar: data.user.avatar } })
+        
         this.$router.push({ name: "tweets" });
       } catch (error) {
         console.log(error);
