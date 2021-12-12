@@ -92,9 +92,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import NewTweetModal from "../components/NewTweetModal.vue";
-import Toast from "../components/NavbarAlertToast.vue";
+import { mapState } from "vuex"
+import NewTweetModal from "../components/NewTweetModal.vue"
+import Toast from "../components/NavbarAlertToast.vue"
 
 export default {
   name: "nav-bar",
@@ -111,38 +111,39 @@ export default {
       isNewNotice: true,
       isNewChat: false,
       isNewMessage: true,
-    };
+    }
   },
   computed: {
     ...mapState(["currentUser"]),
   },
   methods: {
     tweetLaunchHandler() {
-      this.isModelShowed = true;
+      this.isModelShowed = true
     },
     afterTweetCheckout() {
-      this.isModelShowed = false;
+      this.isModelShowed = false
     },
     afterTweetSend(dataStatus) {
       if (!dataStatus) {
-        this.sendToastMessage("error");
+        this.sendToastMessage("error")
       } else {
-        this.sendToastMessage("success");
+        this.sendToastMessage("success")
       }
       // 修改 vuex 狀態
-      this.$store.commit("renderTweet");
-      this.$store.commit("renderTweet");
+      this.$store.commit("renderTweet")
+      this.$store.commit("renderTweet")
     },
     // 修改 toast message 讓 toast 監看到變化，觸發視窗跳出
     sendToastMessage(status) {
-      this.NavbarToastMessage.dataStatus = "";
-      this.NavbarToastMessage.dataStatus = status;
+      this.NavbarToastMessage.dataStatus = ""
+      this.NavbarToastMessage.dataStatus = status
 
-      this.NavbarToastMessage.message = "推文發送成功";
+      this.NavbarToastMessage.message = "推文發送成功"
     },
     logout() {
-      this.$store.commit("revokeAuthentication");
-      this.$router.push("/login");
+      this.$socket.emit('offlineHint', { name: this.currentUser.name, user: { id: this.currentUser.id, account: this.currentUser.account, avatar: this.currentUser.avatar } })
+      this.$store.commit("revokeAuthentication")
+      this.$router.push("/login")
     },
   },
 };

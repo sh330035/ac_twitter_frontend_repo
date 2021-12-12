@@ -69,10 +69,6 @@ export default {
     ...mapState(["currentUser"]),
   },
   created() {
-    // 最後需搬到登入連線
-    this.$socket.connect()
-    // 上線發出訊息報到
-    this.reportUserData()
     // 獲取歷史訊息 
     this.fetchHistoryMessages()
     // 接收所有人的發出的 上線 訊息
@@ -82,15 +78,7 @@ export default {
     // 接收所有人發出的 message 訊息
     this.catchMessage()
   },
-  beforeDestroy() {
-    // 最後需搬到 登出按鈕
-    this.$socket.emit('offlineHint', { name: this.currentUser.name, user: { id: this.currentUser.id, account: this.currentUser.account, avatar: this.currentUser.avatar } })
-  },
   methods: {
-    reportUserData() {
-      // 上線發出訊息報到
-      this.$socket.emit('onlineHint', { name: this.currentUser.name, user: { id: this.currentUser.id, account: this.currentUser.account, avatar: this.currentUser.avatar } })
-    },
     fetchHistoryMessages() {
       this.sockets.subscribe('getChatHistory', historyMessages => {
         const historyBubbles = historyMessages.map(historyMessage => {
