@@ -1,7 +1,7 @@
 <template>
   <div class="chatroom-page chat-feature-page">
     <section class="center-view">
-      <login-users />
+      <login-users :chat-bubbles="chatBubbles" />
       <chat-window
         @after-form-submit="emitMessageToSocket"
         :chat-bubbles="chatBubbles"
@@ -69,7 +69,7 @@ export default {
     ...mapState(["currentUser"]),
   },
   created() {
-    // 連線
+    // 最後需搬到登入連線
     this.$socket.connect()
     // 上線發出訊息報到
     this.reportUserData()
@@ -82,13 +82,16 @@ export default {
     // 接收所有人發出的 message 訊息
     this.catchMessage()
   },
+  beforeDestroy() {
+    // 最後需搬到 登出按鈕
+    this.$socket.emit('offlineHint', { name: this.currentUser.name, user: { id: this.currentUser.id, account: this.currentUser.account, avatar: this.currentUser.avatar } })
+  },
   methods: {
     reportUserData() {
       // 上線發出訊息報到
       this.$socket.emit('onlineHint', { name: this.currentUser.name, user: { id: this.currentUser.id, account: this.currentUser.account, avatar: this.currentUser.avatar } })
     },
-    fetchHistoryMessages(userId) {
-      console.log(`現在的使用者 id-${userId}`)
+    fetchHistoryMessages() {
       this.sockets.subscribe('getChatHistory', historyMessages => {
         const historyBubbles = historyMessages.map(historyMessage => {
           return {
